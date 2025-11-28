@@ -1,0 +1,92 @@
+import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { Heart, ShoppingBag } from "lucide-react";
+
+import categoryBridal from "@/assets/category-bridal.jpg";
+
+const bridalDresses = [
+  { id: 1, name: "Eternal Grace", price: 3499, image: categoryBridal },
+  { id: 2, name: "Whisper Lace", price: 2899, image: categoryBridal },
+  { id: 3, name: "Pearl Romance", price: 3199, image: categoryBridal },
+  { id: 4, name: "Ivory Dreams", price: 2999, image: categoryBridal },
+  { id: 5, name: "Vintage Elegance", price: 3299, image: categoryBridal },
+  { id: 6, name: "Royal Symphony", price: 3699, image: categoryBridal },
+];
+
+export default function FormalWearBridal() {
+  return (
+    <Layout>
+      {/* Hero */}
+      <section className="bg-gradient-hero py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="font-display text-4xl font-semibold text-foreground sm:text-5xl mb-4">
+            Bridal Collection
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
+            Your dream wedding gown awaits. Each dress is custom-crafted to perfection for your special day.
+          </p>
+          <Button asChild variant="gold" size="lg">
+            <Link to="/custom-inquiry">Start Custom Inquiry</Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Product Grid */}
+      <section className="py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {bridalDresses.map((dress, index) => (
+              <article
+                key={dress.id}
+                className="group animate-fade-in"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <div className="relative overflow-hidden rounded-lg aspect-[3/4] mb-4 bg-muted elegant-border">
+                  <img
+                    src={dress.image}
+                    alt={dress.name}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  
+                  <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                    <button
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-card shadow-soft transition-colors hover:bg-primary hover:text-primary-foreground"
+                      aria-label="Add to wishlist"
+                    >
+                      <Heart className="h-5 w-5" />
+                    </button>
+                    <button
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-card shadow-soft transition-colors hover:bg-primary hover:text-primary-foreground"
+                      aria-label="Quick add to bag"
+                    >
+                      <ShoppingBag className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  <div className="absolute inset-0 flex items-center justify-center bg-charcoal/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <Button asChild variant="gold" size="sm">
+                      <Link to="/custom-inquiry">Customize This</Link>
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="font-display text-lg font-medium text-foreground group-hover:text-primary transition-colors">
+                    {dress.name}
+                  </h3>
+                  <p className="font-medium text-foreground">
+                    From ${dress.price.toLocaleString()}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Bespoke bridal gowns tailored to perfection
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Layout>
+  );
+}

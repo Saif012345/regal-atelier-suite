@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import heroImage from "@/assets/hero-formal.jpg";
 
-interface HeroSectionProps {
-  heroImage: string;
-}
-
-export function HeroSection({ heroImage }: HeroSectionProps) {
+export function HeroSection() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -22,17 +19,14 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
       {/* Content */}
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl animate-slide-up">
-          <p className="mb-4 font-display text-lg tracking-widest text-gold uppercase">
-            New Collection 2024
-          </p>
           <h1 className="mb-6 font-display text-5xl font-semibold leading-tight text-ivory sm:text-6xl lg:text-7xl">
-            Elegance for Every
-            <span className="block text-gold">Occasion</span>
+            Azixa Rahman
           </h1>
+          <p className="mb-4 font-display text-2xl text-gold">
+            Timeless Elegance, Crafted for You
+          </p>
           <p className="mb-8 text-lg text-ivory/80 leading-relaxed max-w-lg">
-            Discover our exquisite collection of prom dresses, bridal gowns, 
-            and occasion wear. Handcrafted with precision and designed to make 
-            you feel extraordinary.
+            Discover exquisite formal wear designed to make your most important moments unforgettable.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button asChild variant="hero" size="xl">
