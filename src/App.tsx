@@ -14,6 +14,7 @@ import Contact from "./pages/Contact";
 import FormalWearProm from "./pages/FormalWearProm";
 import FormalWearBridal from "./pages/FormalWearBridal";
 import FormalWearOccasion from "./pages/FormalWearOccasion";
+import Abayas from "./pages/Abayas";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/formal-wear/prom" element={<FormalWearProm />} />
           <Route path="/formal-wear/bridal" element={<FormalWearBridal />} />
           <Route path="/formal-wear/occasion" element={<FormalWearOccasion />} />
+          <Route path="/abayas" element={<Abayas />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/custom-inquiry" element={<CustomInquiry />} />
           <Route path="/gallery" element={<Gallery />} />
