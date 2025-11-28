@@ -1,12 +1,12 @@
 import { Layout } from "@/components/layout/Layout";
 import { HeroSection } from "@/components/home/HeroSection";
+import { AboutSection } from "@/components/home/AboutSection";
 import { CategorySection } from "@/components/home/CategorySection";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 
-import heroImage from "@/assets/hero-formal.jpg";
 import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
 import categoryOccasion from "@/assets/category-occasion.jpg";
@@ -17,19 +17,19 @@ const categories = [
     name: "Prom",
     description: "Make an unforgettable entrance with our stunning prom collection",
     image: categoryProm,
-    href: "/shop?category=prom",
+    href: "/formal-wear/prom",
   },
   {
     name: "Bridal",
     description: "Timeless elegance for your most special day",
     image: categoryBridal,
-    href: "/shop?category=bridal",
+    href: "/formal-wear/bridal",
   },
   {
     name: "Occasion",
     description: "Sophisticated pieces for galas, events & celebrations",
     image: categoryOccasion,
-    href: "/shop?category=occasion",
+    href: "/formal-wear/occasion",
   },
   {
     name: "Abayas",
@@ -75,7 +75,8 @@ const featuredProducts = [
 const Index = () => {
   return (
     <Layout>
-      <HeroSection heroImage={heroImage} />
+      <HeroSection />
+      <AboutSection />
       <CategorySection categories={categories} />
       <FeaturedProducts products={featuredProducts} />
       <ServicesSection />

@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, User, Search } from "lucide-react";
+import { Menu, X, ShoppingBag, User, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "Custom Inquiry", href: "/custom-inquiry" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Size Guide", href: "/size-chart" },
+  { name: "Custom Inquiry", href: "/custom-inquiry" },
+  { name: "Measurements", href: "/size-chart" },
+  { name: "Booking", href: "/booking" },
+  { name: "Contact", href: "/contact" },
+];
+
+const formalWearLinks = [
+  { name: "Prom", href: "/formal-wear/prom" },
+  { name: "Bridal", href: "/formal-wear/bridal" },
+  { name: "Occasion", href: "/formal-wear/occasion" },
 ];
 
 export function Navbar() {
@@ -23,7 +30,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <span className="font-display text-2xl font-semibold tracking-wide text-foreground">
-              MAISON<span className="text-primary">ÉLÉGANCE</span>
+              Azixa Rahman
             </span>
           </Link>
 
@@ -43,6 +50,27 @@ export function Navbar() {
                 {item.name}
               </Link>
             ))}
+            
+            {/* Formal Wear Dropdown */}
+            <div className="relative group">
+              <button className="text-sm font-medium tracking-wide text-muted-foreground hover:text-primary transition-colors duration-300 flex items-center gap-1">
+                Formal Wear
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="bg-card border border-border rounded-lg shadow-elegant overflow-hidden min-w-[180px]">
+                  {formalWearLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="block px-4 py-3 text-sm hover:bg-muted transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Desktop Actions */}
@@ -99,6 +127,22 @@ export function Navbar() {
                   {item.name}
                 </Link>
               ))}
+              
+              {/* Formal Wear Section in Mobile */}
+              <div className="px-4 py-3">
+                <p className="text-sm font-medium text-muted-foreground mb-2">Formal Wear</p>
+                {formalWearLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block py-2 pl-4 text-base font-medium text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+              
               <div className="mt-4 flex gap-4 px-4">
                 <Button variant="outline" className="flex-1">
                   <User className="mr-2 h-4 w-4" />
