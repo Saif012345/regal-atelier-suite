@@ -32,7 +32,7 @@ export function Footer() {
           <div className="space-y-6">
             <Link to="/" className="inline-block">
               <span className="font-display text-2xl font-semibold tracking-wide">
-                MAISON<span className="text-gold">ÉLÉGANCE</span>
+                Azixa <span className="text-gold">Rahman</span>
               </span>
             </Link>
             <p className="text-sm text-ivory/70 leading-relaxed">
@@ -129,7 +129,7 @@ export function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-xs text-ivory/50">
-            © {new Date().getFullYear()} Maison Élégance. All rights reserved.
+            © {new Date().getFullYear()} Azixa Rahman. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-ivory/50">
             <Link to="/privacy" className="hover:text-gold transition-colors">
