@@ -24,7 +24,7 @@ export default function FormalWearProm() {
             Prom Collection
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            Make your prom night unforgettable with a stunning custom gown designed just for you.
+            Make your prom night unforgettable with a stunning gown designed just for you. Each piece can be fully customized to your measurements and style preferences.
           </p>
           <Button asChild variant="gold" size="lg">
             <Link to="/custom-inquiry">Start Custom Inquiry</Link>

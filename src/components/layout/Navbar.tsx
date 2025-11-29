@@ -13,14 +13,14 @@ const navigation = [{
   name: "Gallery",
   href: "/gallery"
 }, {
-  name: "Custom Inquiry",
-  href: "/custom-inquiry"
-}, {
   name: "Measurements",
   href: "/size-chart"
 }, {
   name: "Booking",
   href: "/booking"
+}, {
+  name: "About",
+  href: "/about"
 }, {
   name: "Contact",
   href: "/contact"

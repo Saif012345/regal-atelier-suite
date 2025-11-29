@@ -16,6 +16,7 @@ import FormalWearBridal from "./pages/FormalWearBridal";
 import FormalWearOccasion from "./pages/FormalWearOccasion";
 import Abayas from "./pages/Abayas";
 import Admin from "./pages/Admin";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/size-chart" element={<SizeChart />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

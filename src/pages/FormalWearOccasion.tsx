@@ -24,7 +24,7 @@ export default function FormalWearOccasion() {
             Occasion Wear Collection
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            Elegant gowns for galas, formal events, and special celebrations. Custom-designed for your unique occasion.
+            Make a statement at any special occasion with elegant formal wear that reflects your unique style and confidence. Perfect for galas, formal events, and memorable celebrations.
           </p>
           <Button asChild variant="gold" size="lg">
             <Link to="/custom-inquiry">Start Custom Inquiry</Link>

@@ -24,7 +24,7 @@ export default function FormalWearBridal() {
             Bridal Collection
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            Your dream wedding gown awaits. Each dress is custom-crafted to perfection for your special day.
+            Walk down the aisle in your dream wedding gown, designed and crafted exclusively for you. Each bridal piece is a work of art created to make your special day unforgettable.
           </p>
           <Button asChild variant="gold" size="lg">
             <Link to="/custom-inquiry">Start Custom Inquiry</Link>
