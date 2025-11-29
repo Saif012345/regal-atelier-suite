@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Instagram, Facebook } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -11,18 +11,27 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
     message: "",
   });
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.message) {
+      toast({
+        title: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Message Sent!",
-      description: "We'll get back to you as soon as possible.",
+      description: "We'll get back to you within 24 hours.",
     });
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    setFormData({ name: "", email: "", message: "" });
   };
 
   return (
@@ -31,10 +40,10 @@ export default function Contact() {
       <section className="bg-gradient-hero py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-display text-4xl font-semibold text-foreground sm:text-5xl mb-4">
-            Get In Touch
+            We'd Love to Hear From You
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Have questions about our services or ready to start your custom design? We'd love to hear from you.
+            Whether you have questions, need assistance, or want to connect with our team, we're here to help. Fill out the form below or email <a href="mailto:azixarahman@gmail.com" className="text-primary hover:underline font-medium">azixarahman@gmail.com</a> and our team will be in touch in the next 24 hours.
           </p>
         </div>
       </section>
@@ -50,7 +59,7 @@ export default function Contact() {
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name">Name *</Label>
                     <Input
                       id="name"
                       required
@@ -61,7 +70,7 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">Email *</Label>
                     <Input
                       id="email"
                       type="email"
@@ -69,17 +78,6 @@ export default function Contact() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="your@email.com"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+1 (555) 000-0000"
                     />
                   </div>
 
@@ -106,7 +104,7 @@ export default function Contact() {
             <div className="order-1 lg:order-2 space-y-8">
               <div>
                 <h2 className="font-display text-2xl font-semibold text-foreground mb-6">
-                  Contact Information
+                  Connect With Us
                 </h2>
                 <div className="space-y-6">
                   <div className="flex gap-4">
@@ -115,48 +113,46 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-medium text-foreground mb-1">Email</h3>
-                      <a href="mailto:info@azixarahman.com" className="text-muted-foreground hover:text-primary transition-colors">
-                        info@azixarahman.com
+                      <a 
+                        href="mailto:azixarahman@gmail.com" 
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        azixarahman@gmail.com
                       </a>
                     </div>
                   </div>
 
                   <div className="flex gap-4">
                     <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Phone className="h-6 w-6 text-primary" />
+                      <Instagram className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-foreground mb-1">Phone</h3>
-                      <a href="tel:+15550000000" className="text-muted-foreground hover:text-primary transition-colors">
-                        +1 (555) 000-0000
+                      <h3 className="font-medium text-foreground mb-1">Instagram</h3>
+                      <a 
+                        href="https://www.instagram.com/azixarahman" 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        @azixarahman
                       </a>
                     </div>
                   </div>
 
                   <div className="flex gap-4">
                     <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <MapPin className="h-6 w-6 text-primary" />
+                      <Facebook className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-foreground mb-1">Address</h3>
-                      <p className="text-muted-foreground">
-                        123 Fashion District<br />
-                        New York, NY 10001
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Clock className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-foreground mb-1">Business Hours</h3>
-                      <p className="text-muted-foreground">
-                        Monday - Friday: 10am - 6pm<br />
-                        Saturday: 11am - 5pm<br />
-                        Sunday: By Appointment
-                      </p>
+                      <h3 className="font-medium text-foreground mb-1">Facebook</h3>
+                      <a 
+                        href="https://www.facebook.com/share/16BLSUJzvM/?mibextid=wwXIfr" 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        Azixa Rahman
+                      </a>
                     </div>
                   </div>
                 </div>

@@ -14,26 +14,29 @@ import categoryOccasion from "@/assets/category-occasion.jpg";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
 const galleryImages = [
-  { id: 1, image: categoryBridal, caption: "Sarah's Dream Wedding Gown", category: "Bridal" },
-  { id: 2, image: categoryProm, caption: "Emma's Prom Night", category: "Prom" },
-  { id: 3, image: categoryOccasion, caption: "Gala Event - Custom Design", category: "Occasion" },
-  { id: 4, image: categoryAbaya, caption: "Ramadan Collection Piece", category: "Abaya" },
-  { id: 5, image: categoryBridal, caption: "Vintage-Inspired Bridal", category: "Bridal" },
-  { id: 6, image: categoryProm, caption: "Red Carpet Ready", category: "Prom" },
-  { id: 7, image: categoryOccasion, caption: "Mother of the Bride", category: "Occasion" },
-  { id: 8, image: categoryAbaya, caption: "Embroidered Elegance", category: "Abaya" },
+  { id: 1, image: categoryBridal, caption: "Sarah's Dream Wedding Gown", category: "Bridal", tags: ["Luxury", "Custom"] },
+  { id: 2, image: categoryProm, caption: "Emma's Prom Night", category: "Prom", tags: ["Modern"] },
+  { id: 3, image: categoryOccasion, caption: "Gala Event - Custom Design", category: "Occasion", tags: ["Luxury", "Custom"] },
+  { id: 4, image: categoryAbaya, caption: "Ramadan Collection Piece", category: "Abaya", tags: ["Modest", "Elegant"] },
+  { id: 5, image: categoryBridal, caption: "Vintage-Inspired Bridal", category: "Bridal", tags: ["Custom", "Vintage"] },
+  { id: 6, image: categoryProm, caption: "Red Carpet Ready", category: "Prom", tags: ["Luxury", "Bold"] },
+  { id: 7, image: categoryOccasion, caption: "Mother of the Bride", category: "Occasion", tags: ["Elegant"] },
+  { id: 8, image: categoryAbaya, caption: "Embroidered Elegance", category: "Abaya", tags: ["Modest", "Luxury"] },
 ];
 
-const categories = ["All", "Bridal", "Prom", "Occasion", "Abaya"];
+const categories = ["All", "Prom", "Bridal", "Occasion", "Abaya"];
+const tagFilters = ["All Tags", "Luxury", "Modest", "Custom", "Elegant", "Modern", "Bold", "Vintage"];
 
 export default function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedTag, setSelectedTag] = useState("All Tags");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-  const filteredImages =
-    selectedCategory === "All"
-      ? galleryImages
-      : galleryImages.filter((img) => img.category === selectedCategory);
+  const filteredImages = galleryImages.filter((img) => {
+    const categoryMatch = selectedCategory === "All" || img.category === selectedCategory;
+    const tagMatch = selectedTag === "All Tags" || img.tags.includes(selectedTag);
+    return categoryMatch && tagMatch;
+  });
 
   const currentIndex = selectedImage !== null
     ? filteredImages.findIndex((img) => img.id === selectedImage)
@@ -66,17 +69,38 @@ export default function Gallery() {
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {categories.map((cat) => (
-              <Button
-                key={cat}
-                variant={selectedCategory === cat ? "gold" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat}
-              </Button>
-            ))}
+          <div className="space-y-4 mb-10">
+            <div>
+              <p className="text-sm text-muted-foreground mb-2 font-medium">Category</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {categories.map((cat) => (
+                  <Button
+                    key={cat}
+                    variant={selectedCategory === cat ? "gold" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(cat)}
+                  >
+                    {cat}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-sm text-muted-foreground mb-2 font-medium">Tags</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {tagFilters.map((tag) => (
+                  <Button
+                    key={tag}
+                    variant={selectedTag === tag ? "gold" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedTag(tag)}
+                  >
+                    {tag}
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Gallery Grid */}

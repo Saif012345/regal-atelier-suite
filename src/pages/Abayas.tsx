@@ -67,7 +67,7 @@ export default function Abayas() {
             Abaya Collection
           </h1>
           <p className="text-lg md:text-xl max-w-2xl mx-auto animate-slide-up opacity-90">
-            Elegant and modest designs crafted with the finest fabrics
+            Elegant and modest designs crafted with the finest fabrics. Each abaya combines tradition with contemporary style.
           </p>
         </div>
       </section>

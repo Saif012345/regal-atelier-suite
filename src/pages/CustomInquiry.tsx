@@ -32,21 +32,25 @@ const inquiryTypes = [
 
 const embellishments = [
   "Beading",
-  "Sequins",
-  "Lace Appliqué",
-  "Embroidery",
-  "Crystals",
   "Pearls",
-  "Feathers",
-  "Ruffles",
+  "Appliqués",
+  "Crystals",
+  "Other",
+];
+
+const accessories = [
+  "Veil",
+  "Handfand",
+  "Matching hijab",
+  "Other",
 ];
 
 const consultationPreferences = [
   "FaceTime",
   "Google Meet",
   "Zoom",
-  "WhatsApp Video",
-  "Phone Call",
+  "WhatsApp",
+  "Other",
 ];
 
 const budgetRanges = [
@@ -68,11 +72,16 @@ export default function CustomInquiry() {
     instaHandle: "",
     color: "",
     notes: "",
-    budgetRange: "",
+    budgetMin: "",
+    budgetMax: "",
+    currency: "USD",
     consultationPref: "",
+    embellishmentOther: "",
+    accessoryOther: "",
   });
   const [needDate, setNeedDate] = useState<Date | undefined>();
   const [selectedEmbellishments, setSelectedEmbellishments] = useState<string[]>([]);
+  const [selectedAccessories, setSelectedAccessories] = useState<string[]>([]);
   const [inspirationFiles, setInspirationFiles] = useState<File[]>([]);
   const [fullBodyPhoto, setFullBodyPhoto] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -117,6 +126,10 @@ export default function CustomInquiry() {
       toast({ title: "Please upload at least one inspiration image", variant: "destructive" });
       return;
     }
+    if (!fullBodyPhoto) {
+      toast({ title: "Please upload a full body photo", variant: "destructive" });
+      return;
+    }
     if (!formData.color) {
       toast({ title: "Please specify your preferred color", variant: "destructive" });
       return;
@@ -125,8 +138,12 @@ export default function CustomInquiry() {
       toast({ title: "Please describe your inspiration", variant: "destructive" });
       return;
     }
-    if (!formData.budgetRange) {
-      toast({ title: "Please select a budget range", variant: "destructive" });
+    if (!formData.budgetMin || !formData.budgetMax) {
+      toast({ title: "Please specify your budget range", variant: "destructive" });
+      return;
+    }
+    if (!formData.consultationPref) {
+      toast({ title: "Please select consultation preference", variant: "destructive" });
       return;
     }
 
@@ -326,11 +343,10 @@ export default function CustomInquiry() {
                 )}
               </div>
 
-              {/* Full Body Photo */}
               <div className="space-y-2">
-                <Label>Full Body Photo (optional)</Label>
+                <Label>Upload Full Body Photo *</Label>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Helps us understand your silhouette for better design recommendations
+                  Required for accurate design recommendations
                 </p>
                 <input
                   type="file"
@@ -360,9 +376,10 @@ export default function CustomInquiry() {
                 />
               </div>
 
-              {/* Embellishments */}
+               {/* Embellishments */}
               <div className="space-y-3">
-                <Label>Embellishment Preferences</Label>
+                <Label>Embellishment Preferences (optional)</Label>
+                <p className="text-sm text-muted-foreground">Select all that apply</p>
                 <div className="flex flex-wrap gap-3">
                   {embellishments.map((emb) => (
                     <label
@@ -388,6 +405,53 @@ export default function CustomInquiry() {
                     </label>
                   ))}
                 </div>
+                {selectedEmbellishments.includes("Other") && (
+                  <Input
+                    value={formData.embellishmentOther}
+                    onChange={(e) => handleInputChange("embellishmentOther", e.target.value)}
+                    placeholder="Please specify..."
+                    className="mt-2"
+                  />
+                )}
+              </div>
+
+              {/* Accessories */}
+              <div className="space-y-3">
+                <Label>Accessories (optional)</Label>
+                <p className="text-sm text-muted-foreground">Select all that apply</p>
+                <div className="flex flex-wrap gap-3">
+                  {accessories.map((acc) => (
+                    <label
+                      key={acc}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer transition-all",
+                        selectedAccessories.includes(acc)
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/50"
+                      )}
+                    >
+                      <Checkbox
+                        checked={selectedAccessories.includes(acc)}
+                        onCheckedChange={(checked) => {
+                          setSelectedAccessories((prev) =>
+                            checked
+                              ? [...prev, acc]
+                              : prev.filter((a) => a !== acc)
+                          );
+                        }}
+                      />
+                      <span className="text-sm">{acc}</span>
+                    </label>
+                  ))}
+                </div>
+                {selectedAccessories.includes("Other") && (
+                  <Input
+                    value={formData.accessoryOther}
+                    onChange={(e) => handleInputChange("accessoryOther", e.target.value)}
+                    placeholder="Please specify..."
+                    className="mt-2"
+                  />
+                )}
               </div>
 
               {/* Notes */}
@@ -409,28 +473,52 @@ export default function CustomInquiry() {
                 Budget & Consultation
               </h2>
 
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="space-y-6">
                 <div className="space-y-2">
-                  <Label>Budget Range *</Label>
-                  <Select
-                    value={formData.budgetRange}
-                    onValueChange={(v) => handleInputChange("budgetRange", v)}
-                  >
-                    <SelectTrigger className="bg-card">
-                      <SelectValue placeholder="Select budget range" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-card border-border">
-                      {budgetRanges.map((range) => (
-                        <SelectItem key={range} value={range}>
-                          {range}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Label>Budget Range * (numerical values only)</Label>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1">
+                      <Select
+                        value={formData.currency}
+                        onValueChange={(v) => handleInputChange("currency", v)}
+                      >
+                        <SelectTrigger className="bg-card">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-card border-border">
+                          <SelectItem value="USD">USD</SelectItem>
+                          <SelectItem value="GBP">GBP</SelectItem>
+                          <SelectItem value="EUR">EUR</SelectItem>
+                          <SelectItem value="NGN">NGN</SelectItem>
+                          <SelectItem value="CAD">CAD</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="col-span-1">
+                      <Input
+                        type="number"
+                        value={formData.budgetMin}
+                        onChange={(e) => handleInputChange("budgetMin", e.target.value)}
+                        placeholder="Min"
+                        min="0"
+                        step="100"
+                      />
+                    </div>
+                    <div className="col-span-1">
+                      <Input
+                        type="number"
+                        value={formData.budgetMax}
+                        onChange={(e) => handleInputChange("budgetMax", e.target.value)}
+                        placeholder="Max"
+                        min="0"
+                        step="100"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Consultation Preference</Label>
+                  <Label>Virtual Consultation Preference *</Label>
                   <Select
                     value={formData.consultationPref}
                     onValueChange={(v) => handleInputChange("consultationPref", v)}

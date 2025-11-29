@@ -22,16 +22,13 @@ export function HeroSection() {
           <h1 className="mb-6 font-display text-5xl font-semibold leading-tight text-ivory sm:text-6xl lg:text-7xl">
             Azixa Rahman
           </h1>
-          <p className="mb-4 font-display text-2xl text-gold">
-            Timeless Elegance, Crafted for You
-          </p>
-          <p className="mb-8 text-lg text-ivory/80 leading-relaxed max-w-lg">
-            Discover exquisite formal wear designed to make your most important moments unforgettable.
+          <p className="mb-8 text-lg text-ivory/90 leading-relaxed max-w-2xl">
+            Azixa Rahman was built on the belief that every woman deserves a gown that reflects her style, her story, and her confidence. Our designs blend bold fashion moments with timeless silhouettes—crafted for those who want to be seen, remembered, and celebrated.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button asChild variant="hero" size="xl">
-              <Link to="/shop">
-                Explore Collection
+              <Link to="/formal-wear/prom">
+                Explore the Collection
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>

@@ -41,7 +41,7 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/azixarahman"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-ivory/20 transition-colors hover:border-gold hover:text-gold"
@@ -50,7 +50,7 @@ export function Footer() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/16BLSUJzvM/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-ivory/20 transition-colors hover:border-gold hover:text-gold"
@@ -114,11 +114,11 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:hello@maisonelegance.com"
+                  href="mailto:azixarahman@gmail.com"
                   className="flex items-center gap-3 text-sm text-ivory/70 transition-colors hover:text-gold"
                 >
                   <Mail className="h-5 w-5 flex-shrink-0 text-gold" />
-                  hello@maisonelegance.com
+                  azixarahman@gmail.com
                 </a>
               </li>
             </ul>
