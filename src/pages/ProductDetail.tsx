@@ -21,6 +21,7 @@ import {
 import { Heart, ShoppingBag, Ruler, Video, ChevronRight, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
@@ -56,12 +57,14 @@ const mockProduct = {
     "Hidden back zipper",
     "Fully lined",
   ],
+  isCustom: true, // Custom inquiry for Prom, Bridal, Occasion; false for Abayas
 };
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const { toast } = useToast();
   const { addItem, setIsCartOpen } = useCart();
+  const { addItem: addToWishlist, isInWishlist } = useWishlist();
   const [selectedImage, setSelectedImage] = useState(0);
   const [sizingOption, setSizingOption] = useState<"standard" | "custom">("standard");
   const [selectedSize, setSelectedSize] = useState("");
@@ -75,6 +78,30 @@ export default function ProductDetail() {
     sleeveLength: "",
     fullHeight: "",
   });
+
+  const handleWishlistToggle = () => {
+    if (isInWishlist(mockProduct.id)) {
+      toast({
+        title: "Already in wishlist",
+        description: "This item is already in your wishlist.",
+      });
+      return;
+    }
+
+    addToWishlist({
+      id: mockProduct.id,
+      name: mockProduct.name,
+      price: mockProduct.price,
+      image: mockProduct.images[0],
+      category: mockProduct.category,
+      isCustom: mockProduct.isCustom,
+    });
+
+    toast({
+      title: "Added to wishlist",
+      description: `${mockProduct.name} has been added to your wishlist.`,
+    });
+  };
 
   const handleAddToBag = () => {
     if (sizingOption === "standard" && !selectedSize) {
@@ -333,17 +360,32 @@ export default function ProductDetail() {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <Button
-                  variant="gold"
+                {mockProduct.isCustom ? (
+                  <Button
+                    variant="gold"
+                    size="xl"
+                    className="flex-1"
+                    asChild
+                  >
+                    <Link to="/custom-inquiry">Submit Custom Inquiry</Link>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="gold"
+                    size="xl"
+                    className="flex-1"
+                    onClick={handleAddToBag}
+                  >
+                    <ShoppingBag className="h-5 w-5 mr-2" />
+                    Add to Bag
+                  </Button>
+                )}
+                <Button 
+                  variant="outline" 
                   size="xl"
-                  className="flex-1"
-                  onClick={handleAddToBag}
+                  onClick={handleWishlistToggle}
                 >
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  Add to Bag
-                </Button>
-                <Button variant="outline" size="xl">
-                  <Heart className="h-5 w-5" />
+                  <Heart className={`h-5 w-5 ${isInWishlist(mockProduct.id) ? "fill-current text-primary" : ""}`} />
                 </Button>
               </div>
 

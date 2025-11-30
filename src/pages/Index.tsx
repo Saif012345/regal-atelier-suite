@@ -6,6 +6,7 @@ import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
+import { InstagramSection } from "@/components/home/InstagramSection";
 
 import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
@@ -17,19 +18,19 @@ const categories = [
     name: "Prom",
     description: "Make an unforgettable entrance with our stunning prom collection",
     image: categoryProm,
-    href: "/formal-wear/prom",
+    href: "/shop?category=prom",
   },
   {
     name: "Bridal",
     description: "Timeless elegance for your most special day",
     image: categoryBridal,
-    href: "/formal-wear/bridal",
+    href: "/shop?category=bridal",
   },
   {
     name: "Occasion",
     description: "Sophisticated pieces for galas, events & celebrations",
     image: categoryOccasion,
-    href: "/formal-wear/occasion",
+    href: "/shop?category=occasion",
   },
   {
     name: "Abayas",
@@ -81,6 +82,7 @@ const Index = () => {
       <FeaturedProducts products={featuredProducts} />
       <ServicesSection />
       <TestimonialSection />
+      <InstagramSection />
       <NewsletterSection />
     </Layout>
   );
