@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 import { Heart, ShoppingBag, Ruler, Video, ChevronRight, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 
 import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
@@ -60,6 +61,7 @@ const mockProduct = {
 export default function ProductDetail() {
   const { slug } = useParams();
   const { toast } = useToast();
+  const { addItem, setIsCartOpen } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [sizingOption, setSizingOption] = useState<"standard" | "custom">("standard");
   const [selectedSize, setSelectedSize] = useState("");
@@ -98,10 +100,32 @@ export default function ProductDetail() {
       }
     }
 
+    const selectedFabricObj = fabricOptions.find((f) => f.id === selectedFabric)!;
+
+    addItem({
+      id: `${mockProduct.id}-${Date.now()}`,
+      name: mockProduct.name,
+      price: mockProduct.price,
+      image: mockProduct.images[0],
+      category: mockProduct.category,
+      quantity: 1,
+      sizing: {
+        type: sizingOption,
+        size: sizingOption === "standard" ? selectedSize : undefined,
+        measurements: sizingOption === "custom" ? customMeasurements : undefined,
+      },
+      fabric: {
+        id: selectedFabricObj.id,
+        name: selectedFabricObj.name,
+      },
+    });
+
     toast({
       title: "Added to bag",
       description: `${mockProduct.name} has been added to your shopping bag.`,
     });
+
+    setIsCartOpen(true);
   };
 
   return (
