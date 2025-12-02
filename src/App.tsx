@@ -2,9 +2,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
+
+// Main pages
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
@@ -13,15 +15,27 @@ import Gallery from "./pages/Gallery";
 import SizeChart from "./pages/SizeChart";
 import Booking from "./pages/Booking";
 import Contact from "./pages/Contact";
+import About from "./pages/About";
+import Checkout from "./pages/Checkout";
+import Wishlist from "./pages/Wishlist";
+import Admin from "./pages/Admin";
+import NotFound from "./pages/NotFound";
+
+// Azixa Rahman Label pages
+import AzixaHome from "./pages/AzixaHome";
+import AzixaProm from "./pages/AzixaProm";
+import AzixaBridal from "./pages/AzixaBridal";
+import AzixaOccasion from "./pages/AzixaOccasion";
+
+// Simply Azixa pages
+import SimplyAzixaHome from "./pages/SimplyAzixaHome";
+import SimplyAzixaAbayas from "./pages/SimplyAzixaAbayas";
+
+// Legacy pages (keeping for backwards compatibility)
 import FormalWearProm from "./pages/FormalWearProm";
 import FormalWearBridal from "./pages/FormalWearBridal";
 import FormalWearOccasion from "./pages/FormalWearOccasion";
 import Abayas from "./pages/Abayas";
-import Admin from "./pages/Admin";
-import About from "./pages/About";
-import Checkout from "./pages/Checkout";
-import Wishlist from "./pages/Wishlist";
-import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -33,27 +47,43 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/formal-wear/prom" element={<FormalWearProm />} />
-            <Route path="/formal-wear/bridal" element={<FormalWearBridal />} />
-            <Route path="/formal-wear/occasion" element={<FormalWearOccasion />} />
-            <Route path="/abayas" element={<Abayas />} />
-            <Route path="/product/:slug" element={<ProductDetail />} />
-            <Route path="/custom-inquiry" element={<CustomInquiry />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/size-chart" element={<SizeChart />} />
-            <Route path="/booking" element={<Booking />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/admin" element={<Admin />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+            <Routes>
+              {/* Root redirects to Azixa Rahman */}
+              <Route path="/" element={<Navigate to="/azixa" replace />} />
+              
+              {/* Azixa Rahman Label Routes */}
+              <Route path="/azixa" element={<AzixaHome />} />
+              <Route path="/azixa/prom" element={<AzixaProm />} />
+              <Route path="/azixa/bridal" element={<AzixaBridal />} />
+              <Route path="/azixa/occasion" element={<AzixaOccasion />} />
+              
+              {/* Simply Azixa Routes */}
+              <Route path="/simply-azixa" element={<SimplyAzixaHome />} />
+              <Route path="/simply-azixa/abayas" element={<SimplyAzixaAbayas />} />
+              
+              {/* Shared Pages */}
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/product/:slug" element={<ProductDetail />} />
+              <Route path="/custom-inquiry" element={<CustomInquiry />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/size-chart" element={<SizeChart />} />
+              <Route path="/booking" element={<Booking />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/admin" element={<Admin />} />
+              
+              {/* Legacy routes - redirect to new structure */}
+              <Route path="/formal-wear/prom" element={<Navigate to="/azixa/prom" replace />} />
+              <Route path="/formal-wear/bridal" element={<Navigate to="/azixa/bridal" replace />} />
+              <Route path="/formal-wear/occasion" element={<Navigate to="/azixa/occasion" replace />} />
+              <Route path="/abayas" element={<Navigate to="/simply-azixa/abayas" replace />} />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
         </CartProvider>
       </WishlistProvider>
     </TooltipProvider>
