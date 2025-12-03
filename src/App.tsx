@@ -6,8 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 
-// Main pages
-import Index from "./pages/Index";
+// Shared pages
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import CustomInquiry from "./pages/CustomInquiry";
@@ -30,12 +29,6 @@ import AzixaOccasion from "./pages/AzixaOccasion";
 // Simply Azixa pages
 import SimplyAzixaHome from "./pages/SimplyAzixaHome";
 import SimplyAzixaAbayas from "./pages/SimplyAzixaAbayas";
-
-// Legacy pages (keeping for backwards compatibility)
-import FormalWearProm from "./pages/FormalWearProm";
-import FormalWearBridal from "./pages/FormalWearBridal";
-import FormalWearOccasion from "./pages/FormalWearOccasion";
-import Abayas from "./pages/Abayas";
 
 const queryClient = new QueryClient();
 
