@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
-import logo from "@/assets/logo.png";
 
 const navigation = [
   { name: "Home", href: "/azixa" },
@@ -34,8 +33,10 @@ export function AzixaNavbar() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link to="/azixa" className="flex items-center gap-2">
-            <img src={logo} alt="Azixa Rahman" className="h-12 w-auto" />
+          <Link to="/azixa" className="flex items-center">
+            <span className="font-display text-2xl font-semibold tracking-wide text-foreground">
+              Azixa Rahman
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

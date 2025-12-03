@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import logo from "@/assets/logo.png";
 
 const footerLinks = {
   shop: [
@@ -32,7 +31,9 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="inline-block">
-              <img src={logo} alt="Azixa Rahman" className="h-16 w-auto brightness-0 invert" />
+              <span className="font-display text-2xl font-semibold tracking-wide">
+                Azixa <span className="text-gold">Rahman</span>
+              </span>
             </Link>
             <p className="text-sm text-ivory/70 leading-relaxed">
               Crafting exquisite formal wear for life's most memorable moments. 
