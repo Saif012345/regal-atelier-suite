@@ -20,9 +20,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon, Upload, X, Sparkles, ArrowRight } from "lucide-react";
+import { CalendarIcon, Upload, X, Sparkles, ArrowRight, Video } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { CalendlyBooking } from "@/components/CalendlyBooking";
 
 const inquiryTypes = [
   { id: "prom", name: "Prom Dress", description: "Custom prom gown design" },
@@ -534,6 +535,25 @@ export default function CustomInquiry() {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+
+                {/* Calendly Video Consultation Booking */}
+                <div className="p-6 bg-muted/50 rounded-lg border border-border">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Video className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-display font-semibold text-foreground mb-1">
+                        Schedule a Video Consultation
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Want to discuss your vision in detail? Book a video call with our design team 
+                        to walk through your ideas and get expert guidance.
+                      </p>
+                      <CalendlyBooking text="Book Video Consultation" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
