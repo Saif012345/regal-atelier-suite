@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { DualBrandBar } from "./DualBrandBar";
 
 const navigation = [
   { name: "Home", href: "/azixa" },
@@ -29,7 +30,9 @@ export function AzixaNavbar() {
   const { totalItems: wishlistTotal } = useWishlist();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-effect">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <DualBrandBar />
+      <div className="glass-effect">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
@@ -80,12 +83,6 @@ export function AzixaNavbar() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex lg:items-center lg:gap-4">
-            <Link to="/simply-azixa">
-              <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                Simply Azixa
-              </Button>
-            </Link>
-            
             <Button
               variant="ghost"
               size="icon"
@@ -193,17 +190,11 @@ export function AzixaNavbar() {
                 </Link>
               ))}
 
-              <div className="px-4 pt-4">
-                <Link to="/simply-azixa" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full border-primary text-primary">
-                    Simply Azixa
-                  </Button>
-                </Link>
-              </div>
             </div>
           </div>
         )}
       </nav>
+      </div>
       <CartDrawer />
     </header>
   );
