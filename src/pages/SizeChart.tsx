@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
-import { Video, Ruler, HelpCircle } from "lucide-react";
+import { Video, Ruler, HelpCircle, ArrowRightLeft, Play } from "lucide-react";
+import { CalendlyBooking } from "@/components/CalendlyBooking";
 
 const sizeChartInches = [
   { size: "XS", us: "0-2", bust: "31-32", waist: "23-24", hips: "33-34", hollow: "54-55" },
@@ -50,6 +54,16 @@ const measurementGuide = [
 ];
 
 export default function SizeChart() {
+  const [showVideo, setShowVideo] = useState(false);
+  const [conversionMode, setConversionMode] = useState<"inToCm" | "cmToIn">("inToCm");
+  const [inputValue, setInputValue] = useState("");
+
+  const convertedValue = inputValue
+    ? conversionMode === "inToCm"
+      ? (parseFloat(inputValue) * 2.54).toFixed(1)
+      : (parseFloat(inputValue) / 2.54).toFixed(1)
+    : "";
+
   return (
     <Layout>
       {/* Hero */}
@@ -67,6 +81,100 @@ export default function SizeChart() {
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
+            {/* Video Tutorial Section */}
+            <div className="mb-12">
+              <div className="flex items-center gap-2 mb-6">
+                <Video className="h-5 w-5 text-primary" />
+                <h2 className="font-display text-2xl font-semibold">How to Measure Yourself</h2>
+              </div>
+
+              <div className="rounded-lg overflow-hidden border border-border bg-card">
+                {showVideo ? (
+                  <div className="aspect-video">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                      title="How to Take Your Measurements"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  </div>
+                ) : (
+                  <div 
+                    className="aspect-video bg-gradient-to-br from-charcoal to-charcoal/80 flex flex-col items-center justify-center cursor-pointer group relative"
+                    onClick={() => setShowVideo(true)}
+                  >
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="h-20 w-20 rounded-full bg-primary/20 flex items-center justify-center mb-4 group-hover:bg-primary/30 transition-colors">
+                      <Play className="h-10 w-10 text-primary fill-primary" />
+                    </div>
+                    <h3 className="font-display text-xl font-semibold text-ivory mb-2">
+                      Measurement Tutorial Video
+                    </h3>
+                    <p className="text-ivory/70 text-sm max-w-md text-center px-4">
+                      Learn how to take accurate measurements at home with our step-by-step guide
+                    </p>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2 text-center">
+                Replace the video URL with your actual measurement tutorial video
+              </p>
+            </div>
+
+            {/* Unit Converter */}
+            <div className="mb-12 p-6 bg-champagne rounded-lg">
+              <div className="flex items-center gap-2 mb-4">
+                <ArrowRightLeft className="h-5 w-5 text-primary" />
+                <h3 className="font-display text-xl font-semibold">Unit Converter</h3>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Quickly convert your measurements between inches and centimeters.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex-1 w-full">
+                  <Label htmlFor="input-value" className="text-sm mb-1.5 block">
+                    {conversionMode === "inToCm" ? "Inches" : "Centimeters"}
+                  </Label>
+                  <Input
+                    id="input-value"
+                    type="number"
+                    placeholder={conversionMode === "inToCm" ? "Enter inches..." : "Enter cm..."}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    className="bg-card"
+                  />
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="mt-6 sm:mt-0 flex-shrink-0"
+                  onClick={() => {
+                    setConversionMode(conversionMode === "inToCm" ? "cmToIn" : "inToCm");
+                    setInputValue("");
+                  }}
+                >
+                  <ArrowRightLeft className="h-4 w-4" />
+                </Button>
+
+                <div className="flex-1 w-full">
+                  <Label className="text-sm mb-1.5 block">
+                    {conversionMode === "inToCm" ? "Centimeters" : "Inches"}
+                  </Label>
+                  <div className="h-10 px-3 rounded-md border border-border bg-muted flex items-center">
+                    <span className="text-foreground">
+                      {convertedValue ? `${convertedValue} ${conversionMode === "inToCm" ? "cm" : "in"}` : "—"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Size Chart Tables */}
             <div className="mb-12">
               <div className="flex items-center gap-2 mb-6">
@@ -146,28 +254,6 @@ export default function SizeChart() {
               </Tabs>
             </div>
 
-            {/* Video Tutorial */}
-            <div className="mb-12 p-6 bg-champagne rounded-lg">
-              <div className="flex flex-col sm:flex-row items-start gap-6">
-                <div className="flex-shrink-0 h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Video className="h-8 w-8 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-display text-xl font-semibold mb-2">
-                    How to Measure Yourself
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    Watch our step-by-step video tutorial to learn how to take accurate 
-                    measurements at home. Proper measurements ensure the perfect fit.
-                  </p>
-                  <Button variant="gold" size="sm">
-                    <Video className="h-4 w-4 mr-2" />
-                    Watch Tutorial
-                  </Button>
-                </div>
-              </div>
-            </div>
-
             {/* Measurement Guide */}
             <div className="mb-12">
               <div className="flex items-center gap-2 mb-6">
@@ -188,7 +274,7 @@ export default function SizeChart() {
               </div>
             </div>
 
-            {/* CTA */}
+            {/* CTA with Calendly */}
             <div className="text-center p-8 bg-charcoal rounded-lg">
               <h3 className="font-display text-2xl font-semibold text-ivory mb-3">
                 Need Help Finding Your Size?
@@ -196,9 +282,7 @@ export default function SizeChart() {
               <p className="text-ivory/70 mb-6">
                 Book a virtual consultation and our stylists will help you find the perfect fit.
               </p>
-              <Button asChild variant="gold">
-                <Link to="/booking">Book Consultation</Link>
-              </Button>
+              <CalendlyBooking text="Book Size Consultation" />
             </div>
           </div>
         </div>
