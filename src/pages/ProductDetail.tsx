@@ -18,10 +18,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Heart, ShoppingBag, Ruler, Video, ChevronRight, Check } from "lucide-react";
+import { Heart, ShoppingBag, Ruler, ChevronRight, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { CalendlyBooking } from "@/components/CalendlyBooking";
 
 import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
@@ -340,23 +341,8 @@ export default function ProductDetail() {
                 )}
               </div>
 
-              {/* Video Consultation */}
-              <div className="p-4 bg-champagne rounded-lg">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Video className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium text-foreground mb-1">Need help deciding?</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Book a complimentary video consultation with our stylists.
-                    </p>
-                    <Button asChild variant="goldOutline" size="sm">
-                      <Link to="/booking">Book Consultation</Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              {/* Video Consultation - Calendly Integration */}
+              <CalendlyBooking variant="card" text="Book Video Consultation" />
 
               {/* Action Buttons */}
               <div className="flex gap-4">
