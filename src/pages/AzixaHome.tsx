@@ -62,7 +62,7 @@ export default function AzixaHome() {
                 </Button>
               </Link>
               <Link to="/custom-inquiry">
-                <Button size="lg" variant="outline" className="border-ivory text-ivory hover:bg-ivory hover:text-charcoal">
+                <Button size="lg" variant="heroOutline">
                   Custom Design
                 </Button>
               </Link>
