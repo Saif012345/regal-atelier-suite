@@ -8,7 +8,7 @@ export function DualBrandBar() {
   return (
     <div className="bg-secondary/50 border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between h-auto sm:h-10 py-2 sm:py-0 gap-2 sm:gap-0">
+        <div className="flex items-center justify-between h-10">
           {/* Simply Azixa - Left */}
           <Link
             to="/simply-azixa"
@@ -21,9 +21,6 @@ export function DualBrandBar() {
           >
             Simply Azixa
           </Link>
-
-          {/* Divider for desktop */}
-          <div className="hidden sm:block h-4 w-px bg-border" />
 
           {/* Azixa Rahman Label - Right */}
           <Link
