@@ -38,7 +38,7 @@ export default function SimplyAzixaHome() {
                 </Button>
               </Link>
               <Link to="/gallery">
-                <Button size="lg" variant="outline" className="border-ivory text-ivory hover:bg-ivory hover:text-charcoal">
+                <Button size="lg" variant="heroOutline">
                   View Gallery
                 </Button>
               </Link>
