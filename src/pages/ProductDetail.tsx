@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,9 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { CalendlyBooking } from "@/components/CalendlyBooking";
-
-import categoryProm from "@/assets/category-prom.jpg";
-import categoryBridal from "@/assets/category-bridal.jpg";
+import { getProductBySlug, Product } from "@/data/products";
 
 const sizeChart = [
   { size: "XS", bust: "32", waist: "24", hips: "34" },
@@ -43,33 +42,20 @@ const fabricOptions = [
   { id: "silk-navy", name: "Silk Navy", color: "#000080" },
 ];
 
-const mockProduct = {
-  id: "celestial-ballgown",
-  name: "Celestial Ballgown",
-  price: 1899,
-  images: [categoryProm, categoryBridal],
-  category: "Prom",
-  description: "A breathtaking ballgown that captures the magic of a starlit night. Features intricate beadwork, a sweetheart neckline, and a dramatic full skirt that moves beautifully.",
-  details: [
-    "Hand-sewn beadwork throughout bodice",
-    "Sweetheart neckline with optional straps",
-    "Full tulle skirt with horsehair trim",
-    "Built-in boning for structure",
-    "Hidden back zipper",
-    "Fully lined",
-  ],
-  isCustom: true, // Custom inquiry for Prom, Bridal, Occasion; false for Abayas
-};
-
 export default function ProductDetail() {
   const { slug } = useParams();
   const { toast } = useToast();
   const { addItem, setIsCartOpen } = useCart();
   const { addItem: addToWishlist, isInWishlist } = useWishlist();
+  
+  const product = getProductBySlug(slug || "");
+  
   const [selectedImage, setSelectedImage] = useState(0);
   const [sizingOption, setSizingOption] = useState<"standard" | "custom">("standard");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedFabric, setSelectedFabric] = useState(fabricOptions[0].id);
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name || "");
+  const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "");
   const [customMeasurements, setCustomMeasurements] = useState({
     bust: "",
     waist: "",
@@ -80,8 +66,13 @@ export default function ProductDetail() {
     fullHeight: "",
   });
 
+  // If product not found, redirect to shop
+  if (!product) {
+    return <Navigate to="/shop" replace />;
+  }
+
   const handleWishlistToggle = () => {
-    if (isInWishlist(mockProduct.id)) {
+    if (isInWishlist(product.id)) {
       toast({
         title: "Already in wishlist",
         description: "This item is already in your wishlist.",
@@ -90,17 +81,17 @@ export default function ProductDetail() {
     }
 
     addToWishlist({
-      id: mockProduct.id,
-      name: mockProduct.name,
-      price: mockProduct.price,
-      image: mockProduct.images[0],
-      category: mockProduct.category,
-      isCustom: mockProduct.isCustom,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      category: product.category,
+      isCustom: product.isCustom,
     });
 
     toast({
       title: "Added to wishlist",
-      description: `${mockProduct.name} has been added to your wishlist.`,
+      description: `${product.name} has been added to your wishlist.`,
     });
   };
 
@@ -131,11 +122,11 @@ export default function ProductDetail() {
     const selectedFabricObj = fabricOptions.find((f) => f.id === selectedFabric)!;
 
     addItem({
-      id: `${mockProduct.id}-${Date.now()}`,
-      name: mockProduct.name,
-      price: mockProduct.price,
-      image: mockProduct.images[0],
-      category: mockProduct.category,
+      id: `${product.id}-${Date.now()}`,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      category: product.category,
       quantity: 1,
       sizing: {
         type: sizingOption,
@@ -150,7 +141,7 @@ export default function ProductDetail() {
 
     toast({
       title: "Added to bag",
-      description: `${mockProduct.name} has been added to your shopping bag.`,
+      description: `${product.name} has been added to your shopping bag.`,
     });
 
     setIsCartOpen(true);
@@ -166,7 +157,7 @@ export default function ProductDetail() {
             <ChevronRight className="h-4 w-4" />
             <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
             <ChevronRight className="h-4 w-4" />
-            <span className="text-foreground">{mockProduct.name}</span>
+            <span className="text-foreground">{product.name}</span>
           </nav>
         </div>
       </div>
@@ -178,13 +169,13 @@ export default function ProductDetail() {
             <div className="space-y-4">
               <div className="aspect-[3/4] overflow-hidden rounded-lg bg-muted elegant-border">
                 <img
-                  src={mockProduct.images[selectedImage]}
-                  alt={mockProduct.name}
+                  src={product.images[selectedImage]}
+                  alt={product.name}
                   className="h-full w-full object-cover"
                 />
               </div>
               <div className="flex gap-4">
-                {mockProduct.images.map((img, index) => (
+                {product.images.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -202,18 +193,18 @@ export default function ProductDetail() {
             <div className="space-y-8">
               <div>
                 <p className="text-sm font-medium tracking-widest text-primary uppercase mb-2">
-                  {mockProduct.category}
+                  {product.category}
                 </p>
                 <h1 className="font-display text-4xl font-semibold text-foreground mb-4">
-                  {mockProduct.name}
+                  {product.name}
                 </h1>
                 <p className="text-2xl font-medium text-foreground">
-                  ${mockProduct.price.toLocaleString()}
+                  ${product.price.toLocaleString()}
                 </p>
               </div>
 
               <p className="text-muted-foreground leading-relaxed">
-                {mockProduct.description}
+                {product.description}
               </p>
 
               {/* Fabric Selection */}
@@ -254,9 +245,10 @@ export default function ProductDetail() {
                         Size Chart
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-lg bg-card">
+                    <DialogContent className="max-w-lg bg-card" aria-describedby="size-chart-description">
                       <DialogHeader>
                         <DialogTitle className="font-display text-2xl">Size Chart</DialogTitle>
+                        <DialogDescription id="size-chart-description">Reference measurements for standard sizes</DialogDescription>
                       </DialogHeader>
                       <div className="overflow-x-auto">
                         <table className="w-full text-sm">
@@ -346,7 +338,7 @@ export default function ProductDetail() {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                {mockProduct.isCustom ? (
+                {product.isCustom ? (
                   <Button
                     variant="gold"
                     size="xl"
@@ -371,7 +363,7 @@ export default function ProductDetail() {
                   size="xl"
                   onClick={handleWishlistToggle}
                 >
-                  <Heart className={`h-5 w-5 ${isInWishlist(mockProduct.id) ? "fill-current text-primary" : ""}`} />
+                  <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? "fill-current text-primary" : ""}`} />
                 </Button>
               </div>
 
@@ -383,7 +375,7 @@ export default function ProductDetail() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <ul className="space-y-2 text-muted-foreground">
-                      {mockProduct.details.map((detail, index) => (
+                      {product.details.map((detail, index) => (
                         <li key={index} className="flex items-start gap-2">
                           <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                           {detail}
