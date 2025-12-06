@@ -118,6 +118,55 @@ export default function Checkout() {
           <div className="max-w-6xl mx-auto">
             <h1 className="font-display text-4xl font-semibold text-center mb-12">Checkout</h1>
 
+            {/* Order Summary - Now at top */}
+            <Card className="p-6 space-y-6 mb-8">
+              <h2 className="font-display text-2xl font-semibold">Order Summary</h2>
+
+              {/* Currency Selector */}
+              <div>
+                <Label>Currency</Label>
+                <Select value={currency} onValueChange={setCurrency}>
+                  <SelectTrigger className="bg-card max-w-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border">
+                    {currencies.map((curr) => (
+                      <SelectItem key={curr.code} value={curr.code}>
+                        {curr.code} ({curr.symbol})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Items */}
+              <div className="space-y-3 max-h-64 overflow-y-auto">
+                {items.map((item) => (
+                  <div key={item.id} className="flex gap-3">
+                    <div className="w-16 h-20 rounded overflow-hidden bg-muted flex-shrink-0">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium line-clamp-2">{item.name}</p>
+                      <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                    </div>
+                    <p className="text-sm font-medium">
+                      {selectedCurrency.symbol}
+                      {(item.price * item.quantity * selectedCurrency.rate).toFixed(2)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <Separator />
+
+              {/* Subtotal */}
+              <div className="flex justify-between text-base">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span>{selectedCurrency.symbol}{convertedSubtotal.toFixed(2)}</span>
+              </div>
+            </Card>
+
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Left: Form */}
               <div className="space-y-8">
@@ -216,6 +265,23 @@ export default function Checkout() {
                     </div>
                   </Card>
 
+                  {/* Shipping Method */}
+                  <Card className="p-6 space-y-6">
+                    <h2 className="font-display text-2xl font-semibold">Shipping Method</h2>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-4 rounded-lg border border-primary bg-primary/5">
+                        <div>
+                          <p className="font-medium">Standard Shipping</p>
+                          <p className="text-sm text-muted-foreground">4-6 weeks production + delivery</p>
+                        </div>
+                        <p className="font-medium">Free</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Custom gowns require 4-6 weeks for production. Expedited options available upon request.
+                      </p>
+                    </div>
+                  </Card>
+
                   {/* Payment Method */}
                   <Card className="p-6 space-y-6">
                     <h2 className="font-display text-2xl font-semibold">Payment Method</h2>
@@ -237,48 +303,10 @@ export default function Checkout() {
                 </form>
               </div>
 
-              {/* Right: Order Summary */}
+              {/* Right: Review & Finalize */}
               <div className="space-y-6">
                 <Card className="p-6 space-y-6 sticky top-24">
-                  <h2 className="font-display text-2xl font-semibold">Order Summary</h2>
-
-                  {/* Currency Selector */}
-                  <div>
-                    <Label>Currency</Label>
-                    <Select value={currency} onValueChange={setCurrency}>
-                      <SelectTrigger className="bg-card">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-card border-border">
-                        {currencies.map((curr) => (
-                          <SelectItem key={curr.code} value={curr.code}>
-                            {curr.code} ({curr.symbol})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Items */}
-                  <div className="space-y-3 max-h-64 overflow-y-auto">
-                    {items.map((item) => (
-                      <div key={item.id} className="flex gap-3">
-                        <div className="w-16 h-20 rounded overflow-hidden bg-muted flex-shrink-0">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium line-clamp-2">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
-                        </div>
-                        <p className="text-sm font-medium">
-                          {selectedCurrency.symbol}
-                          {(item.price * item.quantity * selectedCurrency.rate).toFixed(2)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <Separator />
+                  <h2 className="font-display text-2xl font-semibold">Review & Finalize</h2>
 
                   {/* Payment Type Toggle */}
                   <div>

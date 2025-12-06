@@ -63,7 +63,7 @@ export default function AzixaOccasion() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative overflow-hidden rounded-lg elegant-border mb-4">
-                  <Link to={`/product/${dress.id}`}>
+                  <Link to={`/occasion/${dress.id}`}>
                     <img
                       src={dress.image}
                       alt={dress.name}
@@ -94,7 +94,7 @@ export default function AzixaOccasion() {
                 </div>
 
                 <div>
-                  <Link to={`/product/${dress.id}`}>
+                  <Link to={`/occasion/${dress.id}`}>
                     <h3 className="font-display text-lg font-medium text-foreground hover:text-primary transition-colors">
                       {dress.name}
                     </h3>

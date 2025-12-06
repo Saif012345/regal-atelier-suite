@@ -57,6 +57,10 @@ const App = () => (
               {/* Shared Pages */}
               <Route path="/shop" element={<Shop />} />
               <Route path="/product/:slug" element={<ProductDetail />} />
+              <Route path="/prom/:slug" element={<ProductDetail />} />
+              <Route path="/bridal/:slug" element={<ProductDetail />} />
+              <Route path="/occasion/:slug" element={<ProductDetail />} />
+              <Route path="/abaya/:slug" element={<ProductDetail />} />
               <Route path="/custom-inquiry" element={<CustomInquiry />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/size-chart" element={<SizeChart />} />
