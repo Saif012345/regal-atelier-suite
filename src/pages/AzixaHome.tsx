@@ -6,37 +6,29 @@ import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
 import categoryOccasion from "@/assets/category-occasion.jpg";
 import heroFormal from "@/assets/hero-formal.jpg";
-
-const categories = [
-  {
-    name: "Prom",
-    description: "Make an unforgettable entrance with our stunning prom collection",
-    image: categoryProm,
-    href: "/azixa/prom",
-  },
-  {
-    name: "Bridal",
-    description: "Timeless elegance for your most special day",
-    image: categoryBridal,
-    href: "/azixa/bridal",
-  },
-  {
-    name: "Occasion",
-    description: "Sophisticated pieces for galas, events & celebrations",
-    image: categoryOccasion,
-    href: "/azixa/occasion",
-  },
-];
-
+const categories = [{
+  name: "Prom",
+  description: "Make an unforgettable entrance with our stunning prom collection",
+  image: categoryProm,
+  href: "/azixa/prom"
+}, {
+  name: "Bridal",
+  description: "Timeless elegance for your most special day",
+  image: categoryBridal,
+  href: "/azixa/bridal"
+}, {
+  name: "Occasion",
+  description: "Sophisticated pieces for galas, events & celebrations",
+  image: categoryOccasion,
+  href: "/azixa/occasion"
+}];
 export default function AzixaHome() {
-  return (
-    <AzixaLayout>
+  return <AzixaLayout>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroFormal})` }}
-        >
+        <div className="absolute inset-0 bg-cover bg-center" style={{
+        backgroundImage: `url(${heroFormal})`
+      }}>
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/50 to-transparent" />
         </div>
 
@@ -47,7 +39,7 @@ export default function AzixaHome() {
             </p>
             <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold text-ivory mb-6 leading-tight">
               Azixa Rahman
-              <span className="block text-gold">Label</span>
+              
             </h1>
             <p className="text-ivory/80 text-lg mb-8 max-w-lg leading-relaxed">
               Where dreams are woven into fabric. Each gown is a masterpiece of 
@@ -105,18 +97,10 @@ export default function AzixaHome() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {categories.map((category, index) => (
-              <Link
-                key={category.name}
-                to={category.href}
-                className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
+            {categories.map((category, index) => <Link key={category.name} to={category.href} className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in" style={{
+            animationDelay: `${index * 100}ms`
+          }}>
+                <img src={category.image} alt={category.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <h3 className="font-display text-2xl text-ivory mb-2">{category.name}</h3>
@@ -125,8 +109,7 @@ export default function AzixaHome() {
                     Shop Now <ArrowRight className="ml-2 h-4 w-4" />
                   </span>
                 </div>
-              </Link>
-            ))}
+              </Link>)}
           </div>
         </div>
       </section>
@@ -149,6 +132,5 @@ export default function AzixaHome() {
           </Link>
         </div>
       </section>
-    </AzixaLayout>
-  );
+    </AzixaLayout>;
 }
