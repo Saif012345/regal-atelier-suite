@@ -27,11 +27,14 @@ import { CalendlyBooking } from "@/components/CalendlyBooking";
 import { getProductBySlug, Product } from "@/data/products";
 
 const sizeChart = [
-  { size: "XS", bust: "32", waist: "24", hips: "34" },
-  { size: "S", bust: "34", waist: "26", hips: "36" },
-  { size: "M", bust: "36", waist: "28", hips: "38" },
-  { size: "L", bust: "38", waist: "30", hips: "40" },
-  { size: "XL", bust: "40", waist: "32", hips: "42" },
+  { size: "2", bust: "32", waist: "24", hips: "34" },
+  { size: "4", bust: "33", waist: "25", hips: "35" },
+  { size: "6", bust: "34", waist: "26", hips: "36" },
+  { size: "8", bust: "35", waist: "27", hips: "37" },
+  { size: "10", bust: "36", waist: "28", hips: "38" },
+  { size: "12", bust: "38", waist: "30", hips: "40" },
+  { size: "14", bust: "40", waist: "32", hips: "42" },
+  { size: "16", bust: "42", waist: "34", hips: "44" },
 ];
 
 const fabricOptions = [

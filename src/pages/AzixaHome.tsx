@@ -55,7 +55,7 @@ export default function AzixaHome() {
               memorable occasions.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/azixa/prom">
+              <Link to="/shop">
                 <Button size="lg" variant="gold" className="group">
                   Explore Collection
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

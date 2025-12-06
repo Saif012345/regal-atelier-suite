@@ -94,7 +94,7 @@ export default function SizeChart() {
                     <iframe
                       width="100%"
                       height="100%"
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                      src="https://www.youtube.com/embed/kh3LWlsTPKM?si=tFKi1I3zL_vuKC6c&autoplay=1"
                       title="How to Take Your Measurements"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -121,7 +121,7 @@ export default function SizeChart() {
                 )}
               </div>
               <p className="text-xs text-muted-foreground mt-2 text-center">
-                Replace the video URL with your actual measurement tutorial video
+                Learn how to take accurate measurements at home with our step-by-step guide.
               </p>
             </div>
 
