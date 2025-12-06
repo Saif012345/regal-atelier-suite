@@ -16,25 +16,32 @@ import categoryOccasion from "@/assets/category-occasion.jpg";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
 const allProducts = [
+  // Prom
   { id: "celestial-ballgown", name: "Celestial Ballgown", price: 1899, image: categoryProm, category: "Prom", color: "Blue", isCustom: true },
-  { id: "starlight-gown", name: "Starlight Gown", price: 1799, image: categoryProm, category: "Prom", color: "Silver", isCustom: true },
-  { id: "rose-ballgown", name: "Rose Ballgown", price: 1999, image: categoryProm, category: "Prom", color: "Pink", isCustom: true },
+  { id: "midnight-dream", name: "Midnight Dream", price: 2199, image: categoryProm, category: "Prom", color: "Blue", isCustom: true },
+  { id: "rose-enchantment", name: "Rose Enchantment", price: 1799, image: categoryProm, category: "Prom", color: "Pink", isCustom: true },
+  { id: "starlight-gown", name: "Starlight Gown", price: 2099, image: categoryProm, category: "Prom", color: "Silver", isCustom: true },
+  { id: "aurora-silk", name: "Aurora Silk Gown", price: 2299, image: categoryProm, category: "Prom", color: "Pink", isCustom: true },
+  { id: "crystal-cascade", name: "Crystal Cascade", price: 2499, image: categoryProm, category: "Prom", color: "Silver", isCustom: true },
   
-  { id: "eternal-grace", name: "Eternal Grace", price: 3499, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
-  { id: "cathedral-dreams", name: "Cathedral Dreams", price: 3899, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
-  { id: "royal-bride", name: "Royal Bride", price: 4299, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
+  // Bridal
+  { id: "eternal-grace", name: "Eternal Grace", price: 3999, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
+  { id: "royal-elegance", name: "Royal Elegance", price: 4499, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
+  { id: "whispered-romance", name: "Whispered Romance", price: 3799, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
+  { id: "moonlit-garden", name: "Moonlit Garden", price: 4199, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
+  { id: "timeless-beauty", name: "Timeless Beauty", price: 4299, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
+  { id: "pearl-cascade", name: "Pearl Cascade", price: 4699, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
   
-  { id: "emerald-dream", name: "Emerald Dream", price: 1299, image: categoryOccasion, category: "Occasion", color: "Green", isCustom: true },
-  { id: "sapphire-evening", name: "Sapphire Evening", price: 1499, image: categoryOccasion, category: "Occasion", color: "Blue", isCustom: true },
-  { id: "ruby-elegance", name: "Ruby Elegance", price: 1399, image: categoryOccasion, category: "Occasion", color: "Red", isCustom: true },
-  
-  { id: "noir-elegance", name: "Noir Elegance Abaya", price: 599, image: categoryAbaya, category: "Abayas", color: "Black", isCustom: false },
-  { id: "pearl-abaya", name: "Pearl Abaya", price: 699, image: categoryAbaya, category: "Abayas", color: "Beige", isCustom: false },
-  { id: "velvet-luxury", name: "Velvet Luxury Abaya", price: 799, image: categoryAbaya, category: "Abayas", color: "Navy", isCustom: false },
-  { id: "silk-grace", name: "Silk Grace Abaya", price: 649, image: categoryAbaya, category: "Abayas", color: "Gray", isCustom: false },
+  // Occasion
+  { id: "gilded-evening", name: "Gilded Evening", price: 1599, image: categoryOccasion, category: "Occasion", color: "Gold", isCustom: true },
+  { id: "sapphire-nights", name: "Sapphire Nights", price: 1799, image: categoryOccasion, category: "Occasion", color: "Blue", isCustom: true },
+  { id: "velvet-dream", name: "Velvet Dream", price: 1699, image: categoryOccasion, category: "Occasion", color: "Red", isCustom: true },
+  { id: "emerald-enchantress", name: "Emerald Enchantress", price: 1899, image: categoryOccasion, category: "Occasion", color: "Green", isCustom: true },
+  { id: "champagne-soiree", name: "Champagne Soirée", price: 1749, image: categoryOccasion, category: "Occasion", color: "Gold", isCustom: true },
+  { id: "midnight-glamour", name: "Midnight Glamour", price: 1999, image: categoryOccasion, category: "Occasion", color: "Black", isCustom: true },
 ];
 
-const colors = ["All", "Black", "White", "Ivory", "Blue", "Pink", "Red", "Green", "Silver", "Beige", "Navy", "Gray"];
+const colors = ["All", "Black", "White", "Ivory", "Blue", "Pink", "Red", "Green", "Silver", "Gold"];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
 export default function Shop() {
@@ -114,7 +121,6 @@ export default function Shop() {
               <TabsTrigger value="prom">Prom</TabsTrigger>
               <TabsTrigger value="bridal">Bridal</TabsTrigger>
               <TabsTrigger value="occasion">Occasion</TabsTrigger>
-              <TabsTrigger value="abayas">Abayas</TabsTrigger>
             </TabsList>
           </Tabs>
 

@@ -9,12 +9,12 @@ import { toast } from "sonner";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
 const abayas = [
-  { id: "noir-elegance", name: "Noir Elegance Abaya", price: 599, image: categoryAbaya, colors: ["Black", "Navy"], lengths: ["52", "54", "56", "58"] },
-  { id: "pearl-mist", name: "Pearl Mist Abaya", price: 649, image: categoryAbaya, colors: ["Off White", "Cream"], lengths: ["52", "54", "56", "58"] },
-  { id: "embroidered-grace", name: "Embroidered Grace", price: 799, image: categoryAbaya, colors: ["Black", "Burgundy"], lengths: ["54", "56", "58"] },
-  { id: "classic-simplicity", name: "Classic Simplicity", price: 449, image: categoryAbaya, colors: ["Black", "Navy", "Brown"], lengths: ["52", "54", "56", "58"] },
-  { id: "lace-detail", name: "Lace Detail Abaya", price: 699, image: categoryAbaya, colors: ["Black", "Emerald"], lengths: ["54", "56", "58"] },
-  { id: "modern-drape", name: "Modern Drape Abaya", price: 549, image: categoryAbaya, colors: ["Charcoal", "Olive"], lengths: ["52", "54", "56"] },
+  { id: "pearl-mist", name: "Pearl Mist Abaya", price: 249, image: categoryAbaya, colors: ["Pearl", "Black", "Navy"], lengths: ["52", "54", "56", "58"] },
+  { id: "midnight-grace", name: "Midnight Grace Abaya", price: 279, image: categoryAbaya, colors: ["Black", "Dark Grey"], lengths: ["52", "54", "56", "58"] },
+  { id: "desert-rose", name: "Desert Rose Abaya", price: 299, image: categoryAbaya, colors: ["Rose", "Blush", "Mauve"], lengths: ["52", "54", "56", "58"] },
+  { id: "ocean-breeze", name: "Ocean Breeze Abaya", price: 269, image: categoryAbaya, colors: ["Ocean Blue", "Teal", "Sky"], lengths: ["52", "54", "56", "58"] },
+  { id: "golden-hour", name: "Golden Hour Abaya", price: 319, image: categoryAbaya, colors: ["Black/Gold", "Navy/Gold", "Burgundy/Gold"], lengths: ["52", "54", "56", "58"] },
+  { id: "classic-noir", name: "Classic Noir Abaya", price: 229, image: categoryAbaya, colors: ["Black"], lengths: ["52", "54", "56", "58"] },
 ];
 
 export default function SimplyAzixaAbayas() {
