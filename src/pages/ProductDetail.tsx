@@ -23,7 +23,7 @@ import { Heart, ShoppingBag, Ruler, ChevronRight, Check, Video } from "lucide-re
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { CalendlyBooking } from "@/components/CalendlyBooking";
+
 import { getProductBySlug, Product } from "@/data/products";
 
 const sizeChart = [

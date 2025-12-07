@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { Video, Ruler, HelpCircle, ArrowRightLeft, Play } from "lucide-react";
-import { CalendlyBooking } from "@/components/CalendlyBooking";
+
 
 const sizeChartInches = [
   { size: "XS", us: "0-2", bust: "31-32", waist: "23-24", hips: "33-34", hollow: "54-55" },
@@ -282,7 +282,9 @@ export default function SizeChart() {
               <p className="text-ivory/70 mb-6">
                 Book a virtual consultation and our stylists will help you find the perfect fit.
               </p>
-              <CalendlyBooking text="Book Size Consultation" />
+              <Button variant="outline" className="border-ivory text-ivory hover:bg-ivory/10" asChild>
+                <Link to="/booking">Book Size Consultation</Link>
+              </Button>
             </div>
           </div>
         </div>

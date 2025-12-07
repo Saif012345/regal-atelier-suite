@@ -23,7 +23,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Upload, X, Sparkles, ArrowRight, Video } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { CalendlyBooking } from "@/components/CalendlyBooking";
+
 
 const inquiryTypes = [
   { id: "prom", name: "Prom Dress", description: "Custom prom gown design" },
@@ -551,7 +551,9 @@ export default function CustomInquiry() {
                         Want to discuss your vision in detail? Book a video call with our design team 
                         to walk through your ideas and get expert guidance.
                       </p>
-                      <CalendlyBooking text="Book Video Consultation" />
+                      <Button variant="outline" asChild>
+                        <Link to="/booking">Book Video Consultation</Link>
+                      </Button>
                     </div>
                   </div>
                 </div>
