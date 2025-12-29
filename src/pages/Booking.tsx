@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -16,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Video, Clock, Calendar as CalendarIcon, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format, addDays, isBefore, startOfToday } from "date-fns";
+import { TermsAcceptanceModal } from "@/components/TermsAcceptanceModal";
 
 const timeSlots = [
   "9:00 AM",
@@ -68,11 +71,13 @@ export default function Booking() {
     notes: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const selectedConsultation = consultationTypes.find((c) => c.id === consultationType);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
 
     if (!selectedDate || !selectedTime || !platform) {
       toast({
@@ -89,6 +94,11 @@ export default function Booking() {
         description: "Please fill in all required fields.",
         variant: "destructive",
       });
+      return;
+    }
+
+    if (!termsAccepted) {
+      setShowTermsModal(true);
       return;
     }
 
@@ -329,9 +339,28 @@ export default function Booking() {
                   </div>
                 </div>
 
+                {/* Terms Acceptance Checkbox */}
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <Checkbox
+                    checked={termsAccepted}
+                    onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+                    className="mt-0.5"
+                  />
+                  <span className="text-sm leading-relaxed">
+                    I agree to the{" "}
+                    <Link to="/terms" className="text-primary hover:underline">
+                      Terms & Conditions
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="text-primary hover:underline">
+                      Privacy Policy
+                    </Link>
+                  </span>
+                </label>
+
                 <Button
                   type="submit"
-                  variant="gold"
+                  variant="default"
                   size="xl"
                   className="w-full"
                   disabled={isSubmitting}
@@ -345,6 +374,16 @@ export default function Booking() {
                     </>
                   )}
                 </Button>
+
+                <TermsAcceptanceModal
+                  open={showTermsModal}
+                  onOpenChange={setShowTermsModal}
+                  onAccept={() => {
+                    setTermsAccepted(true);
+                    handleSubmit();
+                  }}
+                  context="booking"
+                />
               </div>
             </div>
           </form>
