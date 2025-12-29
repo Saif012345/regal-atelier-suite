@@ -2,130 +2,130 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prata&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* 
-  FORMAL WEAR E-COMMERCE DESIGN SYSTEM
-  Elegant & Luxurious palette for bridal/formal wear
+  AZIXA RAHMAN DESIGN SYSTEM
+  Luxury Black & Deep Purple palette
 */
 
 @layer base {
   :root {
-    /* Core palette - Elegant champagne and ivory */
-    --background: 40 33% 98%;
-    --foreground: 20 14% 15%;
+    /* Core palette - Black base with Deep Purple accent */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
 
-    --card: 40 40% 99%;
-    --card-foreground: 20 14% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
 
-    --popover: 40 40% 99%;
-    --popover-foreground: 20 14% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
 
-    /* Primary - Champagne Gold */
-    --primary: 43 74% 49%;
-    --primary-foreground: 40 33% 98%;
+    /* Primary - Deep Purple */
+    --primary: 300 100% 25%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Soft Blush */
-    --secondary: 20 25% 95%;
-    --secondary-foreground: 20 14% 25%;
+    /* Secondary - Soft gray */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
 
-    /* Muted - Warm Gray */
-    --muted: 30 20% 94%;
-    --muted-foreground: 20 10% 45%;
+    /* Muted - Light gray */
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Accent - Rose Gold */
-    --accent: 15 50% 80%;
-    --accent-foreground: 20 14% 15%;
+    /* Accent - Deep Purple lighter */
+    --accent: 300 60% 90%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 20% 88%;
-    --input: 30 20% 90%;
-    --ring: 43 74% 49%;
+    --border: 0 0% 88%;
+    --input: 0 0% 90%;
+    --ring: 300 100% 25%;
 
     --radius: 0.5rem;
 
-    /* Custom tokens */
-    --gold: 43 74% 49%;
-    --gold-light: 43 60% 75%;
-    --gold-dark: 43 74% 35%;
-    --champagne: 40 40% 92%;
-    --ivory: 40 33% 98%;
-    --blush: 15 50% 92%;
-    --charcoal: 20 14% 15%;
-    --warm-gray: 30 10% 55%;
+    /* Custom tokens - keeping some for compatibility */
+    --gold: 300 100% 25%;
+    --gold-light: 300 60% 70%;
+    --gold-dark: 300 100% 20%;
+    --champagne: 0 0% 96%;
+    --ivory: 0 0% 98%;
+    --blush: 300 40% 95%;
+    --charcoal: 0 0% 0%;
+    --warm-gray: 0 0% 45%;
 
     /* Typography */
-    --font-display: 'Cormorant Garamond', serif;
+    --font-display: 'Prata', serif;
     --font-body: 'Inter', sans-serif;
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(30 20% 20% / 0.08);
-    --shadow-elegant: 0 8px 30px -8px hsl(30 20% 20% / 0.12);
-    --shadow-card: 0 2px 12px -2px hsl(30 20% 20% / 0.06);
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.08);
+    --shadow-elegant: 0 8px 30px -8px hsl(0 0% 0% / 0.15);
+    --shadow-card: 0 2px 12px -2px hsl(0 0% 0% / 0.06);
 
     /* Transitions */
     --transition-elegant: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Sidebar */
-    --sidebar-background: 40 33% 98%;
-    --sidebar-foreground: 20 14% 25%;
-    --sidebar-primary: 43 74% 49%;
-    --sidebar-primary-foreground: 40 33% 98%;
-    --sidebar-accent: 30 20% 94%;
-    --sidebar-accent-foreground: 20 14% 25%;
-    --sidebar-border: 30 20% 88%;
-    --sidebar-ring: 43 74% 49%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 15%;
+    --sidebar-primary: 300 100% 25%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 15%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 300 100% 25%;
   }
 
   .dark {
-    --background: 20 14% 8%;
-    --foreground: 40 33% 95%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 95%;
 
-    --card: 20 14% 10%;
-    --card-foreground: 40 33% 95%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 20 14% 10%;
-    --popover-foreground: 40 33% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 43 70% 55%;
-    --primary-foreground: 20 14% 8%;
+    --primary: 300 80% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 20 14% 15%;
-    --secondary-foreground: 40 33% 90%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 20 10% 18%;
-    --muted-foreground: 30 10% 60%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 15 40% 30%;
-    --accent-foreground: 40 33% 95%;
+    --accent: 300 40% 25%;
+    --accent-foreground: 0 0% 95%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 20 10% 20%;
-    --input: 20 10% 20%;
-    --ring: 43 70% 55%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 300 80% 50%;
 
-    --gold: 43 70% 55%;
-    --gold-light: 43 50% 40%;
-    --gold-dark: 43 70% 65%;
-    --champagne: 20 14% 15%;
-    --ivory: 20 14% 8%;
-    --blush: 15 30% 20%;
-    --charcoal: 40 33% 95%;
-    --warm-gray: 30 10% 60%;
+    --gold: 300 80% 50%;
+    --gold-light: 300 50% 35%;
+    --gold-dark: 300 80% 60%;
+    --champagne: 0 0% 12%;
+    --ivory: 0 0% 5%;
+    --blush: 300 30% 18%;
+    --charcoal: 0 0% 95%;
+    --warm-gray: 0 0% 60%;
 
-    --sidebar-background: 20 14% 10%;
-    --sidebar-foreground: 40 33% 90%;
-    --sidebar-primary: 43 70% 55%;
-    --sidebar-primary-foreground: 20 14% 8%;
-    --sidebar-accent: 20 10% 18%;
-    --sidebar-accent-foreground: 40 33% 90%;
-    --sidebar-border: 20 10% 20%;
-    --sidebar-ring: 43 70% 55%;
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 300 80% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 300 80% 50%;
   }
 }
 
