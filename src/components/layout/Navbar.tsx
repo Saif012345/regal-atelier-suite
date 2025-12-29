@@ -44,13 +44,8 @@ const shopLinks = [{
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const {
-    totalItems,
-    setIsCartOpen
-  } = useCart();
-  const {
-    totalItems: wishlistTotal
-  } = useWishlist();
+  const { totalItems, setIsCartOpen } = useCart();
+  const { totalItems: wishlistTotal } = useWishlist();
   return <header className="fixed top-0 left-0 right-0 z-50 glass-effect">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
@@ -71,7 +66,9 @@ export function Navbar() {
               </button>
               <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div className="bg-card border border-border rounded-lg shadow-elegant overflow-hidden min-w-[180px]">
-                  {shopLinks.map(link => {})}
+                  {shopLinks.map(link => <Link key={link.name} to={link.href} className="block px-4 py-3 text-sm hover:bg-muted transition-colors">
+                      {link.name}
+                    </Link>)}
                 </div>
               </div>
             </div>
@@ -83,34 +80,66 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex lg:items-center lg:gap-4">
-            <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist" onClick={() => window.location.href = '/wishlist'}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative" 
+              aria-label="Wishlist"
+              onClick={() => window.location.href = '/wishlist'}
+            >
               <Heart className="h-5 w-5" />
-              {wishlistTotal > 0 && <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+              {wishlistTotal > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                   {wishlistTotal}
-                </span>}
+                </span>
+              )}
             </Button>
             
-            <Button variant="ghost" size="icon" className="relative" aria-label="Shopping bag" onClick={() => setIsCartOpen(true)}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative" 
+              aria-label="Shopping bag"
+              onClick={() => setIsCartOpen(true)}
+            >
               <ShoppingBag className="h-5 w-5" />
-              {totalItems > 0 && <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+              {totalItems > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                   {totalItems}
-                </span>}
+                </span>
+              )}
             </Button>
           </div>
 
           {/* Mobile menu button */}
           <div className="flex items-center gap-2 lg:hidden">
-            <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist" onClick={() => window.location.href = '/wishlist'}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative" 
+              aria-label="Wishlist"
+              onClick={() => window.location.href = '/wishlist'}
+            >
               <Heart className="h-5 w-5" />
-              {wishlistTotal > 0 && <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+              {wishlistTotal > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                   {wishlistTotal}
-                </span>}
+                </span>
+              )}
             </Button>
-            <Button variant="ghost" size="icon" className="relative" aria-label="Shopping bag" onClick={() => setIsCartOpen(true)}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative" 
+              aria-label="Shopping bag"
+              onClick={() => setIsCartOpen(true)}
+            >
               <ShoppingBag className="h-5 w-5" />
-              {totalItems > 0 && <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+              {totalItems > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                   {totalItems}
-                </span>}
+                </span>
+              )}
             </Button>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
