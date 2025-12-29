@@ -12,7 +12,8 @@ const navigation = [
   { name: "Home", href: "/azixa" },
   { name: "Gallery", href: "/gallery" },
   { name: "Size Chart", href: "/size-chart" },
-  { name: "About", href: "/about" },
+  { name: "About", href: "/azixa/about" },
+  { name: "FAQ", href: "/azixa/faq" },
   { name: "Contact", href: "/contact" },
 ];
 

@@ -9,21 +9,33 @@ import { Video, Ruler, HelpCircle, ArrowRightLeft, Play } from "lucide-react";
 
 
 const sizeChartInches = [
-  { size: "XS", us: "0-2", bust: "31-32", waist: "23-24", hips: "33-34", hollow: "54-55" },
-  { size: "S", us: "4-6", bust: "33-34", waist: "25-26", hips: "35-36", hollow: "55-56" },
-  { size: "M", us: "8-10", bust: "35-36", waist: "27-28", hips: "37-38", hollow: "56-57" },
-  { size: "L", us: "12-14", bust: "37-39", waist: "29-31", hips: "39-41", hollow: "57-58" },
-  { size: "XL", us: "16-18", bust: "40-42", waist: "32-34", hips: "42-44", hollow: "58-59" },
-  { size: "2XL", us: "20-22", bust: "43-45", waist: "35-37", hips: "45-47", hollow: "59-60" },
+  { size: "2", us: "2", bust: "32", waist: "24", hips: "34", hollow: "54-55" },
+  { size: "4", us: "4", bust: "33", waist: "25", hips: "35", hollow: "55-56" },
+  { size: "6", us: "6", bust: "34", waist: "26", hips: "36", hollow: "55-56" },
+  { size: "8", us: "8", bust: "35", waist: "27", hips: "37", hollow: "56-57" },
+  { size: "10", us: "10", bust: "36", waist: "28", hips: "38", hollow: "56-57" },
+  { size: "12", us: "12", bust: "38", waist: "30", hips: "40", hollow: "57-58" },
+  { size: "14", us: "14", bust: "40", waist: "32", hips: "42", hollow: "57-58" },
+  { size: "16", us: "16", bust: "42", waist: "34", hips: "44", hollow: "58-59" },
+  { size: "18", us: "18", bust: "44", waist: "36", hips: "46", hollow: "58-59" },
+  { size: "20", us: "20", bust: "46", waist: "38", hips: "48", hollow: "59-60" },
+  { size: "22", us: "22", bust: "48", waist: "40", hips: "50", hollow: "59-60" },
+  { size: "24", us: "24", bust: "50", waist: "42", hips: "52", hollow: "60-61" },
 ];
 
 const sizeChartCm = [
-  { size: "XS", us: "0-2", bust: "79-81", waist: "58-61", hips: "84-86", hollow: "137-140" },
-  { size: "S", us: "4-6", bust: "84-86", waist: "64-66", hips: "89-91", hollow: "140-142" },
-  { size: "M", us: "8-10", bust: "89-91", waist: "69-71", hips: "94-97", hollow: "142-145" },
-  { size: "L", us: "12-14", bust: "94-99", waist: "74-79", hips: "99-104", hollow: "145-147" },
-  { size: "XL", us: "16-18", bust: "102-107", waist: "81-86", hips: "107-112", hollow: "147-150" },
-  { size: "2XL", us: "20-22", bust: "109-114", waist: "89-94", hips: "114-119", hollow: "150-152" },
+  { size: "2", us: "2", bust: "81", waist: "61", hips: "86", hollow: "137-140" },
+  { size: "4", us: "4", bust: "84", waist: "64", hips: "89", hollow: "140-142" },
+  { size: "6", us: "6", bust: "86", waist: "66", hips: "91", hollow: "140-142" },
+  { size: "8", us: "8", bust: "89", waist: "69", hips: "94", hollow: "142-145" },
+  { size: "10", us: "10", bust: "91", waist: "71", hips: "97", hollow: "142-145" },
+  { size: "12", us: "12", bust: "97", waist: "76", hips: "102", hollow: "145-147" },
+  { size: "14", us: "14", bust: "102", waist: "81", hips: "107", hollow: "145-147" },
+  { size: "16", us: "16", bust: "107", waist: "86", hips: "112", hollow: "147-150" },
+  { size: "18", us: "18", bust: "112", waist: "91", hips: "117", hollow: "147-150" },
+  { size: "20", us: "20", bust: "117", waist: "97", hips: "122", hollow: "150-152" },
+  { size: "22", us: "22", bust: "122", waist: "102", hips: "127", hollow: "150-152" },
+  { size: "24", us: "24", bust: "127", waist: "107", hips: "132", hollow: "152-155" },
 ];
 
 const measurementGuide = [

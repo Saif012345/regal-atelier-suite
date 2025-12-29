@@ -13,7 +13,8 @@ const navigation = [
   { name: "Abayas", href: "/simply-azixa/abayas" },
   { name: "Gallery", href: "/gallery" },
   { name: "Size Chart", href: "/size-chart" },
-  { name: "About", href: "/about" },
+  { name: "About", href: "/simply-azixa/about" },
+  { name: "FAQ", href: "/simply-azixa/faq" },
   { name: "Contact", href: "/contact" },
 ];
 

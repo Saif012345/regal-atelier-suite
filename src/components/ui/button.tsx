@@ -15,9 +15,9 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Elegant variants for formal wear
-        gold: "bg-gold text-primary-foreground hover:bg-gold-dark shadow-soft hover:shadow-elegant font-medium tracking-wide",
-        goldOutline: "border-2 border-gold text-gold bg-transparent hover:bg-gold hover:text-primary-foreground transition-all duration-300",
+        // Legacy gold variant - now uses primary (deep purple)
+        gold: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft hover:shadow-elegant font-medium tracking-wide",
+        goldOutline: "border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300",
         elegant: "bg-charcoal text-ivory hover:bg-charcoal/90 shadow-elegant font-display tracking-widest uppercase text-xs",
         hero: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-elegant font-display tracking-widest uppercase px-8 py-6 text-sm",
         heroOutline: "border-2 border-primary-foreground/80 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 font-display tracking-widest uppercase px-8 py-6 text-sm",
