@@ -23,6 +23,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Upload, X, Sparkles, ArrowRight, Video } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { TermsAcceptanceModal } from "@/components/TermsAcceptanceModal";
 
 
 const inquiryTypes = [
@@ -86,6 +87,8 @@ export default function CustomInquiry() {
   const [inspirationFiles, setInspirationFiles] = useState<File[]>([]);
   const [fullBodyPhoto, setFullBodyPhoto] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -107,8 +110,8 @@ export default function CustomInquiry() {
     setInspirationFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
 
     // Validation
     if (!selectedType) {
@@ -145,6 +148,11 @@ export default function CustomInquiry() {
     }
     if (!formData.consultationPref) {
       toast({ title: "Please select consultation preference", variant: "destructive" });
+      return;
+    }
+
+    if (!termsAccepted) {
+      setShowTermsModal(true);
       return;
     }
 
@@ -561,10 +569,29 @@ export default function CustomInquiry() {
             </div>
 
             {/* Submit */}
-            <div className="pt-6 border-t border-border">
+            <div className="pt-6 border-t border-border space-y-4">
+              {/* Terms Acceptance Checkbox */}
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={termsAccepted}
+                  onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+                  className="mt-0.5"
+                />
+                <span className="text-sm leading-relaxed">
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-primary hover:underline">
+                    Terms & Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>
+                </span>
+              </label>
+
               <Button
                 type="submit"
-                variant="gold"
+                variant="default"
                 size="xl"
                 className="w-full"
                 disabled={isSubmitting}
@@ -578,15 +605,21 @@ export default function CustomInquiry() {
                   </>
                 )}
               </Button>
-              <p className="text-xs text-center text-muted-foreground mt-4">
-                By submitting, you agree to our{" "}
-                <Link to="/privacy" className="underline hover:text-primary">
-                  Privacy Policy
-                </Link>
-                . We'll respond within 24 hours.
+              <p className="text-xs text-center text-muted-foreground">
+                We'll respond within 24 hours.
               </p>
             </div>
           </form>
+
+          <TermsAcceptanceModal
+            open={showTermsModal}
+            onOpenChange={setShowTermsModal}
+            onAccept={() => {
+              setTermsAccepted(true);
+              handleSubmit();
+            }}
+            context="custom-inquiry"
+          />
         </div>
       </section>
     </Layout>

@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowRight, Lock, ShoppingBag } from "lucide-react";
+import { TermsAcceptanceModal } from "@/components/TermsAcceptanceModal";
 
 const currencies = [
   { code: "USD", symbol: "$", rate: 1 },
@@ -41,6 +43,8 @@ export default function Checkout() {
   const [paymentType, setPaymentType] = useState<"full" | "deposit">("full");
   const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const depositPercent = 50; // Admin configurable
   const selectedCurrency = currencies.find((c) => c.code === currency)!;
@@ -63,8 +67,8 @@ export default function Checkout() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
 
     // Validation
     const required = ["email", "firstName", "lastName", "address", "city", "country", "phone"];
@@ -76,6 +80,11 @@ export default function Checkout() {
         description: "Please fill in all required fields.",
         variant: "destructive",
       });
+      return;
+    }
+
+    if (!termsAccepted) {
+      setShowTermsModal(true);
       return;
     }
 
@@ -356,8 +365,27 @@ export default function Checkout() {
                     </div>
                   </div>
 
+                  {/* Terms Acceptance Checkbox */}
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <Checkbox
+                      checked={termsAccepted}
+                      onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+                      className="mt-0.5"
+                    />
+                    <span className="text-sm leading-relaxed">
+                      I agree to the{" "}
+                      <Link to="/terms" className="text-primary hover:underline">
+                        Terms & Conditions
+                      </Link>{" "}
+                      and{" "}
+                      <Link to="/privacy" className="text-primary hover:underline">
+                        Privacy Policy
+                      </Link>
+                    </span>
+                  </label>
+
                   <Button
-                    variant="gold"
+                    variant="default"
                     size="xl"
                     className="w-full"
                     onClick={handleSubmit}
@@ -378,6 +406,16 @@ export default function Checkout() {
                     Your payment information is secure and encrypted
                   </p>
                 </Card>
+
+                <TermsAcceptanceModal
+                  open={showTermsModal}
+                  onOpenChange={setShowTermsModal}
+                  onAccept={() => {
+                    setTermsAccepted(true);
+                    handleSubmit();
+                  }}
+                  context="checkout"
+                />
               </div>
             </div>
           </div>
