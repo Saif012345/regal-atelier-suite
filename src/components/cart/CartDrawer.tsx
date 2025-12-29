@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -7,6 +7,14 @@ import { cn } from "@/lib/utils";
 
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, totalItems, subtotal, isCartOpen, setIsCartOpen } = useCart();
+  const location = useLocation();
+  
+  // Determine brand context
+  const isSimplyAzixa = location.pathname.startsWith("/simply-azixa") || 
+    items.some(item => item.category === "Abaya");
+  
+  const shopLink = isSimplyAzixa ? "/simply-azixa/abayas" : "/azixa/prom";
+  const shopText = isSimplyAzixa ? "Shop Abayas" : "Shop Collection";
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -25,8 +33,8 @@ export function CartDrawer() {
             <p className="text-sm text-muted-foreground mb-6">
               Add items to get started
             </p>
-            <Button variant="gold" onClick={() => setIsCartOpen(false)} asChild>
-              <Link to="/formal-wear/prom">Continue Shopping</Link>
+            <Button variant="default" onClick={() => setIsCartOpen(false)} asChild>
+              <Link to={shopLink}>{shopText}</Link>
             </Button>
           </div>
         ) : (

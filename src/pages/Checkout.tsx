@@ -95,6 +95,9 @@ export default function Checkout() {
   };
 
   if (items.length === 0) {
+    // Check if any previous items were abayas to determine context
+    const isSimplyAzixaContext = false; // Default to Azixa Rahman for checkout
+    
     return (
       <Layout>
         <section className="py-20">
@@ -102,8 +105,8 @@ export default function Checkout() {
             <ShoppingBag className="h-20 w-20 mx-auto text-muted-foreground mb-6" />
             <h1 className="font-display text-3xl font-semibold mb-4">Your cart is empty</h1>
             <p className="text-muted-foreground mb-8">Add items to proceed to checkout</p>
-            <Button variant="gold" asChild>
-              <Link to="/formal-wear/prom">Start Shopping</Link>
+            <Button variant="default" asChild>
+              <Link to="/azixa/prom">Start Shopping</Link>
             </Button>
           </div>
         </section>

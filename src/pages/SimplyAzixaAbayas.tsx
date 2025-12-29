@@ -8,13 +8,16 @@ import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
+// Numeric sizes 2-24
+const sizes = ["2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24"];
+
 const abayas = [
-  { id: "pearl-mist", name: "Pearl Mist Abaya", price: 249, image: categoryAbaya, colors: ["Pearl", "Black", "Navy"], lengths: ["52", "54", "56", "58"] },
-  { id: "midnight-grace", name: "Midnight Grace Abaya", price: 279, image: categoryAbaya, colors: ["Black", "Dark Grey"], lengths: ["52", "54", "56", "58"] },
-  { id: "desert-rose", name: "Desert Rose Abaya", price: 299, image: categoryAbaya, colors: ["Rose", "Blush", "Mauve"], lengths: ["52", "54", "56", "58"] },
-  { id: "ocean-breeze", name: "Ocean Breeze Abaya", price: 269, image: categoryAbaya, colors: ["Ocean Blue", "Teal", "Sky"], lengths: ["52", "54", "56", "58"] },
-  { id: "golden-hour", name: "Golden Hour Abaya", price: 319, image: categoryAbaya, colors: ["Black/Gold", "Navy/Gold", "Burgundy/Gold"], lengths: ["52", "54", "56", "58"] },
-  { id: "classic-noir", name: "Classic Noir Abaya", price: 229, image: categoryAbaya, colors: ["Black"], lengths: ["52", "54", "56", "58"] },
+  { id: "pearl-mist", name: "Pearl Mist Abaya", price: 249, image: categoryAbaya, colors: ["Pearl", "Black", "Navy"], lengths: ["52", "54", "56", "58", "60", "62"] },
+  { id: "midnight-grace", name: "Midnight Grace Abaya", price: 279, image: categoryAbaya, colors: ["Black", "Dark Grey"], lengths: ["52", "54", "56", "58", "60", "62"] },
+  { id: "desert-rose", name: "Desert Rose Abaya", price: 299, image: categoryAbaya, colors: ["Rose", "Blush", "Mauve"], lengths: ["52", "54", "56", "58", "60", "62"] },
+  { id: "ocean-breeze", name: "Ocean Breeze Abaya", price: 269, image: categoryAbaya, colors: ["Ocean Blue", "Teal", "Sky"], lengths: ["52", "54", "56", "58", "60", "62"] },
+  { id: "golden-hour", name: "Golden Hour Abaya", price: 319, image: categoryAbaya, colors: ["Black/Gold", "Navy/Gold", "Burgundy/Gold"], lengths: ["52", "54", "56", "58", "60", "62"] },
+  { id: "classic-noir", name: "Classic Noir Abaya", price: 229, image: categoryAbaya, colors: ["Black"], lengths: ["52", "54", "56", "58", "60", "62"] },
 ];
 
 export default function SimplyAzixaAbayas() {
@@ -22,6 +25,7 @@ export default function SimplyAzixaAbayas() {
   const { addItem: addToCart } = useCart();
   const [selectedColors, setSelectedColors] = useState<Record<string, string>>({});
   const [selectedLengths, setSelectedLengths] = useState<Record<string, string>>({});
+  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
 
   const handleWishlistToggle = (abaya: typeof abayas[0]) => {
     if (isInWishlist(abaya.id)) {
@@ -43,31 +47,32 @@ export default function SimplyAzixaAbayas() {
   const handleAddToCart = (abaya: typeof abayas[0]) => {
     const color = selectedColors[abaya.id] || abaya.colors[0];
     const length = selectedLengths[abaya.id] || abaya.lengths[0];
+    const size = selectedSizes[abaya.id] || sizes[0];
     
     addToCart({
-      id: `${abaya.id}-${color}-${length}`,
-      name: `${abaya.name} (${color}, ${length}")`,
+      id: `${abaya.id}-${color}-${length}-${size}`,
+      name: `${abaya.name}`,
       price: abaya.price,
       image: abaya.image,
       category: "Abaya",
       quantity: 1,
       sizing: {
         type: "standard",
-        size: length,
+        size: size,
       },
     });
-    toast.success("Added to cart");
+    toast.success(`Added to cart - Size ${size}, ${color}, ${length}" length`);
   };
 
   return (
     <SimplyAzixaLayout>
       {/* Hero */}
-      <section className="bg-gradient-hero py-16">
+      <section className="bg-charcoal py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-display text-4xl font-semibold text-foreground sm:text-5xl mb-4">
+          <h1 className="font-display text-4xl font-semibold text-ivory sm:text-5xl mb-4">
             Abaya Collection
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-ivory/70 max-w-2xl mx-auto">
             Discover our curated collection of luxurious abayas, designed for the modern woman 
             who values modesty without compromising on style.
           </p>
@@ -93,8 +98,8 @@ export default function SimplyAzixaAbayas() {
                     />
                   </Link>
                   
-                  {/* Quick Actions */}
-                  <div className="absolute top-4 right-4 flex flex-col gap-2">
+                  {/* Wishlist Button */}
+                  <div className="absolute top-4 right-4">
                     <Button
                       variant="secondary"
                       size="icon"
@@ -110,7 +115,7 @@ export default function SimplyAzixaAbayas() {
                   {/* Quick Add */}
                   <div className="absolute bottom-4 left-4 right-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                     <Button
-                      variant="gold"
+                      variant="default"
                       className="w-full"
                       onClick={() => handleAddToCart(abaya)}
                     >
@@ -120,13 +125,39 @@ export default function SimplyAzixaAbayas() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Link to={`/product/${abaya.id}`}>
                     <h3 className="font-display text-lg font-medium text-foreground hover:text-primary transition-colors">
                       {abaya.name}
                     </h3>
                   </Link>
-                  <p className="text-primary font-semibold">${abaya.price}</p>
+                  <p className="text-primary font-semibold text-lg">${abaya.price}</p>
+
+                  {/* Size Selection */}
+                  <div className="space-y-1">
+                    <span className="text-xs text-muted-foreground">Size:</span>
+                    <div className="flex flex-wrap gap-1">
+                      {sizes.slice(0, 6).map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => setSelectedSizes({ ...selectedSizes, [abaya.id]: size })}
+                          className={`w-8 h-8 text-xs rounded border transition-colors ${
+                            (selectedSizes[abaya.id] || sizes[0]) === size
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                      <button
+                        onClick={() => {}}
+                        className="px-2 h-8 text-xs rounded border border-border text-muted-foreground"
+                      >
+                        +6
+                      </button>
+                    </div>
+                  </div>
 
                   {/* Color Options */}
                   <div className="flex items-center gap-2">
@@ -152,7 +183,7 @@ export default function SimplyAzixaAbayas() {
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">Length:</span>
                     <div className="flex gap-1">
-                      {abaya.lengths.map((length) => (
+                      {abaya.lengths.slice(0, 4).map((length) => (
                         <button
                           key={length}
                           onClick={() => setSelectedLengths({ ...selectedLengths, [abaya.id]: length })}

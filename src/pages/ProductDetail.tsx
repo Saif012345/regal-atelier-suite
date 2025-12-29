@@ -35,6 +35,10 @@ const sizeChart = [
   { size: "12", bust: "38", waist: "30", hips: "40" },
   { size: "14", bust: "40", waist: "32", hips: "42" },
   { size: "16", bust: "42", waist: "34", hips: "44" },
+  { size: "18", bust: "44", waist: "36", hips: "46" },
+  { size: "20", bust: "46", waist: "38", hips: "48" },
+  { size: "22", bust: "48", waist: "40", hips: "50" },
+  { size: "24", bust: "50", waist: "42", hips: "52" },
 ];
 
 const fabricOptions = [
