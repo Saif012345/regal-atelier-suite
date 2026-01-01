@@ -21,7 +21,6 @@ const shopLinks = [
   { name: "Prom", href: "/azixa/prom" },
   { name: "Bridal", href: "/azixa/bridal" },
   { name: "Occasion", href: "/azixa/occasion" },
-  { name: "Custom", href: "/custom-inquiry" },
 ];
 
 export function AzixaNavbar() {

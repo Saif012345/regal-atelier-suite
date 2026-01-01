@@ -154,15 +154,20 @@ export default function ProductDetail() {
     setIsCartOpen(true);
   };
 
+  // Brand detection based on product data
+  const isSimplyAzixa = product.brand === "simply-azixa";
+
   return (
     <Layout>
       {/* Breadcrumb */}
       <div className="bg-muted/50 py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+            <Link to={isSimplyAzixa ? "/simply-azixa" : "/azixa"} className="hover:text-primary transition-colors">Home</Link>
             <ChevronRight className="h-4 w-4" />
-            <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
+            <Link to={isSimplyAzixa ? "/simply-azixa/abayas" : "/shop"} className="hover:text-primary transition-colors">
+              {isSimplyAzixa ? "Abayas" : "Shop"}
+            </Link>
             <ChevronRight className="h-4 w-4" />
             <span className="text-foreground">{product.name}</span>
           </nav>
@@ -214,91 +219,151 @@ export default function ProductDetail() {
                 {product.description}
               </p>
 
-              {/* Fabric Selection */}
-              <div className="space-y-4">
-                <Label className="text-base font-medium">Fabric & Color</Label>
-                <div className="flex flex-wrap gap-3">
-                  {fabricOptions.map((fabric) => (
-                    <button
-                      key={fabric.id}
-                      onClick={() => setSelectedFabric(fabric.id)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
-                        selectedFabric === fabric.id
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      }`}
-                    >
-                      <span
-                        className="w-5 h-5 rounded-full border border-border"
-                        style={{ backgroundColor: fabric.color }}
-                      />
-                      <span className="text-sm">{fabric.name}</span>
-                      {selectedFabric === fabric.id && (
-                        <Check className="h-4 w-4 text-primary" />
-                      )}
-                    </button>
-                  ))}
+              {/* Simply Azixa: Color Selection */}
+              {isSimplyAzixa && product.colors && product.colors.length > 0 && (
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Color</Label>
+                  <div className="flex flex-wrap gap-3">
+                    {product.colors.map((color) => (
+                      <button
+                        key={color.name}
+                        onClick={() => setSelectedColor(color.name)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
+                          selectedColor === color.name
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span
+                          className="w-5 h-5 rounded-full border border-border"
+                          style={{ backgroundColor: color.hex }}
+                        />
+                        <span className="text-sm">{color.name}</span>
+                        {selectedColor === color.name && (
+                          <Check className="h-4 w-4 text-primary" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Simply Azixa: Length Selection */}
+              {isSimplyAzixa && product.lengths && product.lengths.length > 0 && (
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Length</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {product.lengths.map((length) => (
+                      <button
+                        key={length}
+                        onClick={() => setSelectedLength(length)}
+                        className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
+                          selectedLength === length
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border hover:border-primary"
+                        }`}
+                      >
+                        {length}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Azixa Rahman: Fabric Selection */}
+              {!isSimplyAzixa && (
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Fabric & Color</Label>
+                  <div className="flex flex-wrap gap-3">
+                    {fabricOptions.map((fabric) => (
+                      <button
+                        key={fabric.id}
+                        onClick={() => setSelectedFabric(fabric.id)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
+                          selectedFabric === fabric.id
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span
+                          className="w-5 h-5 rounded-full border border-border"
+                          style={{ backgroundColor: fabric.color }}
+                        />
+                        <span className="text-sm">{fabric.name}</span>
+                        {selectedFabric === fabric.id && (
+                          <Check className="h-4 w-4 text-primary" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Sizing Options */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-base font-medium">Sizing</Label>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="link" className="h-auto p-0">
-                        <Ruler className="h-4 w-4 mr-1" />
-                        Size Chart
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-lg bg-card" aria-describedby="size-chart-description">
-                      <DialogHeader>
-                        <DialogTitle className="font-display text-2xl">Size Chart</DialogTitle>
-                        <DialogDescription id="size-chart-description">Reference measurements for standard sizes</DialogDescription>
-                      </DialogHeader>
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-border">
-                              <th className="py-3 px-4 text-left font-medium">Size</th>
-                              <th className="py-3 px-4 text-left font-medium">Bust (in)</th>
-                              <th className="py-3 px-4 text-left font-medium">Waist (in)</th>
-                              <th className="py-3 px-4 text-left font-medium">Hips (in)</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {sizeChart.map((row) => (
-                              <tr key={row.size} className="border-b border-border/50">
-                                <td className="py-3 px-4 font-medium">{row.size}</td>
-                                <td className="py-3 px-4">{row.bust}</td>
-                                <td className="py-3 px-4">{row.waist}</td>
-                                <td className="py-3 px-4">{row.hips}</td>
+                  {/* Size Chart - Azixa Rahman only */}
+                  {!isSimplyAzixa && (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="link" className="h-auto p-0">
+                          <Ruler className="h-4 w-4 mr-1" />
+                          Size Chart
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-lg bg-card" aria-describedby="size-chart-description">
+                        <DialogHeader>
+                          <DialogTitle className="font-display text-2xl">Size Chart</DialogTitle>
+                          <DialogDescription id="size-chart-description">Reference measurements for standard sizes</DialogDescription>
+                        </DialogHeader>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-border">
+                                <th className="py-3 px-4 text-left font-medium">Size</th>
+                                <th className="py-3 px-4 text-left font-medium">Bust (in)</th>
+                                <th className="py-3 px-4 text-left font-medium">Waist (in)</th>
+                                <th className="py-3 px-4 text-left font-medium">Hips (in)</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                            </thead>
+                            <tbody>
+                              {sizeChart.map((row) => (
+                                <tr key={row.size} className="border-b border-border/50">
+                                  <td className="py-3 px-4 font-medium">{row.size}</td>
+                                  <td className="py-3 px-4">{row.bust}</td>
+                                  <td className="py-3 px-4">{row.waist}</td>
+                                  <td className="py-3 px-4">{row.hips}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
                 </div>
 
-                <RadioGroup
-                  value={sizingOption}
-                  onValueChange={(v) => setSizingOption(v as "standard" | "custom")}
-                  className="flex gap-4"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="standard" id="standard" />
-                    <Label htmlFor="standard">Standard Size</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="custom" id="custom" />
-                    <Label htmlFor="custom">Custom Measurements</Label>
-                  </div>
-                </RadioGroup>
+                {/* Azixa Rahman: Standard/Custom sizing toggle */}
+                {!isSimplyAzixa && (
+                  <RadioGroup
+                    value={sizingOption}
+                    onValueChange={(v) => setSizingOption(v as "standard" | "custom")}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="standard" id="standard" />
+                      <Label htmlFor="standard">Standard Size</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="custom" id="custom" />
+                      <Label htmlFor="custom">Custom Measurements</Label>
+                    </div>
+                  </RadioGroup>
+                )}
 
-                {sizingOption === "standard" ? (
+                {/* Size selector - both brands use numeric 2-24 */}
+                {(isSimplyAzixa || sizingOption === "standard") && (
                   <div className="flex flex-wrap gap-2">
                     {sizeChart.map((s) => (
                       <button
@@ -314,7 +379,10 @@ export default function ProductDetail() {
                       </button>
                     ))}
                   </div>
-                ) : (
+                )}
+
+                {/* Custom measurements - Azixa Rahman only */}
+                {!isSimplyAzixa && sizingOption === "custom" && (
                   <div className="grid grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
                     {Object.entries(customMeasurements).map(([key, value]) => (
                       <div key={key} className="space-y-1">
@@ -340,27 +408,29 @@ export default function ProductDetail() {
                 )}
               </div>
 
-              {/* Video Consultation */}
-              <div className="p-4 bg-champagne rounded-lg">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Video className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium text-foreground mb-1">Need help deciding?</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Book a complimentary video consultation with our stylists.
-                    </p>
-                    <Button variant="outline" asChild>
-                      <Link to="/booking">Book Video Consultation</Link>
-                    </Button>
+              {/* Video Consultation - Azixa Rahman only */}
+              {!isSimplyAzixa && (
+                <div className="p-4 bg-champagne rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Video className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium text-foreground mb-1">Need help deciding?</h3>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Book a complimentary video consultation with our stylists.
+                      </p>
+                      <Button variant="outline" asChild>
+                        <Link to="/booking">Book Video Consultation</Link>
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                {product.isCustom ? (
+                {product.isCustom && !isSimplyAzixa ? (
                   <Button
                     variant="gold"
                     size="xl"
@@ -412,8 +482,10 @@ export default function ProductDetail() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <p className="text-muted-foreground">
-                      Free shipping on orders over $500. Standard production time is 4-6 weeks 
-                      for custom sizes. Returns accepted within 14 days for standard sizes.
+                      {isSimplyAzixa 
+                        ? "All sales are final. Please refer to our Terms & Conditions for detailed shipping and returns information."
+                        : "Free shipping on orders over $500. Standard production time is 4-6 weeks for custom sizes. Returns accepted within 14 days for standard sizes."
+                      }
                     </p>
                   </AccordionContent>
                 </AccordionItem>
