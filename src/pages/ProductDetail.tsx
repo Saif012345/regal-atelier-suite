@@ -26,7 +26,8 @@ import { useWishlist } from "@/contexts/WishlistContext";
 
 import { getProductBySlug, Product } from "@/data/products";
 
-const sizeChart = [
+// Azixa Rahman size chart (full measurements for custom fitting)
+const azixaRahmanSizeChart = [
   { size: "2", bust: "32", waist: "24", hips: "34" },
   { size: "4", bust: "33", waist: "25", hips: "35" },
   { size: "6", bust: "34", waist: "26", hips: "36" },
@@ -39,6 +40,22 @@ const sizeChart = [
   { size: "20", bust: "46", waist: "38", hips: "48" },
   { size: "22", bust: "48", waist: "40", hips: "50" },
   { size: "24", bust: "50", waist: "42", hips: "52" },
+];
+
+// Simply Azixa size chart (simplified for abayas)
+const simplyAzixaSizeChart = [
+  { size: "52", bust: "32", waist: "24", hips: "34" },
+  { size: "54", bust: "33", waist: "25", hips: "35" },
+  { size: "56", bust: "34", waist: "26", hips: "36" },
+  { size: "58", bust: "35", waist: "27", hips: "37" },
+  { size: "60", bust: "36", waist: "28", hips: "38" },
+  { size: "62", bust: "38", waist: "30", hips: "40" },
+  { size: "64", bust: "40", waist: "32", hips: "42" },
+  { size: "66", bust: "42", waist: "34", hips: "44" },
+  { size: "68", bust: "44", waist: "36", hips: "46" },
+  { size: "70", bust: "46", waist: "38", hips: "48" },
+  { size: "72", bust: "48", waist: "40", hips: "50" },
+  { size: "74", bust: "50", waist: "42", hips: "52" },
 ];
 
 const fabricOptions = [
@@ -303,52 +320,43 @@ export default function ProductDetail() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-base font-medium">Sizing</Label>
-                  {/* Size Chart - Both brands, but different behavior */}
-                  {isSimplyAzixa ? (
-                    <Button variant="link" className="h-auto p-0" asChild>
-                      <Link to="/size-chart">
+                  {/* Size Chart - Both brands have their own inline dialog */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="link" className="h-auto p-0">
                         <Ruler className="h-4 w-4 mr-1" />
                         Size Chart
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="link" className="h-auto p-0">
-                          <Ruler className="h-4 w-4 mr-1" />
-                          Size Chart
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-lg bg-card" aria-describedby="size-chart-description">
-                        <DialogHeader>
-                          <DialogTitle className="font-display text-2xl">Size Chart</DialogTitle>
-                          <DialogDescription id="size-chart-description">Reference measurements for standard sizes</DialogDescription>
-                        </DialogHeader>
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-sm">
-                            <thead>
-                              <tr className="border-b border-border">
-                                <th className="py-3 px-4 text-left font-medium">Size</th>
-                                <th className="py-3 px-4 text-left font-medium">Bust (in)</th>
-                                <th className="py-3 px-4 text-left font-medium">Waist (in)</th>
-                                <th className="py-3 px-4 text-left font-medium">Hips (in)</th>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg bg-card" aria-describedby="size-chart-description">
+                      <DialogHeader>
+                        <DialogTitle className="font-display text-2xl">Size Chart</DialogTitle>
+                        <DialogDescription id="size-chart-description">Reference measurements for standard sizes</DialogDescription>
+                      </DialogHeader>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border">
+                              <th className="py-3 px-4 text-left font-medium">Size</th>
+                              <th className="py-3 px-4 text-left font-medium">Bust (in)</th>
+                              <th className="py-3 px-4 text-left font-medium">Waist (in)</th>
+                              <th className="py-3 px-4 text-left font-medium">Hips (in)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(isSimplyAzixa ? simplyAzixaSizeChart : azixaRahmanSizeChart).map((row) => (
+                              <tr key={row.size} className="border-b border-border/50">
+                                <td className="py-3 px-4 font-medium">{row.size}</td>
+                                <td className="py-3 px-4">{row.bust}</td>
+                                <td className="py-3 px-4">{row.waist}</td>
+                                <td className="py-3 px-4">{row.hips}</td>
                               </tr>
-                            </thead>
-                            <tbody>
-                              {sizeChart.map((row) => (
-                                <tr key={row.size} className="border-b border-border/50">
-                                  <td className="py-3 px-4 font-medium">{row.size}</td>
-                                  <td className="py-3 px-4">{row.bust}</td>
-                                  <td className="py-3 px-4">{row.waist}</td>
-                                  <td className="py-3 px-4">{row.hips}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
 
                 {/* Azixa Rahman: Standard/Custom sizing toggle */}
@@ -369,10 +377,10 @@ export default function ProductDetail() {
                   </RadioGroup>
                 )}
 
-                {/* Size selector - both brands use numeric 2-24 */}
+                {/* Size selector - each brand uses their own size chart */}
                 {(isSimplyAzixa || sizingOption === "standard") && (
                   <div className="flex flex-wrap gap-2">
-                    {sizeChart.map((s) => (
+                    {(isSimplyAzixa ? simplyAzixaSizeChart : azixaRahmanSizeChart).map((s) => (
                       <button
                         key={s.size}
                         onClick={() => setSelectedSize(s.size)}
