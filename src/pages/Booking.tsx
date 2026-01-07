@@ -346,16 +346,16 @@ export default function Booking() {
                     onCheckedChange={(checked) => setTermsAccepted(checked === true)}
                     className="mt-0.5"
                   />
-                  <span className="text-sm leading-relaxed">
-                    I agree to the{" "}
-                    <Link to="/terms" className="text-primary hover:underline">
-                      Terms & Conditions
-                    </Link>{" "}
-                    and{" "}
-                    <Link to="/privacy" className="text-primary hover:underline">
-                      Privacy Policy
-                    </Link>
-                  </span>
+                    <span className="text-sm leading-relaxed">
+                      I agree to the{" "}
+                      <Link to="/azixa/terms" className="text-primary hover:underline">
+                        Terms & Conditions
+                      </Link>{" "}
+                      and{" "}
+                      <Link to="/privacy" className="text-primary hover:underline">
+                        Privacy Policy
+                      </Link>
+                    </span>
                 </label>
 
                 <Button
@@ -383,6 +383,7 @@ export default function Booking() {
                     handleSubmit();
                   }}
                   context="booking"
+                  brand="azixa-rahman"
                 />
               </div>
             </div>
