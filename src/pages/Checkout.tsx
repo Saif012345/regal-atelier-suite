@@ -46,6 +46,14 @@ export default function Checkout() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
+  // Detect brand based on cart items - Simply Azixa items have "abaya" category
+  const isSimplyAzixa = items.some((item) => 
+    item.category?.toLowerCase().includes("abaya") || 
+    item.category?.toLowerCase() === "simply-azixa"
+  );
+  const detectedBrand = isSimplyAzixa ? "simply-azixa" : "azixa-rahman";
+  const termsLink = isSimplyAzixa ? "/simply-azixa/terms" : "/azixa/terms";
+
   const depositPercent = 50; // Admin configurable
   const selectedCurrency = currencies.find((c) => c.code === currency)!;
   const convertedSubtotal = subtotal * selectedCurrency.rate;
@@ -374,7 +382,7 @@ export default function Checkout() {
                     />
                       <span className="text-sm leading-relaxed">
                         I agree to the{" "}
-                        <Link to="/azixa/terms" className="text-primary hover:underline">
+                        <Link to={termsLink} className="text-primary hover:underline">
                           Terms & Conditions
                         </Link>{" "}
                         and{" "}
@@ -415,7 +423,7 @@ export default function Checkout() {
                     handleSubmit();
                   }}
                   context="checkout"
-                  brand="azixa-rahman"
+                  brand={detectedBrand}
                 />
               </div>
             </div>
