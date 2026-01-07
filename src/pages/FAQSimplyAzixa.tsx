@@ -26,7 +26,10 @@ const faqSections = [
       },
       {
         question: "How do I choose the correct length?",
-        answer: "We strongly recommend checking our Sizing Guide and measuring a similar garment you already own. Choosing the correct length is the customer's responsibility."
+        answer: "We strongly recommend checking our Size Chart and measuring a similar garment you already own. Choosing the correct length is the customer's responsibility.",
+        hasLink: true,
+        linkText: "View Size Chart",
+        linkUrl: "/size-chart"
       },
       {
         question: "Can I exchange or return an Abaya if the length doesn't fit?",
@@ -157,6 +160,11 @@ export default function FAQSimplyAzixa() {
                       </AccordionTrigger>
                       <AccordionContent className="text-muted-foreground pb-6">
                         {faq.answer}
+                        {faq.hasLink && (
+                          <Link to={faq.linkUrl} className="block mt-2 text-primary hover:underline font-medium">
+                            {faq.linkText} →
+                          </Link>
+                        )}
                       </AccordionContent>
                     </AccordionItem>
                   ))}
