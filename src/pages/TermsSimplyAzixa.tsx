@@ -31,7 +31,7 @@ export default function TermsSimplyAzixa() {
                   2. Sizing & Length Selection
                 </h2>
                 <ul className="text-muted-foreground list-disc pl-6 space-y-2">
-                  <li>Please review our <Link to="/size-chart" className="text-primary hover:underline">Size Chart</Link> before ordering.</li>
+                  <li>Please review the size chart on the product page before ordering.</li>
                   <li>We recommend measuring a similar garment you already own.</li>
                   <li><strong>You are responsible</strong> for selecting the correct length.</li>
                   <li>We cannot accept returns, exchanges, or refunds for incorrect length selection.</li>
