@@ -579,7 +579,7 @@ export default function CustomInquiry() {
                 />
                 <span className="text-sm leading-relaxed">
                   I agree to the{" "}
-                  <Link to="/terms" className="text-primary hover:underline">
+                  <Link to="/azixa/terms" className="text-primary hover:underline">
                     Terms & Conditions
                   </Link>{" "}
                   and{" "}
@@ -619,6 +619,7 @@ export default function CustomInquiry() {
               handleSubmit();
             }}
             context="custom-inquiry"
+            brand="azixa-rahman"
           />
         </div>
       </section>

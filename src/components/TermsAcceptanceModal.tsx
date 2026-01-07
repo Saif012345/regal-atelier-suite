@@ -18,6 +18,7 @@ interface TermsAcceptanceModalProps {
   onOpenChange: (open: boolean) => void;
   onAccept: () => void;
   context: "checkout" | "custom-inquiry" | "booking";
+  brand?: "simply-azixa" | "azixa-rahman";
 }
 
 export function TermsAcceptanceModal({
@@ -25,6 +26,7 @@ export function TermsAcceptanceModal({
   onOpenChange,
   onAccept,
   context,
+  brand = "azixa-rahman",
 }: TermsAcceptanceModalProps) {
   const [accepted, setAccepted] = useState(false);
 
@@ -50,6 +52,9 @@ export function TermsAcceptanceModal({
       onOpenChange(false);
     }
   };
+
+  const termsLink = brand === "simply-azixa" ? "/simply-azixa/terms" : "/azixa/terms";
+  const privacyLink = "/privacy";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -81,7 +86,7 @@ export function TermsAcceptanceModal({
             <p>
               For full details, please review our complete{" "}
               <Link
-                to="/terms"
+                to={termsLink}
                 target="_blank"
                 className="text-primary hover:underline inline-flex items-center gap-1"
               >
@@ -90,7 +95,7 @@ export function TermsAcceptanceModal({
               </Link>{" "}
               and{" "}
               <Link
-                to="/privacy"
+                to={privacyLink}
                 target="_blank"
                 className="text-primary hover:underline inline-flex items-center gap-1"
               >
@@ -111,11 +116,11 @@ export function TermsAcceptanceModal({
             />
             <Label className="text-sm cursor-pointer leading-relaxed">
               I have read and agree to the{" "}
-              <Link to="/terms" target="_blank" className="text-primary hover:underline">
+              <Link to={termsLink} target="_blank" className="text-primary hover:underline">
                 Terms & Conditions
               </Link>{" "}
               and{" "}
-              <Link to="/privacy" target="_blank" className="text-primary hover:underline">
+              <Link to={privacyLink} target="_blank" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
             </Label>
