@@ -303,8 +303,15 @@ export default function ProductDetail() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-base font-medium">Sizing</Label>
-                  {/* Size Chart - Azixa Rahman only */}
-                  {!isSimplyAzixa && (
+                  {/* Size Chart - Both brands, but different behavior */}
+                  {isSimplyAzixa ? (
+                    <Button variant="link" className="h-auto p-0" asChild>
+                      <Link to="/size-chart">
+                        <Ruler className="h-4 w-4 mr-1" />
+                        Size Chart
+                      </Link>
+                    </Button>
+                  ) : (
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="link" className="h-auto p-0">
