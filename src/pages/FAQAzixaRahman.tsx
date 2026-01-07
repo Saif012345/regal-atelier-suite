@@ -8,54 +8,154 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const faqs = [
+const faqSections = [
   {
-    question: "How does the custom design process work?",
-    answer: "Our custom design process begins with a consultation where we discuss your vision, preferences, and event details. After the consultation, we provide design sketches and fabric recommendations. Once approved, production begins with regular updates throughout the process. The typical timeline is 4-8 weeks depending on complexity."
+    title: "Order Types",
+    faqs: [
+      {
+        question: "Do you sell ready-made dresses?",
+        answer: "No. All Azixa Rahman garments are Made-to-Order or Custom. We do not keep physical stock."
+      },
+      {
+        question: "What is the difference between Made-to-Order and Custom Orders?",
+        answer: "Made-to-Order (Website Orders): Designs shown on the website. You select a standard size or submit measurements, and the dress is produced accordingly.\n\nCustom Orders: Bespoke designs for bridal, prom, or special occasions. These begin with a paid consultation and involve personalized design development."
+      }
+    ]
   },
   {
-    question: "What is the difference between Made-to-Order and Custom Orders?",
-    answer: "Made-to-Order items are dresses from our existing designs made to your measurements. Custom Orders are entirely bespoke designs created specifically for you from scratch. Custom Orders require a consultation fee and a 50-70% deposit to begin the design process."
+    title: "Payments & Fees",
+    faqs: [
+      {
+        question: "Do I have to pay in full before production starts?",
+        answer: "Yes.\n\nWebsite orders: Full payment upfront\n\nCustom orders:\n• Non-refundable consultation fee\n• 50–70% non-refundable deposit to begin production\n• Remaining balance paid before shipping\n\nSome projects may require full payment upfront."
+      },
+      {
+        question: "Are consultation fees refundable?",
+        answer: "No. Consultation fees are non-refundable and non-transferable."
+      }
+    ]
   },
   {
-    question: "How do I provide my measurements?",
-    answer: "You have three options: 1) Select a standard size from our size chart, 2) Input custom measurements following our online guide, or 3) Book a virtual measurement consultation for guided assistance. We strongly recommend option 3 for custom orders."
+    title: "Measurements & Sizing",
+    faqs: [
+      {
+        question: "How do I submit my measurements?",
+        answer: "You may:\n• Select a standard size\n• Submit custom measurements\n• Book a virtual measurement consultation (additional fee)"
+      },
+      {
+        question: "Who is responsible for measurement accuracy?",
+        answer: "The client is fully responsible."
+      },
+      {
+        question: "What if my dress doesn't fit?",
+        answer: "We do not accept returns, refunds, or exchanges due to:\n• Incorrect measurements\n• Wrong size selection\n• Body changes after ordering"
+      }
+    ]
   },
   {
-    question: "What sizes do you offer?",
-    answer: "We offer sizes 2-24 in our standard size chart. For custom measurements, we can accommodate any size. Our goal is to create a perfect fit for every body."
+    title: "Production & Timelines",
+    faqs: [
+      {
+        question: "How long does production take?",
+        answer: "Typically 4–8 weeks, depending on design complexity."
+      },
+      {
+        question: "How far in advance should I order?",
+        answer: "Simple designs: 1 month minimum\n\nBridal/custom designs: 3–6 months recommended"
+      }
+    ]
   },
   {
-    question: "How long does production take?",
-    answer: "Made-to-Order dresses typically take 4-6 weeks. Custom designs take 6-8 weeks. For bridal gowns and heavily detailed pieces, we recommend allowing 3-6 months. We require a minimum of 1 month before your event date."
+    title: "Shipping & Delivery",
+    faqs: [
+      {
+        question: "How long does shipping take?",
+        answer: "Processing: 1–3 business days after completion\n\nStandard shipping: 7–10 business days"
+      },
+      {
+        question: "Will I receive tracking?",
+        answer: "Yes. Tracking details will be sent once shipped."
+      },
+      {
+        question: "Are delays your responsibility?",
+        answer: "No. Shipping timelines are estimates only."
+      }
+    ]
   },
   {
-    question: "What is your shipping policy?",
-    answer: "We offer free standard shipping on orders over $500. Standard shipping takes 7-10 business days after production is complete. Expedited shipping options are available for an additional fee. International orders may be subject to customs duties."
+    title: "International Orders",
+    faqs: [
+      {
+        question: "Are customs fees included?",
+        answer: "No. Customers are responsible for all customs duties and taxes."
+      }
+    ]
   },
   {
-    question: "Do you offer alterations?",
-    answer: "We do not offer alterations after delivery. However, our detailed measurement process is designed to ensure a perfect fit. We recommend having a local tailor on standby for any minor adjustments needed."
+    title: "Fittings & Alterations",
+    faqs: [
+      {
+        question: "Do you offer fittings?",
+        answer: "Website orders: No fittings\n\nCustom orders: Limited fittings for local clients only"
+      },
+      {
+        question: "Do you cover alteration costs?",
+        answer: "No. Alterations are the client's responsibility."
+      }
+    ]
   },
   {
-    question: "What is your return policy?",
-    answer: "Due to the personalized, made-to-order nature of our products, we do not accept returns or exchanges for change of mind or sizing issues resulting from customer-provided measurements. Refunds are only considered for major manufacturing defects reported within 3 days of receipt."
+    title: "Returns, Exchanges & Refunds",
+    faqs: [
+      {
+        question: "Do you accept returns or exchanges?",
+        answer: "No. All sales are final."
+      },
+      {
+        question: "What if my dress arrives defective?",
+        answer: "Contact us within 3 days of delivery with photo evidence."
+      }
+    ]
   },
   {
-    question: "What consultation types do you offer?",
-    answer: "We offer three types: Complimentary Consultation (15 min, free) for quick styling advice, Styling Session (30 min, $50) for in-depth guidance, and Custom Design Consultation (45 min, $75) for bespoke creations. All consultations are conducted via video call."
+    title: "Cancellations & Deposits",
+    faqs: [
+      {
+        question: "Can I cancel my custom order?",
+        answer: "Yes, but all consultation fees and deposits are forfeited."
+      }
+    ]
   },
   {
-    question: "What payment methods do you accept?",
-    answer: "We accept credit/debit cards (via Stripe), PayPal, and Paystack for Nigerian customers. For custom orders, we require a 50-70% deposit upfront with the remaining balance due before shipment."
+    title: "Fabric & Design Variations",
+    faqs: [
+      {
+        question: "Will my dress look exactly like the photos?",
+        answer: "Minor variations may occur due to screen settings, dye lots, and textile nature."
+      }
+    ]
   },
   {
-    question: "Can I see fabric samples before ordering?",
-    answer: "Fabric samples can be discussed during your consultation. For custom orders, we can arrange to send fabric swatches for an additional fee. Please note that colors may vary slightly from screen representations."
+    title: "Disputes & Chargebacks",
+    faqs: [
+      {
+        question: "What should I do if I have an issue?",
+        answer: "Contact us directly so we can resolve it professionally."
+      },
+      {
+        question: "Are chargebacks allowed?",
+        answer: "Unwarranted chargebacks will be disputed if terms were agreed to and delivery confirmed."
+      }
+    ]
   },
   {
-    question: "Do you ship internationally?",
-    answer: "Yes, we ship worldwide. International customers are responsible for any import duties, customs fees, or taxes levied by their country. Shipping times vary by destination."
+    title: "Contact",
+    faqs: [
+      {
+        question: "How can I reach Azixa Rahman?",
+        answer: "📧 Email: azixarahman@gmail.com\n\nBy placing an order, you confirm that you have read and agreed to our Terms & Conditions."
+      }
+    ]
   }
 ];
 
@@ -72,22 +172,29 @@ export default function FAQAzixaRahman() {
               Azixa Rahman - Luxury Custom Formal Wear
             </p>
 
-            <Accordion type="single" collapsible className="w-full space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border border-border rounded-lg px-6"
-                >
-                  <AccordionTrigger className="font-display text-lg font-medium text-foreground hover:text-primary py-6">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            {faqSections.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="mb-8">
+                <h2 className="text-xl font-semibold text-foreground mb-4 border-b border-border pb-2">
+                  {section.title}
+                </h2>
+                <Accordion type="single" collapsible className="w-full space-y-2">
+                  {section.faqs.map((faq, faqIndex) => (
+                    <AccordionItem 
+                      key={faqIndex} 
+                      value={`${sectionIndex}-${faqIndex}`}
+                      className="border border-border rounded-lg px-6"
+                    >
+                      <AccordionTrigger className="font-display text-lg font-medium text-foreground hover:text-primary py-6 text-left">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground pb-6 whitespace-pre-line">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            ))}
 
             <div className="mt-12 text-center p-8 bg-secondary rounded-2xl">
               <h2 className="font-display text-2xl font-semibold text-foreground mb-4">

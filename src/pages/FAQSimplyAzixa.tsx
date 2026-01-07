@@ -8,54 +8,122 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const faqs = [
+const faqSections = [
   {
-    question: "What sizes do your abayas come in?",
-    answer: "Our abayas feature a relaxed, 'One Size Fits All' silhouette regarding width and overall body fit. The only measurement you need to choose is the Length, available from 52 inches up to 62 inches. We use numeric sizing 2-24 for length selection."
+    title: "Sizing & Fit",
+    faqs: [
+      {
+        question: "Are your Abayas true to size?",
+        answer: "Our Abayas are designed with a modest, relaxed One Size Fits All silhouette in terms of width and body fit. They are flowy, comfortable, and provide full coverage."
+      },
+      {
+        question: "What size do I need to select?",
+        answer: "You only need to select your preferred length. Width and overall fit are standardized for ease and modesty."
+      },
+      {
+        question: "What lengths are available?",
+        answer: "Our Abayas are available in lengths ranging from 52 inches to 62 inches."
+      },
+      {
+        question: "How do I choose the correct length?",
+        answer: "We strongly recommend checking our Sizing Guide and measuring a similar garment you already own. Choosing the correct length is the customer's responsibility."
+      },
+      {
+        question: "Can I exchange or return an Abaya if the length doesn't fit?",
+        answer: "Unfortunately, no. Since Abayas are often made specifically to the length you choose, we cannot accept returns or exchanges for incorrect length selection."
+      }
+    ]
   },
   {
-    question: "How do I choose the right length?",
-    answer: "We recommend measuring a favorite abaya you already own or measuring from your shoulder to where you want the hem to fall. Our Sizing Guide provides detailed instructions. Please measure carefully as we cannot accept returns for incorrect length selections."
+    title: "Ordering & Production",
+    faqs: [
+      {
+        question: "What happens after I place my order?",
+        answer: "Once your order is placed, you will receive a confirmation email confirming that production preparation has begun."
+      },
+      {
+        question: "How long does production take?",
+        answer: "Production can take up to 14 calendar days (2 weeks). We always aim to finish sooner, but this is the maximum timeframe."
+      },
+      {
+        question: "When does shipping start?",
+        answer: "Shipping begins after production is completed."
+      }
+    ]
   },
   {
-    question: "Are your abayas handmade?",
-    answer: "Yes! Every abaya is lovingly handmade by skilled artisans. Whether featuring subtle textures or intricate adornments like our signature meticulous hand beading, each piece is crafted to stand apart."
+    title: "Shipping & Delivery",
+    faqs: [
+      {
+        question: "How long does shipping take?",
+        answer: "Standard shipping can take up to 10 business days, depending on your location and courier service."
+      },
+      {
+        question: "Do you ship internationally?",
+        answer: "Yes, we ship internationally. Delivery times may vary due to customs processing."
+      },
+      {
+        question: "Are customs duties or taxes included?",
+        answer: "No. All customs duties, taxes, or import fees are the responsibility of the customer."
+      },
+      {
+        question: "What if my order is delayed?",
+        answer: "Delays caused by customs, weather, holidays, or courier services are outside our control. We appreciate your patience."
+      }
+    ]
   },
   {
-    question: "How long does production take?",
-    answer: "Please allow us a maximum of two (2) weeks (14 calendar days) to lovingly craft and prepare your order for shipping. We always aim to get it to you sooner, but this is the maximum time you should expect."
+    title: "Payments",
+    faqs: [
+      {
+        question: "When does production begin?",
+        answer: "Production begins once payment is successfully processed."
+      },
+      {
+        question: "Are payments refundable?",
+        answer: "No. All sales are final."
+      }
+    ]
   },
   {
-    question: "What are the shipping times?",
-    answer: "Shipping time begins after the production process is complete. Standard shipping can take up to ten (10) business days to arrive at your doorstep, depending on your location and the courier."
+    title: "Returns & Issues",
+    faqs: [
+      {
+        question: "Do you accept returns or exchanges?",
+        answer: "No. All sales are final due to the custom-length nature of our Abayas."
+      },
+      {
+        question: "What if my Abaya arrives damaged or defective?",
+        answer: "Please contact us within 3 days of delivery with clear evidence, and we will assist accordingly."
+      }
+    ]
   },
   {
-    question: "Do you ship internationally?",
-    answer: "Yes, we ship worldwide. Please note that all prices do not include any potential taxes, customs duties, or fees charged by your country upon import. These fees are the responsibility of the customer."
+    title: "Care Instructions",
+    faqs: [
+      {
+        question: "How should I care for my Abaya?",
+        answer: "Care instructions will be provided with your Abaya to help maintain quality and longevity."
+      }
+    ]
   },
   {
-    question: "What is your return policy?",
-    answer: "Because each Abaya is often made specifically for your chosen length, all sales are considered final. If your Abaya arrives with an unexpected defect or damage, please contact us within 3 days of receiving your order."
+    title: "Policy Updates",
+    faqs: [
+      {
+        question: "Can your policies change?",
+        answer: "Yes. Policies may be updated from time to time. Continued use of our services means acceptance of the updated terms."
+      }
+    ]
   },
   {
-    question: "What if the length I ordered doesn't fit?",
-    answer: "We are unable to accept returns or offer refunds if the length you selected doesn't fit the way you hoped. This is why we strongly recommend checking our detailed Sizing Guide and measuring carefully before ordering."
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer: "We accept credit/debit cards (via Stripe), PayPal, and Paystack for Nigerian customers. Payment is required upfront before production begins."
-  },
-  {
-    question: "Can I track my order?",
-    answer: "Yes! You will receive a tracking notification once your order is shipped. You can track your package directly through the carrier's website."
-  },
-  {
-    question: "How do I care for my abaya?",
-    answer: "Care instructions are included with each abaya. Generally, we recommend hand washing or dry cleaning for delicate fabrics and embellished pieces. Always check the specific care label on your garment."
-  },
-  {
-    question: "How can I contact you?",
-    answer: "If you have any questions at all about your order, or just want to say hello, please reach out to us at azixarahman@gmail.com. We're here to help!"
+    title: "Contact & Support",
+    faqs: [
+      {
+        question: "How can I contact Simply Azixa?",
+        answer: "📧 Email: azixarahman@gmail.com — We're happy to assist with any questions regarding sizing, orders, or general inquiries."
+      }
+    ]
   }
 ];
 
@@ -72,22 +140,29 @@ export default function FAQSimplyAzixa() {
               Simply Azixa - Luxury Modest Abayas
             </p>
 
-            <Accordion type="single" collapsible className="w-full space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border border-border rounded-lg px-6"
-                >
-                  <AccordionTrigger className="font-display text-lg font-medium text-foreground hover:text-primary py-6">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            {faqSections.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="mb-8">
+                <h2 className="text-xl font-semibold text-foreground mb-4 border-b border-border pb-2">
+                  {section.title}
+                </h2>
+                <Accordion type="single" collapsible className="w-full space-y-2">
+                  {section.faqs.map((faq, faqIndex) => (
+                    <AccordionItem 
+                      key={faqIndex} 
+                      value={`${sectionIndex}-${faqIndex}`}
+                      className="border border-border rounded-lg px-6"
+                    >
+                      <AccordionTrigger className="font-display text-lg font-medium text-foreground hover:text-primary py-6 text-left">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground pb-6">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            ))}
 
             <div className="mt-12 text-center p-8 bg-secondary rounded-2xl">
               <h2 className="font-display text-2xl font-semibold text-foreground mb-4">
@@ -96,14 +171,9 @@ export default function FAQSimplyAzixa() {
               <p className="text-muted-foreground mb-6">
                 We're here to help. Reach out to our team for personalized assistance.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button variant="default" asChild>
-                  <Link to="/contact">Contact Us</Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/size-chart">Size Guide</Link>
-                </Button>
-              </div>
+              <Button variant="default" asChild>
+                <Link to="/contact">Contact Us</Link>
+              </Button>
             </div>
           </div>
         </div>
