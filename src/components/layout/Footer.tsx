@@ -20,7 +20,6 @@ export function Footer() {
         ],
     services: isSimplyAzixa
       ? [
-          { name: "Size Guide", href: "/size-chart" },
           { name: "Gallery", href: "/gallery" },
         ]
       : [
