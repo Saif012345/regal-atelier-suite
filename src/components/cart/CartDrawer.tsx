@@ -9,12 +9,29 @@ export function CartDrawer() {
   const { items, removeItem, updateQuantity, totalItems, subtotal, isCartOpen, setIsCartOpen } = useCart();
   const location = useLocation();
   
-  // Determine brand context
-  const isSimplyAzixa = location.pathname.startsWith("/simply-azixa") || 
-    items.some(item => item.category === "Abaya");
+  // Determine brand context based on cart items first, then URL
+  const hasSimplyAzixaItems = items.some(item => 
+    item.category?.toLowerCase().includes("abaya") || 
+    item.category?.toLowerCase() === "simply-azixa"
+  );
+  const hasAzixaRahmanItems = items.some(item => 
+    item.category?.toLowerCase().includes("prom") || 
+    item.category?.toLowerCase().includes("bridal") || 
+    item.category?.toLowerCase().includes("occasion") ||
+    item.category?.toLowerCase() === "azixa-rahman"
+  );
+  
+  // Determine primary brand context
+  const isSimplyAzixa = hasSimplyAzixaItems && !hasAzixaRahmanItems 
+    ? true 
+    : !hasSimplyAzixaItems && hasAzixaRahmanItems 
+      ? false 
+      : location.pathname.startsWith("/simply-azixa");
   
   const shopLink = isSimplyAzixa ? "/simply-azixa/abayas" : "/azixa/prom";
   const shopText = isSimplyAzixa ? "Shop Abayas" : "Shop Collection";
+  const brandName = isSimplyAzixa ? "Simply Azixa" : "Azixa Rahman";
+  const hasMixedBrands = hasSimplyAzixaItems && hasAzixaRahmanItems;
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
