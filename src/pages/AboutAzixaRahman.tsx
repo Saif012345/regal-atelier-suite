@@ -2,10 +2,8 @@ import { Layout } from "@/components/layout/Layout";
 import { Sparkles, Heart, Award, Target, Star, Gem } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
 export default function AboutAzixaRahman() {
-  return (
-    <Layout>
+  return <Layout>
       {/* Hero */}
       <section className="bg-charcoal py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -148,12 +146,11 @@ export default function AboutAzixaRahman() {
                 <Link to="/custom-inquiry">Start Custom Inquiry</Link>
               </Button>
               <Button variant="outline" size="lg" className="border-ivory/30 text-ivory hover:bg-ivory/10" asChild>
-                <Link to="/gallery">View Our Work</Link>
+                <Link to="/gallery" className="text-primary">View Our Work</Link>
               </Button>
             </div>
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 }
