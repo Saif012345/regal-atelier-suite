@@ -6,6 +6,7 @@ import { Heart, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
+import { SEOHead } from "@/components/SEOHead";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
 // Numeric sizes 2-24
@@ -66,6 +67,11 @@ export default function SimplyAzixaAbayas() {
 
   return (
     <SimplyAzixaLayout>
+      <SEOHead 
+        brand="simply-azixa" 
+        title="Abaya Collection | Simply Azixa"
+        description="Shop our curated collection of luxurious abayas designed for the modern woman who values modesty without compromising on style."
+      />
       {/* Hero */}
       <section className="bg-charcoal py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">

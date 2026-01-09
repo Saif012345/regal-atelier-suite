@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { SimplyAzixaLayout } from "@/components/layout/SimplyAzixaLayout";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { SEOHead } from "@/components/SEOHead";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
 export default function SimplyAzixaHome() {
   return (
     <SimplyAzixaLayout>
+      <SEOHead brand="simply-azixa" />
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div
