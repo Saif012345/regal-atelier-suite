@@ -201,6 +201,38 @@ export default function SimplyAzixaContact() {
           </div>
         </div>
       </section>
+
+      {/* Social Media Footer */}
+      <section className="py-12 bg-charcoal text-ivory">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h3 className="font-display text-2xl font-semibold mb-4">
+            Follow Simply Azixa
+          </h3>
+          <p className="text-ivory/70 mb-6 max-w-md mx-auto">
+            Stay updated with our latest collections, styling tips, and exclusive offers.
+          </p>
+          <div className="flex justify-center gap-6">
+            <a
+              href="https://www.instagram.com/simplyazixa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-ivory/10 hover:bg-ivory/20 transition-colors"
+            >
+              <Instagram className="h-5 w-5" />
+              <span>Instagram</span>
+            </a>
+            <a
+              href="https://www.facebook.com/simplyazixa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-ivory/10 hover:bg-ivory/20 transition-colors"
+            >
+              <Facebook className="h-5 w-5" />
+              <span>Facebook</span>
+            </a>
+          </div>
+        </div>
+      </section>
     </SimplyAzixaLayout>
   );
 }
