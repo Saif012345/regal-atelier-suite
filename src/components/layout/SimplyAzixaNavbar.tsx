@@ -14,7 +14,7 @@ const navigation = [
   { name: "Gallery", href: "/gallery" },
   { name: "About", href: "/simply-azixa/about" },
   { name: "FAQ", href: "/simply-azixa/faq" },
-  { name: "Contact", href: "/contact" },
+  { name: "Contact", href: "/simply-azixa/contact" },
 ];
 
 export function SimplyAzixaNavbar() {
