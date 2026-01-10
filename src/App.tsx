@@ -35,6 +35,7 @@ import SimplyAzixaHome from "./pages/SimplyAzixaHome";
 import SimplyAzixaAbayas from "./pages/SimplyAzixaAbayas";
 import AboutSimplyAzixa from "./pages/AboutSimplyAzixa";
 import FAQSimplyAzixa from "./pages/FAQSimplyAzixa";
+import SimplyAzixaContact from "./pages/SimplyAzixaContact";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => (
               <Route path="/simply-azixa/about" element={<AboutSimplyAzixa />} />
               <Route path="/simply-azixa/faq" element={<FAQSimplyAzixa />} />
               <Route path="/simply-azixa/terms" element={<TermsSimplyAzixa />} />
+              <Route path="/simply-azixa/contact" element={<SimplyAzixaContact />} />
               
               {/* Shared Pages */}
               <Route path="/shop" element={<Shop />} />
