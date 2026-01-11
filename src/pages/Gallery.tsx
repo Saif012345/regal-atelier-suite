@@ -18,6 +18,8 @@ import galleryAzixa5 from "@/assets/gallery-azixa-5.jpg";
 import galleryAzixa6 from "@/assets/gallery-azixa-6.jpg";
 import galleryAzixa7 from "@/assets/gallery-azixa-7.jpg";
 import galleryAzixa8 from "@/assets/gallery-azixa-8.jpg";
+import galleryAzixa9 from "@/assets/gallery-azixa-9.jpg";
+import galleryAzixa10 from "@/assets/gallery-azixa-10.jpg";
 
 // Azixa Rahman Label Gallery
 const azixaGalleryImages = [
@@ -29,6 +31,8 @@ const azixaGalleryImages = [
   { id: 6, image: galleryAzixa6, caption: "Fuchsia Velvet Beaded Dress", category: "Occasion", href: "/azixa/occasion" },
   { id: 7, image: galleryAzixa7, caption: "Lavender Ruffled Mermaid Gown", category: "Prom", href: "/azixa/prom" },
   { id: 8, image: galleryAzixa8, caption: "Purple Beaded Evening Gown", category: "Occasion", href: "/azixa/occasion" },
+  { id: 9, image: galleryAzixa9, caption: "Red Beaded Evening Gown", category: "Occasion", href: "/azixa/occasion" },
+  { id: 10, image: galleryAzixa10, caption: "Purple Ankara Sequin Dress", category: "Occasion", href: "/azixa/occasion" },
 ];
 
 // Simply Azixa Gallery
