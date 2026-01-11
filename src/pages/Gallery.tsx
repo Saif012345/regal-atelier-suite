@@ -14,6 +14,10 @@ import galleryAzixa1 from "@/assets/gallery-azixa-1.jpg";
 import galleryAzixa2 from "@/assets/gallery-azixa-2.jpg";
 import galleryAzixa3 from "@/assets/gallery-azixa-3.jpg";
 import galleryAzixa4 from "@/assets/gallery-azixa-4.jpg";
+import galleryAzixa5 from "@/assets/gallery-azixa-5.jpg";
+import galleryAzixa6 from "@/assets/gallery-azixa-6.jpg";
+import galleryAzixa7 from "@/assets/gallery-azixa-7.jpg";
+import galleryAzixa8 from "@/assets/gallery-azixa-8.jpg";
 
 // Azixa Rahman Label Gallery
 const azixaGalleryImages = [
@@ -21,6 +25,10 @@ const azixaGalleryImages = [
   { id: 2, image: galleryAzixa2, caption: "Pink Crystal Feather Dress", category: "Prom", href: "/azixa/prom" },
   { id: 3, image: galleryAzixa3, caption: "Lavender Ball Gown", category: "Occasion", href: "/azixa/occasion" },
   { id: 4, image: galleryAzixa4, caption: "Purple Ruffled Mermaid Gown", category: "Prom", href: "/azixa/prom" },
+  { id: 5, image: galleryAzixa5, caption: "Pink Sequin Mermaid Gown", category: "Prom", href: "/azixa/prom" },
+  { id: 6, image: galleryAzixa6, caption: "Fuchsia Velvet Beaded Dress", category: "Occasion", href: "/azixa/occasion" },
+  { id: 7, image: galleryAzixa7, caption: "Lavender Ruffled Mermaid Gown", category: "Prom", href: "/azixa/prom" },
+  { id: 8, image: galleryAzixa8, caption: "Purple Beaded Evening Gown", category: "Occasion", href: "/azixa/occasion" },
 ];
 
 // Simply Azixa Gallery
