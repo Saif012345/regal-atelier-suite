@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
-import categoryAbaya from "@/assets/category-abaya.jpg";
+import gallerySimply1 from "@/assets/gallery-simply-1.jpg";
+import gallerySimply2 from "@/assets/gallery-simply-3.jpg";
 import galleryAzixa1 from "@/assets/gallery-azixa-1.jpg";
 import galleryAzixa2 from "@/assets/gallery-azixa-2.jpg";
 import galleryAzixa3 from "@/assets/gallery-azixa-3.jpg";
@@ -37,12 +38,8 @@ const azixaGalleryImages = [
 
 // Simply Azixa Gallery
 const simplyAzixaGalleryImages = [
-  { id: 101, image: categoryAbaya, caption: "Ramadan Collection Piece", category: "Abaya", href: "/simply-azixa/abayas" },
-  { id: 102, image: categoryAbaya, caption: "Embroidered Elegance", category: "Abaya", href: "/simply-azixa/abayas" },
-  { id: 103, image: categoryAbaya, caption: "Minimalist Luxury", category: "Lifestyle", href: "/simply-azixa/abayas" },
-  { id: 104, image: categoryAbaya, caption: "Evening Collection", category: "Abaya", href: "/simply-azixa/abayas" },
-  { id: 105, image: categoryAbaya, caption: "Pearl Detailed Abaya", category: "Abaya", href: "/simply-azixa/abayas" },
-  { id: 106, image: categoryAbaya, caption: "Modest Lifestyle", category: "Lifestyle", href: "/simply-azixa/abayas" },
+  { id: 101, image: gallerySimply1, caption: "Red Sequin Embellished Abaya", category: "Abaya", href: "/simply-azixa/abayas" },
+  { id: 102, image: gallerySimply2, caption: "Pink Ruffled Modest Dress", category: "Abaya", href: "/simply-azixa/abayas" },
 ];
 
 type GalleryImage = {
