@@ -9,21 +9,18 @@ import {
 } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
-import categoryProm from "@/assets/category-prom.jpg";
-import categoryBridal from "@/assets/category-bridal.jpg";
-import categoryOccasion from "@/assets/category-occasion.jpg";
 import categoryAbaya from "@/assets/category-abaya.jpg";
+import galleryAzixa1 from "@/assets/gallery-azixa-1.jpg";
+import galleryAzixa2 from "@/assets/gallery-azixa-2.jpg";
+import galleryAzixa3 from "@/assets/gallery-azixa-3.jpg";
+import galleryAzixa4 from "@/assets/gallery-azixa-4.jpg";
 
 // Azixa Rahman Label Gallery
 const azixaGalleryImages = [
-  { id: 1, image: categoryBridal, caption: "Sarah's Dream Wedding Gown", category: "Bridal", href: "/azixa/bridal" },
-  { id: 2, image: categoryProm, caption: "Emma's Prom Night", category: "Prom", href: "/azixa/prom" },
-  { id: 3, image: categoryOccasion, caption: "Gala Event - Custom Design", category: "Occasion", href: "/azixa/occasion" },
-  { id: 4, image: categoryBridal, caption: "Vintage-Inspired Bridal", category: "Bridal", href: "/azixa/bridal" },
-  { id: 5, image: categoryProm, caption: "Red Carpet Ready", category: "Prom", href: "/azixa/prom" },
-  { id: 6, image: categoryOccasion, caption: "Mother of the Bride", category: "Occasion", href: "/azixa/occasion" },
-  { id: 7, image: categoryProm, caption: "Custom Prom Masterpiece", category: "Custom", href: "/custom-inquiry" },
-  { id: 8, image: categoryBridal, caption: "Bespoke Bridal Design", category: "Custom", href: "/custom-inquiry" },
+  { id: 1, image: galleryAzixa1, caption: "Lavender Sequin Elegance", category: "Occasion", href: "/azixa/occasion" },
+  { id: 2, image: galleryAzixa2, caption: "Pink Crystal Feather Dress", category: "Prom", href: "/azixa/prom" },
+  { id: 3, image: galleryAzixa3, caption: "Lavender Ball Gown", category: "Occasion", href: "/azixa/occasion" },
+  { id: 4, image: galleryAzixa4, caption: "Purple Ruffled Mermaid Gown", category: "Prom", href: "/azixa/prom" },
 ];
 
 // Simply Azixa Gallery
