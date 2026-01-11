@@ -90,53 +90,7 @@ export default function Gallery() {
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Simply Azixa Section - Left */}
-            <div>
-              <div className="text-center mb-8">
-                <Link to="/simply-azixa">
-                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-foreground hover:text-primary transition-colors mb-2">
-                    Simply Azixa
-                  </h2>
-                </Link>
-                <p className="text-muted-foreground text-sm">Modest Elegance Collection</p>
-              </div>
-              
-              <div className="grid gap-4 sm:grid-cols-2">
-                {simplyAzixaGalleryImages.map((item, index) => (
-                  <button
-                    key={item.id}
-                    onClick={() => openLightbox(item, simplyAzixaGalleryImages)}
-                    className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.caption}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <p className="text-xs text-gold uppercase tracking-wider mb-1">
-                        {item.category}
-                      </p>
-                      <p className="text-ivory font-display text-sm">
-                        {item.caption}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              
-              <div className="text-center mt-6">
-                <Link to="/simply-azixa/abayas">
-                  <Button variant="outline" className="border-primary text-primary">
-                    Shop Simply Azixa
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* Azixa Rahman Label Section - Right */}
+            {/* Azixa Rahman Label Section - Left */}
             <div>
               <div className="text-center mb-8">
                 <Link to="/azixa">
@@ -177,6 +131,52 @@ export default function Gallery() {
                 <Link to="/azixa">
                   <Button variant="outline" className="border-primary text-primary">
                     Shop Azixa Rahman
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Simply Azixa Section - Right */}
+            <div>
+              <div className="text-center mb-8">
+                <Link to="/simply-azixa">
+                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-foreground hover:text-primary transition-colors mb-2">
+                    Simply Azixa
+                  </h2>
+                </Link>
+                <p className="text-muted-foreground text-sm">Modest Elegance Collection</p>
+              </div>
+              
+              <div className="grid gap-4 sm:grid-cols-2">
+                {simplyAzixaGalleryImages.map((item, index) => (
+                  <button
+                    key={item.id}
+                    onClick={() => openLightbox(item, simplyAzixaGalleryImages)}
+                    className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.caption}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <p className="text-xs text-gold uppercase tracking-wider mb-1">
+                        {item.category}
+                      </p>
+                      <p className="text-ivory font-display text-sm">
+                        {item.caption}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              
+              <div className="text-center mt-6">
+                <Link to="/simply-azixa/abayas">
+                  <Button variant="outline" className="border-primary text-primary">
+                    Shop Simply Azixa
                   </Button>
                 </Link>
               </div>
