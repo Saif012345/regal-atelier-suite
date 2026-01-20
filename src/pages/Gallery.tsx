@@ -11,6 +11,9 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import gallerySimply1 from "@/assets/gallery-simply-1.jpg";
 import gallerySimply2 from "@/assets/gallery-simply-3.jpg";
+import gallerySimply4 from "@/assets/gallery-simply-4.jpg";
+import gallerySimply5 from "@/assets/gallery-simply-5.jpg";
+import gallerySimply6 from "@/assets/gallery-simply-6.jpg";
 import galleryAzixa1 from "@/assets/gallery-azixa-1.jpg";
 import galleryAzixa2 from "@/assets/gallery-azixa-2.jpg";
 import galleryAzixa3 from "@/assets/gallery-azixa-3.jpg";
@@ -40,6 +43,9 @@ const azixaGalleryImages = [
 const simplyAzixaGalleryImages = [
   { id: 101, image: gallerySimply1, caption: "Red Sequin Embellished Abaya", category: "Abaya", href: "/simply-azixa/abayas" },
   { id: 102, image: gallerySimply2, caption: "Pink Ruffled Modest Dress", category: "Abaya", href: "/simply-azixa/abayas" },
+  { id: 103, image: gallerySimply4, caption: "Coral Floral Print Abaya", category: "Abaya", href: "/simply-azixa/abayas" },
+  { id: 104, image: gallerySimply5, caption: "Terracotta Blossom Abaya", category: "Abaya", href: "/simply-azixa/abayas" },
+  { id: 105, image: gallerySimply6, caption: "Olive Green Floral Abaya", category: "Abaya", href: "/simply-azixa/abayas" },
 ];
 
 type GalleryImage = {
