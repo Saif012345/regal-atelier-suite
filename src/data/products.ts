@@ -2,6 +2,10 @@ import categoryProm from "@/assets/category-prom.jpg";
 import categoryBridal from "@/assets/category-bridal.jpg";
 import categoryOccasion from "@/assets/category-occasion.jpg";
 import categoryAbaya from "@/assets/category-abaya.jpg";
+import productRedSequin from "@/assets/product-red-sequin-gown.jpg";
+import productPinkMermaid from "@/assets/product-pink-sequin-mermaid.jpg";
+import productGoldBeaded from "@/assets/product-gold-beaded-gown.jpg";
+import productBurgundyOccasion from "@/assets/product-burgundy-occasion.jpg";
 
 export interface Product {
   id: string;
@@ -23,7 +27,7 @@ export const products: Product[] = [
     id: "celestial-ballgown",
     name: "Celestial Ballgown",
     price: 1899,
-    images: [categoryProm, categoryBridal],
+    images: [productRedSequin, categoryProm, categoryBridal],
     category: "Prom",
     brand: "azixa",
     description: "A breathtaking ballgown that captures the magic of a starlit night. Features intricate beadwork, a sweetheart neckline, and a dramatic full skirt that moves beautifully.",
@@ -41,7 +45,7 @@ export const products: Product[] = [
     id: "midnight-dream",
     name: "Midnight Dream",
     price: 2199,
-    images: [categoryProm],
+    images: [productPinkMermaid, categoryProm],
     category: "Prom",
     brand: "azixa",
     description: "An enchanting midnight blue gown with delicate crystal embellishments that shimmer like stars. Perfect for making a dramatic entrance.",
@@ -131,7 +135,7 @@ export const products: Product[] = [
     id: "eternal-grace",
     name: "Eternal Grace",
     price: 3999,
-    images: [categoryBridal],
+    images: [productGoldBeaded, categoryBridal],
     category: "Bridal",
     brand: "azixa",
     description: "A timeless bridal gown featuring delicate lace and a romantic silhouette. Perfect for the classic bride.",
@@ -235,7 +239,7 @@ export const products: Product[] = [
     id: "gilded-evening",
     name: "Gilded Evening",
     price: 1599,
-    images: [categoryOccasion],
+    images: [productBurgundyOccasion, categoryOccasion],
     category: "Occasion",
     brand: "azixa",
     description: "A sophisticated evening gown with gold accents. Perfect for galas and special events.",
