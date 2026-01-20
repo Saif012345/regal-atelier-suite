@@ -9,37 +9,17 @@ import { Label } from "@/components/ui/label";
 import { Heart, Filter } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useToast } from "@/hooks/use-toast";
+import { products, getProductsByBrand } from "@/data/products";
 
-import categoryProm from "@/assets/category-prom.jpg";
-import categoryBridal from "@/assets/category-bridal.jpg";
-import categoryOccasion from "@/assets/category-occasion.jpg";
-import categoryAbaya from "@/assets/category-abaya.jpg";
-
-const allProducts = [
-  // Prom
-  { id: "celestial-ballgown", name: "Celestial Ballgown", price: 1899, image: categoryProm, category: "Prom", color: "Blue", isCustom: true },
-  { id: "midnight-dream", name: "Midnight Dream", price: 2199, image: categoryProm, category: "Prom", color: "Blue", isCustom: true },
-  { id: "rose-enchantment", name: "Rose Enchantment", price: 1799, image: categoryProm, category: "Prom", color: "Pink", isCustom: true },
-  { id: "starlight-gown", name: "Starlight Gown", price: 2099, image: categoryProm, category: "Prom", color: "Silver", isCustom: true },
-  { id: "aurora-silk", name: "Aurora Silk Gown", price: 2299, image: categoryProm, category: "Prom", color: "Pink", isCustom: true },
-  { id: "crystal-cascade", name: "Crystal Cascade", price: 2499, image: categoryProm, category: "Prom", color: "Silver", isCustom: true },
-  
-  // Bridal
-  { id: "eternal-grace", name: "Eternal Grace", price: 3999, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
-  { id: "royal-elegance", name: "Royal Elegance", price: 4499, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
-  { id: "whispered-romance", name: "Whispered Romance", price: 3799, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
-  { id: "moonlit-garden", name: "Moonlit Garden", price: 4199, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
-  { id: "timeless-beauty", name: "Timeless Beauty", price: 4299, image: categoryBridal, category: "Bridal", color: "White", isCustom: true },
-  { id: "pearl-cascade", name: "Pearl Cascade", price: 4699, image: categoryBridal, category: "Bridal", color: "Ivory", isCustom: true },
-  
-  // Occasion
-  { id: "gilded-evening", name: "Gilded Evening", price: 1599, image: categoryOccasion, category: "Occasion", color: "Gold", isCustom: true },
-  { id: "sapphire-nights", name: "Sapphire Nights", price: 1799, image: categoryOccasion, category: "Occasion", color: "Blue", isCustom: true },
-  { id: "velvet-dream", name: "Velvet Dream", price: 1699, image: categoryOccasion, category: "Occasion", color: "Red", isCustom: true },
-  { id: "emerald-enchantress", name: "Emerald Enchantress", price: 1899, image: categoryOccasion, category: "Occasion", color: "Green", isCustom: true },
-  { id: "champagne-soiree", name: "Champagne Soirée", price: 1749, image: categoryOccasion, category: "Occasion", color: "Gold", isCustom: true },
-  { id: "midnight-glamour", name: "Midnight Glamour", price: 1999, image: categoryOccasion, category: "Occasion", color: "Black", isCustom: true },
-];
+// Get only Azixa Rahman products for the shop
+const azixaProducts = getProductsByBrand("azixa").map(p => ({
+  id: p.id,
+  name: p.name,
+  price: p.price,
+  image: p.images[0],
+  category: p.category,
+  isCustom: p.isCustom,
+}));
 
 const colors = ["All", "Black", "White", "Ivory", "Blue", "Pink", "Red", "Green", "Silver", "Gold"];
 const sizes = ["2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24"];
@@ -56,16 +36,11 @@ export default function Shop() {
   const [sortBy, setSortBy] = useState("featured");
 
   const filteredProducts = useMemo(() => {
-    let filtered = allProducts;
+    let filtered = azixaProducts;
 
     // Category filter
     if (categoryParam !== "all") {
       filtered = filtered.filter((p) => p.category.toLowerCase() === categoryParam.toLowerCase());
-    }
-
-    // Color filter
-    if (selectedColor !== "All") {
-      filtered = filtered.filter((p) => p.color === selectedColor);
     }
 
     // Price filter
@@ -79,9 +54,9 @@ export default function Shop() {
     }
 
     return filtered;
-  }, [categoryParam, selectedColor, priceRange, sortBy]);
+  }, [categoryParam, priceRange, sortBy]);
 
-  const handleWishlistToggle = (product: typeof allProducts[0]) => {
+  const handleWishlistToggle = (product: typeof azixaProducts[0]) => {
     if (isInWishlist(product.id)) {
       return;
     }
@@ -110,7 +85,7 @@ export default function Shop() {
               Shop Collection
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover our exquisite collection of luxury formal wear and modest fashion
+              Discover our exquisite collection of luxury formal wear
             </p>
           </div>
 
@@ -131,23 +106,6 @@ export default function Shop() {
                 <div className="flex items-center gap-2 mb-6">
                   <Filter className="h-5 w-5" />
                   <h3 className="font-display text-xl font-semibold">Filters</h3>
-                </div>
-
-                {/* Color Filter */}
-                <div className="mb-6">
-                  <Label className="mb-3 block">Color</Label>
-                  <Select value={selectedColor} onValueChange={setSelectedColor}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {colors.map((color) => (
-                        <SelectItem key={color} value={color}>
-                          {color}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 {/* Size Filter */}
@@ -210,7 +168,6 @@ export default function Shop() {
                     Try adjusting your filters
                   </p>
                   <Button variant="gold" onClick={() => {
-                    setSelectedColor("All");
                     setSelectedSize("All");
                     setPriceRange([0, 5000]);
                   }}>
