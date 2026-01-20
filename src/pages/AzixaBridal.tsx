@@ -4,16 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { toast } from "sonner";
-import categoryBridal from "@/assets/category-bridal.jpg";
+import { getProductsByCategory } from "@/data/products";
 
-const bridalDresses = [
-  { id: "eternal-grace", name: "Eternal Grace", image: categoryBridal },
-  { id: "vintage-romance", name: "Vintage Romance", image: categoryBridal },
-  { id: "modern-minimalist", name: "Modern Minimalist", image: categoryBridal },
-  { id: "lace-dreams", name: "Lace Dreams", image: categoryBridal },
-  { id: "royal-elegance", name: "Royal Elegance", image: categoryBridal },
-  { id: "bohemian-bliss", name: "Bohemian Bliss", image: categoryBridal },
-];
+// Get bridal products from centralized data
+const bridalProducts = getProductsByCategory("Bridal").filter(p => p.brand === "azixa");
+
+const bridalDresses = bridalProducts.map(p => ({
+  id: p.id,
+  name: p.name,
+  image: p.images[0],
+}));
 
 export default function AzixaBridal() {
   const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
@@ -63,7 +63,7 @@ export default function AzixaBridal() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative overflow-hidden rounded-lg elegant-border mb-4">
-                  <Link to={`/bridal/${dress.id}`}>
+                  <Link to={`/product/${dress.id}`}>
                     <img
                       src={dress.image}
                       alt={dress.name}
@@ -94,7 +94,7 @@ export default function AzixaBridal() {
                 </div>
 
                 <div>
-                  <Link to={`/bridal/${dress.id}`}>
+                  <Link to={`/product/${dress.id}`}>
                     <h3 className="font-display text-lg font-medium text-foreground hover:text-primary transition-colors">
                       {dress.name}
                     </h3>

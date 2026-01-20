@@ -4,16 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { toast } from "sonner";
-import categoryOccasion from "@/assets/category-occasion.jpg";
+import { getProductsByCategory } from "@/data/products";
 
-const occasionDresses = [
-  { id: "emerald-dream", name: "Emerald Dream", image: categoryOccasion },
-  { id: "gala-noir", name: "Gala Noir", image: categoryOccasion },
-  { id: "champagne-toast", name: "Champagne Toast", image: categoryOccasion },
-  { id: "ruby-enchant", name: "Ruby Enchantment", image: categoryOccasion },
-  { id: "mother-bride", name: "Mother of the Bride", image: categoryOccasion },
-  { id: "evening-star", name: "Evening Star", image: categoryOccasion },
-];
+// Get occasion products from centralized data
+const occasionProducts = getProductsByCategory("Occasion").filter(p => p.brand === "azixa");
+
+const occasionDresses = occasionProducts.map(p => ({
+  id: p.id,
+  name: p.name,
+  image: p.images[0],
+}));
 
 export default function AzixaOccasion() {
   const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
@@ -63,7 +63,7 @@ export default function AzixaOccasion() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative overflow-hidden rounded-lg elegant-border mb-4">
-                  <Link to={`/occasion/${dress.id}`}>
+                  <Link to={`/product/${dress.id}`}>
                     <img
                       src={dress.image}
                       alt={dress.name}
@@ -94,7 +94,7 @@ export default function AzixaOccasion() {
                 </div>
 
                 <div>
-                  <Link to={`/occasion/${dress.id}`}>
+                  <Link to={`/product/${dress.id}`}>
                     <h3 className="font-display text-lg font-medium text-foreground hover:text-primary transition-colors">
                       {dress.name}
                     </h3>

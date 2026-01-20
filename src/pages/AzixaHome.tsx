@@ -2,33 +2,46 @@ import { Link } from "react-router-dom";
 import { AzixaLayout } from "@/components/layout/AzixaLayout";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import categoryProm from "@/assets/category-prom.jpg";
-import categoryBridal from "@/assets/category-bridal.jpg";
-import categoryOccasion from "@/assets/category-occasion.jpg";
+import { getProductsByCategory } from "@/data/products";
 import heroFormal from "@/assets/hero-formal.jpg";
-const categories = [{
-  name: "Prom",
-  description: "Make an unforgettable entrance with our stunning prom collection",
-  image: categoryProm,
-  href: "/azixa/prom"
-}, {
-  name: "Bridal",
-  description: "Timeless elegance for your most special day",
-  image: categoryBridal,
-  href: "/azixa/bridal"
-}, {
-  name: "Occasion",
-  description: "Sophisticated pieces for galas, events & celebrations",
-  image: categoryOccasion,
-  href: "/azixa/occasion"
-}];
+
+// Get first product image from each category to use as category thumbnails
+const promProducts = getProductsByCategory("Prom").filter(p => p.brand === "azixa");
+const bridalProducts = getProductsByCategory("Bridal").filter(p => p.brand === "azixa");
+const occasionProducts = getProductsByCategory("Occasion").filter(p => p.brand === "azixa");
+
+const categories = [
+  {
+    name: "Prom",
+    description: "Make an unforgettable entrance with our stunning prom collection",
+    image: promProducts[0]?.images[0] || heroFormal,
+    href: "/azixa/prom"
+  },
+  {
+    name: "Bridal",
+    description: "Timeless elegance for your most special day",
+    image: bridalProducts[0]?.images[0] || heroFormal,
+    href: "/azixa/bridal"
+  },
+  {
+    name: "Occasion",
+    description: "Sophisticated pieces for galas, events & celebrations",
+    image: occasionProducts[0]?.images[0] || heroFormal,
+    href: "/azixa/occasion"
+  }
+];
+
 export default function AzixaHome() {
-  return <AzixaLayout>
+  return (
+    <AzixaLayout>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{
-        backgroundImage: `url(${heroFormal})`
-      }}>
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroFormal})`
+          }}
+        >
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/50 to-transparent" />
         </div>
 
@@ -39,11 +52,10 @@ export default function AzixaHome() {
             </p>
             <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold text-ivory mb-6 leading-tight">
               Azixa Rahman
-              
             </h1>
             <p className="text-ivory/80 text-lg mb-8 max-w-lg leading-relaxed">
-              Where dreams are woven into fabric. Each gown is a masterpiece of 
-              craftsmanship, designed to make you feel extraordinary on your most 
+              Where dreams are woven into fabric. Each gown is a masterpiece of
+              craftsmanship, designed to make you feel extraordinary on your most
               memorable occasions.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -72,9 +84,9 @@ export default function AzixaHome() {
               About the Brand
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-              Azixa Rahman Label represents the pinnacle of bespoke fashion, where traditional 
-              craftsmanship meets contemporary elegance. Each piece is meticulously designed 
-              and handcrafted to transform your vision into a stunning reality. Our commitment 
+              Azixa Rahman Label represents the pinnacle of bespoke fashion, where traditional
+              craftsmanship meets contemporary elegance. Each piece is meticulously designed
+              and handcrafted to transform your vision into a stunning reality. Our commitment
               to excellence ensures that every gown tells a unique story of beauty and sophistication.
             </p>
             <Link to="/about">
@@ -97,10 +109,20 @@ export default function AzixaHome() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {categories.map((category, index) => <Link key={category.name} to={category.href} className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in" style={{
-            animationDelay: `${index * 100}ms`
-          }}>
-                <img src={category.image} alt={category.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+            {categories.map((category, index) => (
+              <Link
+                key={category.name}
+                to={category.href}
+                className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in"
+                style={{
+                  animationDelay: `${index * 100}ms`
+                }}
+              >
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <h3 className="font-display text-2xl text-ivory mb-2">{category.name}</h3>
@@ -109,7 +131,8 @@ export default function AzixaHome() {
                     Shop Now <ArrowRight className="ml-2 h-4 w-4" />
                   </span>
                 </div>
-              </Link>)}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -122,7 +145,7 @@ export default function AzixaHome() {
             Create Your Dream Gown
           </h2>
           <p className="text-ivory/70 max-w-2xl mx-auto mb-8">
-            Work directly with our design team to bring your vision to life. 
+            Work directly with our design team to bring your vision to life.
             From fabric selection to final fitting, we're with you every step of the way.
           </p>
           <Link to="/custom-inquiry">
@@ -132,5 +155,6 @@ export default function AzixaHome() {
           </Link>
         </div>
       </section>
-    </AzixaLayout>;
+    </AzixaLayout>
+  );
 }
