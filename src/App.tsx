@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
+import { AuthProvider } from "@/hooks/useAuth";
 
 // Shared pages
 import Shop from "./pages/Shop";
@@ -17,6 +18,7 @@ import Contact from "./pages/Contact";
 import Checkout from "./pages/Checkout";
 import Wishlist from "./pages/Wishlist";
 import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import NotFound from "./pages/NotFound";
 import Privacy from "./pages/Privacy";
 import TermsSimplyAzixa from "./pages/TermsSimplyAzixa";
@@ -42,12 +44,13 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <WishlistProvider>
-        <CartProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
+      <AuthProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
               {/* Root redirects to Azixa Rahman */}
               <Route path="/" element={<Navigate to="/azixa" replace />} />
               
@@ -85,6 +88,7 @@ const App = () => (
               <Route path="/terms" element={<Navigate to="/azixa/terms" replace />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
               
               {/* Legacy routes */}
               <Route path="/about" element={<Navigate to="/azixa/about" replace />} />
@@ -100,6 +104,7 @@ const App = () => (
           </BrowserRouter>
         </CartProvider>
       </WishlistProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
