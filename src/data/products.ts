@@ -236,17 +236,18 @@ export const products: Product[] = [
 
   // Azixa Rahman - Occasion
   {
-    id: "gilded-evening",
-    name: "Gilded Evening",
-    price: 1599,
+    id: "halimah-dress",
+    name: "Halimah Dress",
+    price: 425,
     images: [productBurgundyOccasion],
     category: "Occasion",
     brand: "azixa",
-    description: "A sophisticated evening gown with gold accents. Perfect for galas and special events.",
+    description: "The Halimah Gown is an artful blend of beaded lace and Satin. Designed with a sleek, body-contouring bodice and skirt, this gown is all about the details. It features elegant long sleeves finished with dramatic double flares, perfectly mirrored by double-flared tiers on the skirt for a graceful, yet playful silhouette.",
     details: [
-      "Gold metallic accents",
-      "One-shoulder design",
-      "Floor-length hem",
+      "Beaded lace and satin blend",
+      "Body-contouring bodice and skirt",
+      "Elegant long sleeves with double flares",
+      "Double-flared tiers on skirt",
       "Hidden zipper",
       "Fully lined",
     ],
