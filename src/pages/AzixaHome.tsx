@@ -91,7 +91,7 @@ export default function AzixaHome() {
             </p>
             <Link to="/about">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                Learn More
+                Learn More About Azixa Rahman
               </Button>
             </Link>
           </div>
