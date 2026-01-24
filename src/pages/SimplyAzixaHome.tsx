@@ -3,9 +3,17 @@ import { SimplyAzixaLayout } from "@/components/layout/SimplyAzixaLayout";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { SEOHead } from "@/components/SEOHead";
+import { useSiteImage } from "@/hooks/useSiteImages";
 import categoryAbaya from "@/assets/category-abaya.jpg";
 
 export default function SimplyAzixaHome() {
+  // Fetch site images
+  const { data: heroImage } = useSiteImage("simply-azixa-hero");
+  const { data: newArrivalsImage } = useSiteImage("simply-azixa-new-arrivals");
+
+  const heroBackgroundImage = heroImage?.image_url || categoryAbaya;
+  const featuredImage = newArrivalsImage?.image_url || categoryAbaya;
+
   return (
     <SimplyAzixaLayout>
       <SEOHead brand="simply-azixa" />
@@ -13,7 +21,7 @@ export default function SimplyAzixaHome() {
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${categoryAbaya})` }}
+          style={{ backgroundImage: `url(${heroBackgroundImage})` }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/60 to-charcoal/40" />
         </div>
@@ -63,9 +71,9 @@ export default function SimplyAzixaHome() {
               contemporary aesthetics. Each piece features premium fabrics, intricate detailing, 
               and flattering silhouettes that make every moment special.
             </p>
-            <Link to="/about">
+            <Link to="/simply-azixa/about">
               <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                Learn More
+                Learn More About Simply Azixa
               </Button>
             </Link>
           </div>
@@ -114,7 +122,7 @@ export default function SimplyAzixaHome() {
             </div>
             <div className="relative animate-fade-in" style={{ animationDelay: "200ms" }}>
               <img
-                src={categoryAbaya}
+                src={featuredImage}
                 alt="Simply Azixa Abayas"
                 className="rounded-lg shadow-elegant w-full aspect-[3/4] object-cover"
               />

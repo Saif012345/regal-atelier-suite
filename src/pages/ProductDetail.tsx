@@ -19,12 +19,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Heart, ShoppingBag, Ruler, ChevronRight, Check, Video } from "lucide-react";
+import { Heart, ShoppingBag, Ruler, ChevronRight, Check, Video, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
-
-import { getProductBySlug, Product } from "@/data/products";
+import { useProductBySlug, parseColor } from "@/hooks/useProducts";
+import heroFormal from "@/assets/hero-formal.jpg";
 
 // Azixa Rahman size chart (full measurements for custom fitting)
 const azixaRahmanSizeChart = [
@@ -44,18 +44,18 @@ const azixaRahmanSizeChart = [
 
 // Simply Azixa size chart (simplified for abayas)
 const simplyAzixaSizeChart = [
-  { size: "52", bust: "32", waist: "24", hips: "34" },
-  { size: "54", bust: "33", waist: "25", hips: "35" },
-  { size: "56", bust: "34", waist: "26", hips: "36" },
-  { size: "58", bust: "35", waist: "27", hips: "37" },
-  { size: "60", bust: "36", waist: "28", hips: "38" },
-  { size: "62", bust: "38", waist: "30", hips: "40" },
-  { size: "64", bust: "40", waist: "32", hips: "42" },
-  { size: "66", bust: "42", waist: "34", hips: "44" },
-  { size: "68", bust: "44", waist: "36", hips: "46" },
-  { size: "70", bust: "46", waist: "38", hips: "48" },
-  { size: "72", bust: "48", waist: "40", hips: "50" },
-  { size: "74", bust: "50", waist: "42", hips: "52" },
+  { size: "2", bust: "32", waist: "24", hips: "34" },
+  { size: "4", bust: "33", waist: "25", hips: "35" },
+  { size: "6", bust: "34", waist: "26", hips: "36" },
+  { size: "8", bust: "35", waist: "27", hips: "37" },
+  { size: "10", bust: "36", waist: "28", hips: "38" },
+  { size: "12", bust: "38", waist: "30", hips: "40" },
+  { size: "14", bust: "40", waist: "32", hips: "42" },
+  { size: "16", bust: "42", waist: "34", hips: "44" },
+  { size: "18", bust: "44", waist: "36", hips: "46" },
+  { size: "20", bust: "46", waist: "38", hips: "48" },
+  { size: "22", bust: "48", waist: "40", hips: "50" },
+  { size: "24", bust: "50", waist: "42", hips: "52" },
 ];
 
 const fabricOptions = [
@@ -72,14 +72,14 @@ export default function ProductDetail() {
   const { addItem, setIsCartOpen } = useCart();
   const { addItem: addToWishlist, isInWishlist } = useWishlist();
   
-  const product = getProductBySlug(slug || "");
+  const { data: product, isLoading, error } = useProductBySlug(slug);
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [sizingOption, setSizingOption] = useState<"standard" | "custom">("standard");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedFabric, setSelectedFabric] = useState(fabricOptions[0].id);
-  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name || "");
-  const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedLength, setSelectedLength] = useState("");
   const [customMeasurements, setCustomMeasurements] = useState({
     bust: "",
     waist: "",
@@ -90,13 +90,35 @@ export default function ProductDetail() {
     fullHeight: "",
   });
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <Layout>
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-[50vh]">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        </section>
+      </Layout>
+    );
+  }
+
   // If product not found, redirect to shop
-  if (!product) {
+  if (!product || error) {
     return <Navigate to="/shop" replace />;
   }
 
+  // Parse colors from database format
+  const productColors = product.colors?.map(parseColor) || [];
+  const productLengths = ["52", "54", "56", "58", "60", "62"]; // Default lengths for abayas
+  
+  // Get images with fallback
+  const productImages = product.images.length > 0 
+    ? product.images.map(img => img.image_url) 
+    : [heroFormal];
+
   const handleWishlistToggle = () => {
-    if (isInWishlist(product.id)) {
+    if (isInWishlist(product.slug)) {
       toast({
         title: "Already in wishlist",
         description: "This item is already in your wishlist.",
@@ -105,12 +127,12 @@ export default function ProductDetail() {
     }
 
     addToWishlist({
-      id: product.id,
+      id: product.slug,
       name: product.name,
       price: product.price,
-      image: product.images[0],
+      image: productImages[0],
       category: product.category,
-      isCustom: product.isCustom,
+      isCustom: product.is_custom || false,
     });
 
     toast({
@@ -146,10 +168,10 @@ export default function ProductDetail() {
     const selectedFabricObj = fabricOptions.find((f) => f.id === selectedFabric)!;
 
     addItem({
-      id: `${product.id}-${Date.now()}`,
+      id: `${product.slug}-${Date.now()}`,
       name: product.name,
       price: product.price,
-      image: product.images[0],
+      image: productImages[0],
       category: product.category,
       quantity: 1,
       sizing: {
@@ -198,24 +220,26 @@ export default function ProductDetail() {
             <div className="space-y-4">
               <div className="aspect-[3/4] overflow-hidden rounded-lg bg-muted elegant-border">
                 <img
-                  src={product.images[selectedImage]}
+                  src={productImages[selectedImage]}
                   alt={product.name}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="flex gap-4">
-                {product.images.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`w-20 h-24 rounded-lg overflow-hidden border-2 transition-colors ${
-                      selectedImage === index ? "border-primary" : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    <img src={img} alt="" className="h-full w-full object-cover" />
-                  </button>
-                ))}
-              </div>
+              {productImages.length > 1 && (
+                <div className="flex gap-4">
+                  {productImages.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`w-20 h-24 rounded-lg overflow-hidden border-2 transition-colors ${
+                        selectedImage === index ? "border-primary" : "border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <img src={img} alt="" className="h-full w-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Product Info */}
@@ -237,11 +261,11 @@ export default function ProductDetail() {
               </p>
 
               {/* Simply Azixa: Color Selection */}
-              {isSimplyAzixa && product.colors && product.colors.length > 0 && (
+              {isSimplyAzixa && productColors.length > 0 && (
                 <div className="space-y-4">
                   <Label className="text-base font-medium">Color</Label>
                   <div className="flex flex-wrap gap-3">
-                    {product.colors.map((color) => (
+                    {productColors.map((color) => (
                       <button
                         key={color.name}
                         onClick={() => setSelectedColor(color.name)}
@@ -266,11 +290,11 @@ export default function ProductDetail() {
               )}
 
               {/* Simply Azixa: Length Selection */}
-              {isSimplyAzixa && product.lengths && product.lengths.length > 0 && (
+              {isSimplyAzixa && (
                 <div className="space-y-4">
                   <Label className="text-base font-medium">Length</Label>
                   <div className="flex flex-wrap gap-2">
-                    {product.lengths.map((length) => (
+                    {productLengths.map((length) => (
                       <button
                         key={length}
                         onClick={() => setSelectedLength(length)}
@@ -280,7 +304,7 @@ export default function ProductDetail() {
                             : "border-border hover:border-primary"
                         }`}
                       >
-                        {length}
+                        {length}"
                       </button>
                     ))}
                   </div>
@@ -426,82 +450,96 @@ export default function ProductDetail() {
               {/* Video Consultation - Azixa Rahman only */}
               {!isSimplyAzixa && (
                 <div className="p-4 bg-champagne rounded-lg">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Video className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-foreground mb-1">Need help deciding?</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Book a complimentary video consultation with our stylists.
-                      </p>
-                      <Button variant="outline" asChild>
-                        <Link to="/booking">Book Video Consultation</Link>
-                      </Button>
-                    </div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <Video className="h-5 w-5 text-primary" />
+                    <span className="font-medium">Need help deciding?</span>
                   </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Schedule a virtual consultation with our stylists
+                  </p>
+                  <Link to="/booking">
+                    <Button variant="outline" size="sm">
+                      Book Consultation
+                    </Button>
+                  </Link>
                 </div>
               )}
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                {product.isCustom && !isSimplyAzixa ? (
-                  <Button
-                    variant="gold"
-                    size="xl"
-                    className="flex-1"
-                    asChild
-                  >
-                    <Link to="/custom-inquiry">Submit Custom Inquiry</Link>
-                  </Button>
-                ) : (
-                  <Button
-                    variant="gold"
-                    size="xl"
-                    className="flex-1"
-                    onClick={handleAddToBag}
-                  >
-                    <ShoppingBag className="h-5 w-5 mr-2" />
-                    Add to Bag
-                  </Button>
-                )}
-                <Button 
-                  variant="outline" 
-                  size="xl"
-                  onClick={handleWishlistToggle}
+                <Button
+                  variant="gold"
+                  size="lg"
+                  className="flex-1"
+                  onClick={handleAddToBag}
                 >
-                  <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? "fill-current text-primary" : ""}`} />
+                  <ShoppingBag className="mr-2 h-5 w-5" />
+                  Add to Bag
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleWishlistToggle}
+                  className={isInWishlist(product.slug) ? "text-primary border-primary" : ""}
+                >
+                  <Heart className={`h-5 w-5 ${isInWishlist(product.slug) ? "fill-current" : ""}`} />
                 </Button>
               </div>
 
               {/* Product Details Accordion */}
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="details">
-                  <AccordionTrigger className="font-display text-lg">
+                  <AccordionTrigger className="text-base font-medium">
                     Product Details
                   </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="space-y-2 text-muted-foreground">
-                      {product.details.map((detail, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                    <ul className="space-y-2">
+                      {product.details?.map((detail, index) => (
+                        <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                          <Check className="h-4 w-4 text-primary" />
                           {detail}
                         </li>
                       ))}
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
+
                 <AccordionItem value="shipping">
-                  <AccordionTrigger className="font-display text-lg">
+                  <AccordionTrigger className="text-base font-medium">
                     Shipping & Returns
                   </AccordionTrigger>
                   <AccordionContent>
-                    <p className="text-muted-foreground">
-                      {isSimplyAzixa 
-                        ? "All sales are final. Please refer to our Terms & Conditions for detailed shipping and returns information."
-                        : "Free shipping on orders over $500. Standard production time is 4-6 weeks for custom sizes. Returns accepted within 14 days for standard sizes."
-                      }
-                    </p>
+                    <div className="space-y-3 text-muted-foreground">
+                      <p>
+                        <strong className="text-foreground">Production Time:</strong>{" "}
+                        {isSimplyAzixa ? "1-2 weeks" : "4-6 weeks for custom orders"}
+                      </p>
+                      <p>
+                        <strong className="text-foreground">Shipping:</strong>{" "}
+                        Worldwide shipping available. Free shipping on orders over $500.
+                      </p>
+                      <p>
+                        <strong className="text-foreground">Returns:</strong>{" "}
+                        {isSimplyAzixa 
+                          ? "Returns accepted within 14 days of delivery for unworn items."
+                          : "Custom orders are final sale. Please ensure measurements are accurate."
+                        }
+                      </p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="care">
+                  <AccordionTrigger className="text-base font-medium">
+                    Care Instructions
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 text-muted-foreground">
+                      <p>• Professional dry clean only</p>
+                      <p>• Store in a cool, dry place</p>
+                      <p>• Use a padded hanger to maintain shape</p>
+                      <p>• Keep away from direct sunlight</p>
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

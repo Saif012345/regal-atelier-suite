@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Package, FileText, Calendar, ShoppingCart, Image, Users, LayoutDashboard, Settings, DollarSign, LogOut } from "lucide-react";
+import { Package, FileText, Calendar, ShoppingCart, Image, Users, LayoutDashboard, Settings, DollarSign, LogOut, ImageIcon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { AdminProductManager } from "@/components/admin/AdminProductManager";
 import { AdminGalleryManager } from "@/components/admin/AdminGalleryManager";
+import { AdminSiteImagesManager } from "@/components/admin/AdminSiteImagesManager";
 
 const sidebarItems = [
   { title: "Dashboard", icon: LayoutDashboard, value: "dashboard" },
   { title: "Products", icon: Package, value: "products" },
+  { title: "Site Images", icon: ImageIcon, value: "site-images" },
   { title: "Gallery", icon: Image, value: "gallery" },
   { title: "Inquiries", icon: FileText, value: "inquiries" },
   { title: "Bookings", icon: Calendar, value: "bookings" },
@@ -201,6 +203,8 @@ export default function Admin() {
             )}
 
             {activeTab === "products" && <AdminProductManager />}
+
+            {activeTab === "site-images" && <AdminSiteImagesManager />}
 
             {activeTab === "gallery" && <AdminGalleryManager />}
 
