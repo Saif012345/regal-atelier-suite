@@ -2,26 +2,16 @@ import { useState, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Heart, Filter } from "lucide-react";
+import { Heart, Filter, Loader2 } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useToast } from "@/hooks/use-toast";
-import { products, getProductsByBrand } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
+import heroFormal from "@/assets/hero-formal.jpg";
 
-// Get only Azixa Rahman products for the shop
-const azixaProducts = getProductsByBrand("azixa").map(p => ({
-  id: p.id,
-  name: p.name,
-  price: p.price,
-  image: p.images[0],
-  category: p.category,
-  isCustom: p.isCustom,
-}));
-
-const colors = ["All", "Black", "White", "Ivory", "Blue", "Pink", "Red", "Green", "Silver", "Gold"];
 const sizes = ["2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24"];
 
 export default function Shop() {
@@ -30,13 +20,17 @@ export default function Shop() {
   const { toast } = useToast();
 
   const categoryParam = searchParams.get("category") || "all";
-  const [selectedColor, setSelectedColor] = useState("All");
   const [selectedSize, setSelectedSize] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [sortBy, setSortBy] = useState("featured");
 
+  // Fetch products from database for Azixa brand only
+  const { data: products, isLoading, error } = useProducts("azixa");
+
   const filteredProducts = useMemo(() => {
-    let filtered = azixaProducts;
+    if (!products) return [];
+    
+    let filtered = products;
 
     // Category filter
     if (categoryParam !== "all") {
@@ -54,20 +48,22 @@ export default function Shop() {
     }
 
     return filtered;
-  }, [categoryParam, priceRange, sortBy]);
+  }, [products, categoryParam, priceRange, sortBy]);
 
-  const handleWishlistToggle = (product: typeof azixaProducts[0]) => {
-    if (isInWishlist(product.id)) {
+  const handleWishlistToggle = (product: typeof products extends (infer T)[] ? T : never) => {
+    if (isInWishlist(product.slug)) {
       return;
     }
 
+    const firstImage = product.images[0]?.image_url || heroFormal;
+
     addToWishlist({
-      id: product.id,
+      id: product.slug,
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: firstImage,
       category: product.category,
-      isCustom: product.isCustom,
+      isCustom: product.is_custom || false,
     });
 
     toast({
@@ -75,6 +71,30 @@ export default function Shop() {
       description: `${product.name} has been added to your wishlist.`,
     });
   };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-[50vh]">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        </section>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-destructive">Error loading products. Please try again.</p>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -176,48 +196,51 @@ export default function Shop() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredProducts.map((product) => (
-                    <div key={product.id} className="group">
-                      <Link to={`/product/${product.id}`}>
-                        <div className="aspect-[3/4] overflow-hidden rounded-lg bg-muted mb-4 relative">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleWishlistToggle(product);
-                            }}
-                            className={`absolute top-3 right-3 h-10 w-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
-                              isInWishlist(product.id)
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-card/90 hover:bg-primary hover:text-primary-foreground"
-                            }`}
-                            aria-label="Add to wishlist"
-                          >
-                            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
-                          </button>
-                        </div>
-                      </Link>
-                      <div className="space-y-2">
-                        <p className="text-xs font-medium tracking-widest text-primary uppercase">
-                          {product.category}
-                        </p>
-                        <Link to={`/product/${product.id}`}>
-                          <h3 className="font-display text-xl font-medium text-foreground hover:text-primary transition-colors">
-                            {product.name}
-                          </h3>
+                  {filteredProducts.map((product) => {
+                    const imageUrl = product.images[0]?.image_url || heroFormal;
+                    return (
+                      <div key={product.id} className="group">
+                        <Link to={`/product/${product.slug}`}>
+                          <div className="aspect-[3/4] overflow-hidden rounded-lg bg-muted mb-4 relative">
+                            <img
+                              src={imageUrl}
+                              alt={product.name}
+                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleWishlistToggle(product);
+                              }}
+                              className={`absolute top-3 right-3 h-10 w-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
+                                isInWishlist(product.slug)
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-card/90 hover:bg-primary hover:text-primary-foreground"
+                              }`}
+                              aria-label="Add to wishlist"
+                            >
+                              <Heart className={`h-4 w-4 ${isInWishlist(product.slug) ? "fill-current" : ""}`} />
+                            </button>
+                          </div>
                         </Link>
-                        {!product.isCustom && (
-                          <p className="text-lg font-medium text-foreground">
-                            ${product.price.toLocaleString()}
+                        <div className="space-y-2">
+                          <p className="text-xs font-medium tracking-widest text-primary uppercase">
+                            {product.category}
                           </p>
-                        )}
+                          <Link to={`/product/${product.slug}`}>
+                            <h3 className="font-display text-xl font-medium text-foreground hover:text-primary transition-colors">
+                              {product.name}
+                            </h3>
+                          </Link>
+                          {!product.is_custom && (
+                            <p className="text-lg font-medium text-foreground">
+                              ${product.price.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

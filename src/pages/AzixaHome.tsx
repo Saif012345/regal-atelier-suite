@@ -1,37 +1,50 @@
 import { Link } from "react-router-dom";
 import { AzixaLayout } from "@/components/layout/AzixaLayout";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { getProductsByCategory } from "@/data/products";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { useProducts } from "@/hooks/useProducts";
+import { useSiteImage } from "@/hooks/useSiteImages";
 import heroFormal from "@/assets/hero-formal.jpg";
 
-// Get first product image from each category to use as category thumbnails
-const promProducts = getProductsByCategory("Prom").filter(p => p.brand === "azixa");
-const bridalProducts = getProductsByCategory("Bridal").filter(p => p.brand === "azixa");
-const occasionProducts = getProductsByCategory("Occasion").filter(p => p.brand === "azixa");
-
-const categories = [
-  {
-    name: "Prom",
-    description: "Make an unforgettable entrance with our stunning prom collection",
-    image: promProducts[0]?.images[0] || heroFormal,
-    href: "/azixa/prom"
-  },
-  {
-    name: "Bridal",
-    description: "Timeless elegance for your most special day",
-    image: bridalProducts[0]?.images[0] || heroFormal,
-    href: "/azixa/bridal"
-  },
-  {
-    name: "Occasion",
-    description: "Sophisticated pieces for galas, events & celebrations",
-    image: occasionProducts[0]?.images[0] || heroFormal,
-    href: "/azixa/occasion"
-  }
-];
-
 export default function AzixaHome() {
+  // Fetch products for category images
+  const { data: products, isLoading } = useProducts("azixa");
+  
+  // Fetch site images for categories
+  const { data: promCategoryImage } = useSiteImage("azixa-category-prom");
+  const { data: bridalCategoryImage } = useSiteImage("azixa-category-bridal");
+  const { data: occasionCategoryImage } = useSiteImage("azixa-category-occasion");
+  const { data: heroImage } = useSiteImage("azixa-hero");
+
+  // Get first product image as fallback
+  const getProductImage = (category: string) => {
+    const product = products?.find(p => p.category === category);
+    return product?.images[0]?.image_url || heroFormal;
+  };
+
+  const categories = [
+    {
+      name: "Prom",
+      description: "Make an unforgettable entrance with our stunning prom collection",
+      image: promCategoryImage?.image_url || getProductImage("Prom"),
+      href: "/azixa/prom"
+    },
+    {
+      name: "Bridal",
+      description: "Timeless elegance for your most special day",
+      image: bridalCategoryImage?.image_url || getProductImage("Bridal"),
+      href: "/azixa/bridal"
+    },
+    {
+      name: "Occasion",
+      description: "Sophisticated pieces for galas, events & celebrations",
+      image: occasionCategoryImage?.image_url || getProductImage("Occasion"),
+      href: "/azixa/occasion"
+    }
+  ];
+
+  const heroBackgroundImage = heroImage?.image_url || heroFormal;
+
   return (
     <AzixaLayout>
       {/* Hero Section */}
@@ -39,7 +52,7 @@ export default function AzixaHome() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${heroFormal})`
+            backgroundImage: `url(${heroBackgroundImage})`
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/50 to-transparent" />
@@ -108,32 +121,38 @@ export default function AzixaHome() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {categories.map((category, index) => (
-              <Link
-                key={category.name}
-                to={category.href}
-                className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in"
-                style={{
-                  animationDelay: `${index * 100}ms`
-                }}
-              >
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="font-display text-2xl text-ivory mb-2">{category.name}</h3>
-                  <p className="text-ivory/70 text-sm mb-4">{category.description}</p>
-                  <span className="inline-flex items-center text-gold text-sm group-hover:translate-x-2 transition-transform">
-                    Shop Now <ArrowRight className="ml-2 h-4 w-4" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              {categories.map((category, index) => (
+                <Link
+                  key={category.name}
+                  to={category.href}
+                  className="group relative overflow-hidden rounded-lg aspect-[3/4] elegant-border animate-fade-in"
+                  style={{
+                    animationDelay: `${index * 100}ms`
+                  }}
+                >
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="font-display text-2xl text-ivory mb-2">{category.name}</h3>
+                    <p className="text-ivory/70 text-sm mb-4">{category.description}</p>
+                    <span className="inline-flex items-center text-gold text-sm group-hover:translate-x-2 transition-transform">
+                      Shop Now <ArrowRight className="ml-2 h-4 w-4" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
