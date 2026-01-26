@@ -80,22 +80,20 @@ export function AdminSiteImagesManager() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Azixa Rahman Images</CardTitle>
-          <CardDescription>Manage homepage category and hero images</CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Azixa Rahman Images</CardTitle>
+          <CardDescription className="text-sm">Manage homepage category and hero images</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {azixaImages.map((img) => (
-              <div key={img.id} className="border border-border rounded-lg p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-sm">
-                      {IMAGE_LABELS[img.key]?.label || img.key}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {IMAGE_LABELS[img.key]?.description}
-                    </p>
-                  </div>
+              <div key={img.id} className="border border-border rounded-lg p-3 sm:p-4 space-y-3">
+                <div>
+                  <p className="font-medium text-sm">
+                    {IMAGE_LABELS[img.key]?.label || img.key}
+                  </p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {IMAGE_LABELS[img.key]?.description}
+                  </p>
                 </div>
                 <div className="aspect-video bg-muted rounded-lg overflow-hidden flex items-center justify-center">
                   {img.image_url ? (
@@ -125,7 +123,7 @@ export function AdminSiteImagesManager() {
                   >
                     <span>
                       <Upload className="h-4 w-4 mr-2" />
-                      {uploadingKey === img.key ? "Uploading..." : "Upload Image"}
+                      {uploadingKey === img.key ? "Uploading..." : "Upload"}
                     </span>
                   </Button>
                 </label>
@@ -137,22 +135,20 @@ export function AdminSiteImagesManager() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Simply Azixa Images</CardTitle>
-          <CardDescription>Manage homepage hero and featured collection images</CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Simply Azixa Images</CardTitle>
+          <CardDescription className="text-sm">Manage homepage hero and featured collection images</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {simplyAzixaImages.map((img) => (
-              <div key={img.id} className="border border-border rounded-lg p-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-sm">
-                      {IMAGE_LABELS[img.key]?.label || img.key}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {IMAGE_LABELS[img.key]?.description}
-                    </p>
-                  </div>
+              <div key={img.id} className="border border-border rounded-lg p-3 sm:p-4 space-y-3">
+                <div>
+                  <p className="font-medium text-sm">
+                    {IMAGE_LABELS[img.key]?.label || img.key}
+                  </p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {IMAGE_LABELS[img.key]?.description}
+                  </p>
                 </div>
                 <div className="aspect-video bg-muted rounded-lg overflow-hidden flex items-center justify-center">
                   {img.image_url ? (
@@ -182,7 +178,7 @@ export function AdminSiteImagesManager() {
                   >
                     <span>
                       <Upload className="h-4 w-4 mr-2" />
-                      {uploadingKey === img.key ? "Uploading..." : "Upload Image"}
+                      {uploadingKey === img.key ? "Uploading..." : "Upload"}
                     </span>
                   </Button>
                 </label>
