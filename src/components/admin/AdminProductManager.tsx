@@ -35,6 +35,7 @@ export function AdminProductManager() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
+  const [allProductImages, setAllProductImages] = useState<Record<string, ProductImage[]>>({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -86,9 +87,36 @@ export function AdminProductManager() {
     }
   };
 
+  const fetchAllProductImages = useCallback(async (productIds: string[]) => {
+    if (productIds.length === 0) return;
+    
+    const { data, error } = await supabase
+      .from('product_images')
+      .select('*')
+      .in('product_id', productIds)
+      .order('display_order');
+    
+    if (!error && data) {
+      const grouped = data.reduce((acc, img) => {
+        if (!acc[img.product_id]) {
+          acc[img.product_id] = [];
+        }
+        acc[img.product_id].push(img);
+        return acc;
+      }, {} as Record<string, ProductImage[]>);
+      setAllProductImages(grouped);
+    }
+  }, []);
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      fetchAllProductImages(products.map(p => p.id));
+    }
+  }, [products, fetchAllProductImages]);
 
   useEffect(() => {
     if (selectedProduct) {
@@ -489,8 +517,16 @@ export function AdminProductManager() {
                 key={product.id}
                 className="flex items-center gap-4 p-4 border border-border rounded-lg"
               >
-                <div className="h-16 w-16 bg-muted rounded flex items-center justify-center">
-                  <span className="text-xs text-muted-foreground">No image</span>
+                <div className="h-16 w-16 bg-muted rounded flex items-center justify-center overflow-hidden">
+                  {allProductImages[product.id]?.[0] ? (
+                    <img
+                      src={allProductImages[product.id][0].image_url}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-xs text-muted-foreground">No image</span>
+                  )}
                 </div>
                 <div className="flex-1">
                   <p className="font-medium">{product.name}</p>
