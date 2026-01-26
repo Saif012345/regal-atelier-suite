@@ -21,6 +21,8 @@ interface Product {
   brand: string;
   is_custom: boolean | null;
   in_stock: boolean | null;
+  sizes: string[] | null;
+  colors: string[] | null;
   created_at: string;
 }
 
@@ -49,6 +51,8 @@ export function AdminProductManager() {
     price: "",
     description: "",
     details: "",
+    sizes: "",
+    colors: "",
     category: "Prom",
     brand: "azixa",
     is_custom: false,
@@ -143,6 +147,8 @@ export function AdminProductManager() {
       price: "",
       description: "",
       details: "",
+      sizes: "",
+      colors: "",
       category: "Prom",
       brand: "azixa",
       is_custom: false,
@@ -160,6 +166,8 @@ export function AdminProductManager() {
       price: product.price.toString(),
       description: product.description || "",
       details: product.details?.join("\n") || "",
+      sizes: product.sizes?.join(", ") || "",
+      colors: product.colors?.join(", ") || "",
       category: product.category,
       brand: product.brand,
       is_custom: product.is_custom || false,
@@ -178,6 +186,8 @@ export function AdminProductManager() {
       price: parseFloat(formData.price),
       description: formData.description || null,
       details: formData.details ? formData.details.split("\n").filter(d => d.trim()) : null,
+      sizes: formData.sizes ? formData.sizes.split(",").map(s => s.trim()).filter(s => s) : null,
+      colors: formData.colors ? formData.colors.split(",").map(c => c.trim()).filter(c => c) : null,
       category: formData.category,
       brand: formData.brand,
       is_custom: formData.is_custom,
@@ -332,14 +342,14 @@ export function AdminProductManager() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Product Management</CardTitle>
-          <CardDescription>Add and manage products for both brands</CardDescription>
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1">
+          <CardTitle className="text-lg sm:text-xl">Product Management</CardTitle>
+          <CardDescription className="text-sm">Add and manage products for both brands</CardDescription>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <Select value={brandFilter} onValueChange={setBrandFilter}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[160px]">
               <SelectValue placeholder="Filter by brand" />
             </SelectTrigger>
             <SelectContent>
@@ -353,7 +363,7 @@ export function AdminProductManager() {
             if (!open) resetForm();
           }}>
             <DialogTrigger asChild>
-              <Button variant="gold">
+              <Button variant="gold" className="w-full sm:w-auto">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Product
               </Button>
@@ -365,7 +375,7 @@ export function AdminProductManager() {
                 </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Product Name</Label>
                     <Input
@@ -386,7 +396,7 @@ export function AdminProductManager() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="price">Price ($)</Label>
                     <Input
@@ -432,6 +442,27 @@ export function AdminProductManager() {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="sizes">Sizes (comma-separated)</Label>
+                    <Input
+                      id="sizes"
+                      value={formData.sizes}
+                      onChange={(e) => setFormData(prev => ({ ...prev, sizes: e.target.value }))}
+                      placeholder="2, 4, 6, 8, 10, 12, 14, 16"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="colors">Colors (comma-separated)</Label>
+                    <Input
+                      id="colors"
+                      value={formData.colors}
+                      onChange={(e) => setFormData(prev => ({ ...prev, colors: e.target.value }))}
+                      placeholder="Black, Navy, Burgundy"
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea
@@ -456,7 +487,7 @@ export function AdminProductManager() {
                 {selectedProduct && (
                   <div className="space-y-2">
                     <Label>Product Images</Label>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {productImages.map((img) => (
                         <div key={img.id} className="relative group">
                           <img
@@ -511,35 +542,46 @@ export function AdminProductManager() {
             No products found. Add your first product to get started.
           </p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex items-center gap-4 p-4 border border-border rounded-lg"
+                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-border rounded-lg"
               >
-                <div className="h-16 w-16 bg-muted rounded flex items-center justify-center overflow-hidden">
-                  {allProductImages[product.id]?.[0] ? (
-                    <img
-                      src={allProductImages[product.id][0].image_url}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-xs text-muted-foreground">No image</span>
-                  )}
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="h-14 w-14 sm:h-16 sm:w-16 bg-muted rounded flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    {allProductImages[product.id]?.[0] ? (
+                      <img
+                        src={allProductImages[product.id][0].image_url}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-xs text-muted-foreground text-center">No image</span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{product.name}</p>
+                    <p className="text-sm text-muted-foreground truncate">
+                      {product.brand === "azixa" ? "Azixa" : "Simply Azixa"} • {product.category} • ${product.price}
+                    </p>
+                    {(product.sizes?.length || product.colors?.length) && (
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                        {product.sizes?.length ? `${product.sizes.length} sizes` : ""}
+                        {product.sizes?.length && product.colors?.length ? " • " : ""}
+                        {product.colors?.length ? `${product.colors.length} colors` : ""}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="font-medium">{product.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {product.brand === "azixa" ? "Azixa Rahman" : "Simply Azixa"} • {product.category} • ${product.price}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => openEditDialog(product)}>
-                    <Pencil className="h-4 w-4" />
+                <div className="flex gap-2 sm:ml-auto">
+                  <Button variant="outline" size="sm" onClick={() => openEditDialog(product)} className="flex-1 sm:flex-none">
+                    <Pencil className="h-4 w-4 sm:mr-0" />
+                    <span className="sm:hidden ml-2">Edit</span>
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleDelete(product)}>
-                    <Trash2 className="h-4 w-4" />
+                  <Button variant="outline" size="sm" onClick={() => handleDelete(product)} className="flex-1 sm:flex-none">
+                    <Trash2 className="h-4 w-4 sm:mr-0" />
+                    <span className="sm:hidden ml-2">Delete</span>
                   </Button>
                 </div>
               </div>

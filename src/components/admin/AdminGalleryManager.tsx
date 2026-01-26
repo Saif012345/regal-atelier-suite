@@ -226,14 +226,14 @@ export function AdminGalleryManager() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Gallery Management</CardTitle>
-          <CardDescription>Upload and manage showcase images for both brands</CardDescription>
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1">
+          <CardTitle className="text-lg sm:text-xl">Gallery Management</CardTitle>
+          <CardDescription className="text-sm">Upload and manage showcase images</CardDescription>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <Select value={brandFilter} onValueChange={setBrandFilter}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[160px]">
               <SelectValue placeholder="Filter by brand" />
             </SelectTrigger>
             <SelectContent>
@@ -247,12 +247,12 @@ export function AdminGalleryManager() {
             if (!open) resetForm();
           }}>
             <DialogTrigger asChild>
-              <Button variant="gold">
+              <Button variant="gold" className="w-full sm:w-auto">
                 <Plus className="h-4 w-4 mr-2" />
-                Upload Image
+                Upload
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg">
+            <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {selectedImage ? "Edit Gallery Image" : "Add Gallery Image"}
@@ -376,7 +376,7 @@ export function AdminGalleryManager() {
             No gallery images found. Upload your first image to get started.
           </p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
             {images.map((image) => (
               <div key={image.id} className="relative group">
                 <img
