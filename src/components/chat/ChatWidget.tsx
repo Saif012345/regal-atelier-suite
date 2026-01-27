@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 import ReactMarkdown from "react-markdown";
 
 interface Message {
@@ -24,6 +25,7 @@ export function ChatWidget() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -129,27 +131,69 @@ export function ChatWidget() {
       <Button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg",
+          "fixed z-50 rounded-full shadow-lg",
           "bg-primary hover:bg-primary/90 text-primary-foreground",
-          "transition-transform hover:scale-105"
+          "transition-transform hover:scale-105",
+          // Mobile: smaller button, closer to edge
+          "bottom-4 right-4 h-12 w-12",
+          // Desktop: larger button, more spacing
+          "sm:bottom-6 sm:right-6 sm:h-14 sm:w-14"
         )}
         size="icon"
       >
-        {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        {isOpen ? (
+          <X className="h-5 w-5 sm:h-6 sm:w-6" />
+        ) : (
+          <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+        )}
       </Button>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[350px] sm:w-[400px] max-h-[500px] bg-background border border-border rounded-lg shadow-xl flex flex-col overflow-hidden">
+        <div
+          className={cn(
+            "fixed z-50 bg-background border border-border shadow-xl flex flex-col overflow-hidden",
+            // Mobile: full width, full height minus some padding
+            "inset-x-2 bottom-20 top-4 rounded-xl",
+            // Small mobile: adjust for button
+            "xs:inset-x-3",
+            // Tablet and up: fixed size, positioned near button
+            "sm:inset-auto sm:bottom-24 sm:right-6 sm:w-[380px] sm:max-h-[500px] sm:rounded-lg",
+            // Large screens: slightly wider
+            "md:w-[420px] md:max-h-[550px]"
+          )}
+        >
           {/* Header */}
-          <div className="bg-primary text-primary-foreground p-4">
-            <h3 className="font-display text-lg font-semibold">Azixa Support</h3>
-            <p className="text-sm opacity-90">We're here to help!</p>
+          <div className="bg-primary text-primary-foreground p-3 sm:p-4 shrink-0">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-base sm:text-lg font-semibold">Azixa Support</h3>
+                <p className="text-xs sm:text-sm opacity-90">We're here to help!</p>
+              </div>
+              {/* Mobile close button in header */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
+                className="sm:hidden text-primary-foreground hover:bg-primary-foreground/20 h-8 w-8"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1 p-4 max-h-[320px]" ref={scrollRef}>
-            <div className="space-y-4">
+          <ScrollArea 
+            className={cn(
+              "flex-1 p-3 sm:p-4",
+              // Mobile: flexible height
+              "min-h-0",
+              // Desktop: max height
+              "sm:max-h-[350px] md:max-h-[400px]"
+            )} 
+            ref={scrollRef}
+          >
+            <div className="space-y-3 sm:space-y-4">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -160,14 +204,14 @@ export function ChatWidget() {
                 >
                   <div
                     className={cn(
-                      "max-w-[85%] rounded-lg px-4 py-2 text-sm",
+                      "max-w-[90%] sm:max-w-[85%] rounded-lg px-3 py-2 sm:px-4 text-sm",
                       message.role === "user"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-foreground"
                     )}
                   >
                     {message.role === "assistant" ? (
-                      <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <div className="prose prose-sm dark:prose-invert max-w-none [&>p]:my-1 [&>ul]:my-1 [&>ol]:my-1">
                         <ReactMarkdown>{message.content}</ReactMarkdown>
                       </div>
                     ) : (
@@ -178,7 +222,7 @@ export function ChatWidget() {
               ))}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex justify-start">
-                  <div className="bg-muted rounded-lg px-4 py-2">
+                  <div className="bg-muted rounded-lg px-3 py-2 sm:px-4">
                     <Loader2 className="h-4 w-4 animate-spin" />
                   </div>
                 </div>
@@ -187,7 +231,7 @@ export function ChatWidget() {
           </ScrollArea>
 
           {/* Input */}
-          <div className="p-4 border-t border-border">
+          <div className="p-3 sm:p-4 border-t border-border shrink-0">
             <div className="flex gap-2">
               <Input
                 value={input}
@@ -195,13 +239,13 @@ export function ChatWidget() {
                 onKeyDown={handleKeyDown}
                 placeholder="Type your message..."
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 text-base sm:text-sm"
               />
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
                 size="icon"
-                className="shrink-0"
+                className="shrink-0 h-10 w-10 sm:h-9 sm:w-9"
               >
                 <Send className="h-4 w-4" />
               </Button>
