@@ -3,11 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Package, FileText, Calendar, ShoppingCart, Image, Users, LayoutDashboard, Settings, DollarSign, LogOut, ImageIcon } from "lucide-react";
+import { Package, FileText, Calendar, ShoppingCart, Image, Users, LayoutDashboard, Settings, LogOut, ImageIcon, Loader2, FolderOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { AdminProductManager } from "@/components/admin/AdminProductManager";
 import { AdminGalleryManager } from "@/components/admin/AdminGalleryManager";
 import { AdminSiteImagesManager } from "@/components/admin/AdminSiteImagesManager";
+import { supabase } from "@/integrations/supabase/client";
+
+interface DashboardStats {
+  azixaProducts: number;
+  simplyAzixaProducts: number;
+  azixaGallery: number;
+  simplyAzixaGallery: number;
+  totalProducts: number;
+  totalGallery: number;
+}
 
 const sidebarItems = [
   { title: "Dashboard", icon: LayoutDashboard, value: "dashboard" },
@@ -23,6 +33,8 @@ const sidebarItems = [
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loadingStats, setLoadingStats] = useState(true);
   const { user, isAdmin, loading, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -32,6 +44,38 @@ export default function Admin() {
     }
   }, [user, loading, navigate]);
 
+  useEffect(() => {
+    async function fetchStats() {
+      setLoadingStats(true);
+      try {
+        // Fetch product counts by brand
+        const [azixaProductsRes, simplyProductsRes, azixaGalleryRes, simplyGalleryRes] = await Promise.all([
+          supabase.from('products').select('id', { count: 'exact', head: true }).eq('brand', 'azixa'),
+          supabase.from('products').select('id', { count: 'exact', head: true }).eq('brand', 'simply-azixa'),
+          supabase.from('gallery_images').select('id', { count: 'exact', head: true }).eq('brand', 'azixa'),
+          supabase.from('gallery_images').select('id', { count: 'exact', head: true }).eq('brand', 'simply-azixa'),
+        ]);
+
+        setStats({
+          azixaProducts: azixaProductsRes.count || 0,
+          simplyAzixaProducts: simplyProductsRes.count || 0,
+          azixaGallery: azixaGalleryRes.count || 0,
+          simplyAzixaGallery: simplyGalleryRes.count || 0,
+          totalProducts: (azixaProductsRes.count || 0) + (simplyProductsRes.count || 0),
+          totalGallery: (azixaGalleryRes.count || 0) + (simplyGalleryRes.count || 0),
+        });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoadingStats(false);
+      }
+    }
+
+    if (user) {
+      fetchStats();
+    }
+  }, [user]);
+
   const handleSignOut = async () => {
     await signOut();
     navigate("/admin/login");
@@ -40,7 +84,7 @@ export default function Admin() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-muted-foreground">Loading...</p>
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -93,60 +137,72 @@ export default function Admin() {
 
         <main className="flex-1">
           <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
-            <div className="flex h-16 items-center px-8 gap-4">
+            <div className="flex h-16 items-center px-4 sm:px-8 gap-4">
               <SidebarTrigger />
-              <h1 className="font-display text-2xl font-semibold">
+              <h1 className="font-display text-xl sm:text-2xl font-semibold">
                 {sidebarItems.find((item) => item.value === activeTab)?.title || "Dashboard"}
               </h1>
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             {activeTab === "dashboard" && (
               <>
                 {/* Overview Stats */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+                <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 mb-8">
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                      <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                      <DollarSign className="h-4 w-4 text-primary" />
+                      <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+                      <Package className="h-4 w-4 text-primary" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">$45,231</div>
-                      <p className="text-xs text-muted-foreground">+20% from last month</p>
+                      {loadingStats ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          <div className="text-2xl font-bold">{stats?.totalProducts || 0}</div>
+                          <p className="text-xs text-muted-foreground">Across both brands</p>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
 
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                      <CardTitle className="text-sm font-medium">New Inquiries</CardTitle>
-                      <FileText className="h-4 w-4 text-primary" />
+                      <CardTitle className="text-sm font-medium">Gallery Images</CardTitle>
+                      <Image className="h-4 w-4 text-primary" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">24</div>
-                      <p className="text-xs text-muted-foreground">+12 this week</p>
+                      {loadingStats ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          <div className="text-2xl font-bold">{stats?.totalGallery || 0}</div>
+                          <p className="text-xs text-muted-foreground">In showcase gallery</p>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
 
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                      <CardTitle className="text-sm font-medium">Active Orders</CardTitle>
-                      <ShoppingCart className="h-4 w-4 text-primary" />
+                      <CardTitle className="text-sm font-medium">Inquiries</CardTitle>
+                      <FileText className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">18</div>
-                      <p className="text-xs text-muted-foreground">8 in production</p>
+                      <div className="text-2xl font-bold text-muted-foreground">—</div>
+                      <p className="text-xs text-muted-foreground">Coming soon</p>
                     </CardContent>
                   </Card>
 
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Bookings</CardTitle>
-                      <Calendar className="h-4 w-4 text-primary" />
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">15</div>
-                      <p className="text-xs text-muted-foreground">Next 7 days</p>
+                      <div className="text-2xl font-bold text-muted-foreground">—</div>
+                      <p className="text-xs text-muted-foreground">Coming soon</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -159,20 +215,20 @@ export default function Admin() {
                       <CardDescription>Prom, Bridal & Occasion Wear</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Products</span>
-                          <span className="font-medium">12</span>
+                      {loadingStats ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Products</span>
+                            <span className="font-medium">{stats?.azixaProducts || 0}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Gallery Images</span>
+                            <span className="font-medium">{stats?.azixaGallery || 0}</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Gallery Images</span>
-                          <span className="font-medium">10</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Active Inquiries</span>
-                          <span className="font-medium">8</span>
-                        </div>
-                      </div>
+                      )}
                     </CardContent>
                   </Card>
 
@@ -182,23 +238,47 @@ export default function Admin() {
                       <CardDescription>Modest Elegance Collection</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Products</span>
-                          <span className="font-medium">8</span>
+                      {loadingStats ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Products</span>
+                            <span className="font-medium">{stats?.simplyAzixaProducts || 0}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Gallery Images</span>
+                            <span className="font-medium">{stats?.simplyAzixaGallery || 0}</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Gallery Images</span>
-                          <span className="font-medium">5</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Orders</span>
-                          <span className="font-medium">6</span>
-                        </div>
-                      </div>
+                      )}
                     </CardContent>
                   </Card>
                 </div>
+
+                {/* Quick Actions */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                    <CardDescription>Jump to commonly used features</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      <Button variant="outline" onClick={() => setActiveTab("products")}>
+                        <Package className="h-4 w-4 mr-2" />
+                        Manage Products
+                      </Button>
+                      <Button variant="outline" onClick={() => setActiveTab("gallery")}>
+                        <Image className="h-4 w-4 mr-2" />
+                        Manage Gallery
+                      </Button>
+                      <Button variant="outline" onClick={() => setActiveTab("site-images")}>
+                        <ImageIcon className="h-4 w-4 mr-2" />
+                        Update Site Images
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </>
             )}
 
@@ -215,24 +295,13 @@ export default function Admin() {
                   <CardDescription>Manage customer design requests and inquiries</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex items-center justify-between p-4 border border-border rounded-lg">
-                        <div className="space-y-1">
-                          <p className="font-medium">Sarah Johnson - Bridal Inquiry</p>
-                          <p className="text-sm text-muted-foreground">
-                            Budget: $3,000-$4,000 • Need by: June 15, 2025
-                          </p>
-                          <div className="flex gap-2 mt-2">
-                            <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded">New</span>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm">View Details</Button>
-                          <Button variant="gold" size="sm">Respond</Button>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <FolderOpen className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="font-medium text-lg mb-2">No Inquiries Yet</h3>
+                    <p className="text-muted-foreground max-w-sm">
+                      Customer inquiries submitted through the contact form will appear here. 
+                      This feature will be available once the inquiry system is set up.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -245,19 +314,13 @@ export default function Admin() {
                   <CardDescription>Manage upcoming consultations and appointments</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex items-center justify-between p-4 border border-border rounded-lg">
-                        <div>
-                          <p className="font-medium">Video Consultation - Emma Davis</p>
-                          <p className="text-sm text-muted-foreground">Jan 25, 2025 at 2:00 PM • Zoom</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm">Reschedule</Button>
-                          <Button variant="gold" size="sm">Join Call</Button>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <Calendar className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="font-medium text-lg mb-2">No Bookings Yet</h3>
+                    <p className="text-muted-foreground max-w-sm">
+                      Consultation bookings will appear here once customers start scheduling appointments.
+                      This feature will be available once the booking system is integrated.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -270,22 +333,13 @@ export default function Admin() {
                   <CardDescription>Track and manage customer orders</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex items-center justify-between p-4 border border-border rounded-lg">
-                        <div>
-                          <p className="font-medium">Order #ORD-{1000 + i}</p>
-                          <p className="text-sm text-muted-foreground">Customer: Jane Smith • Total: $2,899</p>
-                          <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded mt-2 inline-block">
-                            In Production
-                          </span>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm">View</Button>
-                          <Button variant="gold" size="sm">Update Status</Button>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <ShoppingCart className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="font-medium text-lg mb-2">No Orders Yet</h3>
+                    <p className="text-muted-foreground max-w-sm">
+                      Customer orders will appear here once the checkout system is fully integrated.
+                      Currently, orders are managed through direct communication.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -298,7 +352,13 @@ export default function Admin() {
                   <CardDescription>View and manage customer information</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Customer management features coming soon...</p>
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <Users className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="font-medium text-lg mb-2">Customer Directory</h3>
+                    <p className="text-muted-foreground max-w-sm">
+                      Customer profiles and purchase history will be available here once customer accounts are enabled.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -310,7 +370,14 @@ export default function Admin() {
                   <CardDescription>Configure your store settings</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Settings configuration coming soon...</p>
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <Settings className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="font-medium text-lg mb-2">Store Settings</h3>
+                    <p className="text-muted-foreground max-w-sm">
+                      Store configuration options including business hours, shipping settings, 
+                      and notification preferences will be available here.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             )}
