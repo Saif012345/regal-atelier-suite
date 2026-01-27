@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 // Shared pages
 import Shop from "./pages/Shop";
@@ -49,7 +50,8 @@ const App = () => (
           <CartProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+          <BrowserRouter>
+              <ChatWidget />
               <Routes>
               {/* Root redirects to Azixa Rahman */}
               <Route path="/" element={<Navigate to="/azixa" replace />} />
