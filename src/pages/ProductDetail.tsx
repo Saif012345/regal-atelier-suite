@@ -58,7 +58,8 @@ const simplyAzixaSizeChart = [
   { size: "24", bust: "50", waist: "42", hips: "52" },
 ];
 
-const fabricOptions = [
+// Default fabric options for Azixa Rahman products without database colors
+const defaultFabricOptions = [
   { id: "silk-champagne", name: "Silk Champagne", color: "#d4af37" },
   { id: "silk-ivory", name: "Silk Ivory", color: "#fffff0" },
   { id: "silk-blush", name: "Silk Blush", color: "#e8b4b8" },
@@ -77,7 +78,7 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [sizingOption, setSizingOption] = useState<"standard" | "custom">("standard");
   const [selectedSize, setSelectedSize] = useState("");
-  const [selectedFabric, setSelectedFabric] = useState(fabricOptions[0].id);
+  const [selectedFabric, setSelectedFabric] = useState(defaultFabricOptions[0].id);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedLength, setSelectedLength] = useState("");
   const [customMeasurements, setCustomMeasurements] = useState({
@@ -165,7 +166,16 @@ export default function ProductDetail() {
       }
     }
 
-    const selectedFabricObj = fabricOptions.find((f) => f.id === selectedFabric)!;
+    // Get fabric/color info based on brand
+    const isSimply = product.brand === "simply-azixa";
+    const colorInfo = isSimply 
+      ? { id: selectedColor, name: selectedColor }
+      : productColors.length > 0
+        ? { id: selectedColor, name: selectedColor }
+        : (() => {
+            const fabricObj = defaultFabricOptions.find((f) => f.id === selectedFabric);
+            return fabricObj ? { id: fabricObj.id, name: fabricObj.name } : { id: "default", name: "Default" };
+          })();
 
     addItem({
       id: `${product.slug}-${Date.now()}`,
@@ -179,10 +189,7 @@ export default function ProductDetail() {
         size: sizingOption === "standard" ? selectedSize : undefined,
         measurements: sizingOption === "custom" ? customMeasurements : undefined,
       },
-      fabric: {
-        id: selectedFabricObj.id,
-        name: selectedFabricObj.name,
-      },
+      fabric: colorInfo,
     });
 
     toast({
@@ -311,31 +318,58 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Azixa Rahman: Fabric Selection */}
+              {/* Azixa Rahman: Color/Fabric Selection */}
               {!isSimplyAzixa && (
                 <div className="space-y-4">
-                  <Label className="text-base font-medium">Fabric & Color</Label>
+                  <Label className="text-base font-medium">
+                    {productColors.length > 0 ? "Color" : "Fabric & Color"}
+                  </Label>
                   <div className="flex flex-wrap gap-3">
-                    {fabricOptions.map((fabric) => (
-                      <button
-                        key={fabric.id}
-                        onClick={() => setSelectedFabric(fabric.id)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
-                          selectedFabric === fabric.id
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary/50"
-                        }`}
-                      >
-                        <span
-                          className="w-5 h-5 rounded-full border border-border"
-                          style={{ backgroundColor: fabric.color }}
-                        />
-                        <span className="text-sm">{fabric.name}</span>
-                        {selectedFabric === fabric.id && (
-                          <Check className="h-4 w-4 text-primary" />
-                        )}
-                      </button>
-                    ))}
+                    {productColors.length > 0 ? (
+                      // Use database colors if available
+                      productColors.map((color) => (
+                        <button
+                          key={color.name}
+                          onClick={() => setSelectedColor(color.name)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
+                            selectedColor === color.name
+                              ? "border-primary bg-primary/5"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          <span
+                            className="w-5 h-5 rounded-full border border-border"
+                            style={{ backgroundColor: color.hex }}
+                          />
+                          <span className="text-sm">{color.name}</span>
+                          {selectedColor === color.name && (
+                            <Check className="h-4 w-4 text-primary" />
+                          )}
+                        </button>
+                      ))
+                    ) : (
+                      // Fall back to default fabric options
+                      defaultFabricOptions.map((fabric) => (
+                        <button
+                          key={fabric.id}
+                          onClick={() => setSelectedFabric(fabric.id)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
+                            selectedFabric === fabric.id
+                              ? "border-primary bg-primary/5"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          <span
+                            className="w-5 h-5 rounded-full border border-border"
+                            style={{ backgroundColor: fabric.color }}
+                          />
+                          <span className="text-sm">{fabric.name}</span>
+                          {selectedFabric === fabric.id && (
+                            <Check className="h-4 w-4 text-primary" />
+                          )}
+                        </button>
+                      ))
+                    )}
                   </div>
                 </div>
               )}

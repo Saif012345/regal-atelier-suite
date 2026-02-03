@@ -25,10 +25,41 @@ export interface Product {
   images: ProductImage[];
 }
 
-// Parse color string "Name:#hex" to object
+// Parse color string "Name:#hex" or just "Name" to object
 export function parseColor(colorStr: string): { name: string; hex: string } {
-  const [name, hex] = colorStr.split(":");
-  return { name, hex: hex || "#000000" };
+  if (colorStr.includes(":")) {
+    const [name, hex] = colorStr.split(":");
+    return { name, hex: hex || "#000000" };
+  }
+  // If no hex provided, return a default based on common color names
+  const colorMap: Record<string, string> = {
+    "Black": "#1a1a1a",
+    "White": "#ffffff",
+    "Ivory": "#fffff0",
+    "Navy": "#1e3a5f",
+    "Navy Blue": "#1e3a5f",
+    "Royal Blue": "#4169e1",
+    "Sky Blue": "#87ceeb",
+    "Red": "#dc2626",
+    "Burgundy": "#722f37",
+    "Pink": "#ec4899",
+    "Blush": "#e8c4c4",
+    "Rose": "#d4a5a5",
+    "Gold": "#d4af37",
+    "Silver": "#c0c0c0",
+    "Emerald Green": "#50c878",
+    "Green": "#22c55e",
+    "Mint": "#98fb98",
+    "Lilac": "#c8a2c8",
+    "Purple": "#9333ea",
+    "Orange": "#f97316",
+    "Yellow": "#facc15",
+    "Peach": "#ffcba4",
+    "Brown": "#8b4513",
+    "Teal": "#4a7c7c",
+    "Mauve": "#b8a5b8",
+  };
+  return { name: colorStr, hex: colorMap[colorStr] || "#6b7280" };
 }
 
 async function fetchProducts(brand?: string, category?: string): Promise<Product[]> {
