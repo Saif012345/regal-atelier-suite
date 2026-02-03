@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Package, FileText, Calendar, ShoppingCart, Image, Users, LayoutDashboard, Settings, LogOut, ImageIcon, Loader2, FolderOpen } from "lucide-react";
+import { Package, FileText, Calendar, ShoppingCart, Image, Users, LayoutDashboard, Settings, LogOut, ImageIcon, Loader2, FolderOpen, Palette } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { AdminProductManager } from "@/components/admin/AdminProductManager";
 import { AdminGalleryManager } from "@/components/admin/AdminGalleryManager";
 import { AdminSiteImagesManager } from "@/components/admin/AdminSiteImagesManager";
+import { AdminFabricManager } from "@/components/admin/AdminFabricManager";
 import { supabase } from "@/integrations/supabase/client";
 
 interface DashboardStats {
@@ -17,11 +18,13 @@ interface DashboardStats {
   simplyAzixaGallery: number;
   totalProducts: number;
   totalGallery: number;
+  totalFabrics: number;
 }
 
 const sidebarItems = [
   { title: "Dashboard", icon: LayoutDashboard, value: "dashboard" },
   { title: "Products", icon: Package, value: "products" },
+  { title: "Fabrics", icon: Palette, value: "fabrics" },
   { title: "Site Images", icon: ImageIcon, value: "site-images" },
   { title: "Gallery", icon: Image, value: "gallery" },
   { title: "Inquiries", icon: FileText, value: "inquiries" },
@@ -49,11 +52,12 @@ export default function Admin() {
       setLoadingStats(true);
       try {
         // Fetch product counts by brand
-        const [azixaProductsRes, simplyProductsRes, azixaGalleryRes, simplyGalleryRes] = await Promise.all([
+        const [azixaProductsRes, simplyProductsRes, azixaGalleryRes, simplyGalleryRes, fabricsRes] = await Promise.all([
           supabase.from('products').select('id', { count: 'exact', head: true }).eq('brand', 'azixa'),
           supabase.from('products').select('id', { count: 'exact', head: true }).eq('brand', 'simply-azixa'),
           supabase.from('gallery_images').select('id', { count: 'exact', head: true }).eq('brand', 'azixa'),
           supabase.from('gallery_images').select('id', { count: 'exact', head: true }).eq('brand', 'simply-azixa'),
+          supabase.from('fabric_swatches').select('id', { count: 'exact', head: true }),
         ]);
 
         setStats({
@@ -63,6 +67,7 @@ export default function Admin() {
           simplyAzixaGallery: simplyGalleryRes.count || 0,
           totalProducts: (azixaProductsRes.count || 0) + (simplyProductsRes.count || 0),
           totalGallery: (azixaGalleryRes.count || 0) + (simplyGalleryRes.count || 0),
+          totalFabrics: fabricsRes.count || 0,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -149,7 +154,7 @@ export default function Admin() {
             {activeTab === "dashboard" && (
               <>
                 {/* Overview Stats */}
-                <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 mb-8">
+                <div className="grid gap-4 grid-cols-2 lg:grid-cols-5 mb-8">
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Total Products</CardTitle>
@@ -162,6 +167,23 @@ export default function Admin() {
                         <>
                           <div className="text-2xl font-bold">{stats?.totalProducts || 0}</div>
                           <p className="text-xs text-muted-foreground">Across both brands</p>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                      <CardTitle className="text-sm font-medium">Fabric Swatches</CardTitle>
+                      <Palette className="h-4 w-4 text-primary" />
+                    </CardHeader>
+                    <CardContent>
+                      {loadingStats ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          <div className="text-2xl font-bold">{stats?.totalFabrics || 0}</div>
+                          <p className="text-xs text-muted-foreground">Available fabrics</p>
                         </>
                       )}
                     </CardContent>
@@ -276,6 +298,10 @@ export default function Admin() {
                         <ImageIcon className="h-4 w-4 mr-2" />
                         Update Site Images
                       </Button>
+                      <Button variant="outline" onClick={() => setActiveTab("fabrics")}>
+                        <Palette className="h-4 w-4 mr-2" />
+                        Manage Fabrics
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -285,6 +311,8 @@ export default function Admin() {
             {activeTab === "products" && <AdminProductManager />}
 
             {activeTab === "site-images" && <AdminSiteImagesManager />}
+
+            {activeTab === "fabrics" && <AdminFabricManager />}
 
             {activeTab === "gallery" && <AdminGalleryManager />}
 

@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      fabric_swatches: {
+        Row: {
+          brand: string
+          created_at: string
+          description: string | null
+          hex_color: string
+          id: string
+          image_url: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          brand?: string
+          created_at?: string
+          description?: string | null
+          hex_color?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          brand?: string
+          created_at?: string
+          description?: string | null
+          hex_color?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_images: {
         Row: {
           brand: string
@@ -46,6 +79,42 @@ export type Database = {
           image_url?: string
         }
         Relationships: []
+      }
+      product_fabrics: {
+        Row: {
+          created_at: string
+          fabric_id: string
+          id: string
+          product_id: string
+        }
+        Insert: {
+          created_at?: string
+          fabric_id: string
+          id?: string
+          product_id: string
+        }
+        Update: {
+          created_at?: string
+          fabric_id?: string
+          id?: string
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_fabrics_fabric_id_fkey"
+            columns: ["fabric_id"]
+            isOneToOne: false
+            referencedRelation: "fabric_swatches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_fabrics_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       product_images: {
         Row: {
