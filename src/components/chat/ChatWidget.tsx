@@ -131,7 +131,7 @@ export function ChatWidget() {
       <Button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed z-50 rounded-full shadow-lg",
+          "fixed z-[60] rounded-full shadow-lg",
           "bg-primary hover:bg-primary/90 text-primary-foreground",
           "transition-transform hover:scale-105",
           // Mobile: smaller button, closer to edge
@@ -152,9 +152,9 @@ export function ChatWidget() {
       {isOpen && (
         <div
           className={cn(
-            "fixed z-50 bg-background border border-border shadow-xl flex flex-col overflow-hidden",
+            "fixed z-[60] bg-background border border-border shadow-xl flex flex-col overflow-hidden",
             // Mobile: full width, full height minus some padding
-            "inset-x-2 bottom-20 top-4 rounded-xl",
+            "inset-x-2 bottom-20 top-20 rounded-xl",
             // Small mobile: adjust for button
             "xs:inset-x-3",
             // Tablet and up: fixed size, positioned near button
