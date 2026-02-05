@@ -7,8 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Upload, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, X, Palette } from "lucide-react";
 
 interface Product {
   id: string;
@@ -33,6 +34,14 @@ interface ProductImage {
   display_order: number;
 }
 
+interface FabricSwatch {
+  id: string;
+  name: string;
+  hex_color: string;
+  image_url: string | null;
+  brand: string;
+}
+
 export function AdminProductManager() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -42,6 +51,11 @@ export function AdminProductManager() {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [brandFilter, setBrandFilter] = useState<string>("all");
+  
+  // Fabric assignment state
+  const [availableFabrics, setAvailableFabrics] = useState<FabricSwatch[]>([]);
+  const [assignedFabricIds, setAssignedFabricIds] = useState<string[]>([]);
+  
   const { toast } = useToast();
 
   // Form state
@@ -112,9 +126,36 @@ export function AdminProductManager() {
     }
   }, []);
 
+  // Fetch all available fabrics
+  const fetchAvailableFabrics = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('fabric_swatches')
+      .select('*')
+      .order('name');
+    
+    if (!error && data) {
+      setAvailableFabrics(data);
+    }
+  }, []);
+
+  // Fetch fabrics assigned to a product
+  const fetchAssignedFabrics = async (productId: string) => {
+    const { data, error } = await supabase
+      .from('product_fabrics')
+      .select('fabric_id')
+      .eq('product_id', productId);
+    
+    if (!error && data) {
+      setAssignedFabricIds(data.map(pf => pf.fabric_id));
+    } else {
+      setAssignedFabricIds([]);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+    fetchAvailableFabrics();
+  }, [fetchProducts, fetchAvailableFabrics]);
 
   useEffect(() => {
     if (products.length > 0) {
@@ -125,6 +166,7 @@ export function AdminProductManager() {
   useEffect(() => {
     if (selectedProduct) {
       fetchProductImages(selectedProduct.id);
+      fetchAssignedFabrics(selectedProduct.id);
     }
   }, [selectedProduct]);
 
@@ -156,6 +198,7 @@ export function AdminProductManager() {
     });
     setSelectedProduct(null);
     setProductImages([]);
+    setAssignedFabricIds([]);
   };
 
   const openEditDialog = (product: Product) => {
@@ -174,6 +217,36 @@ export function AdminProductManager() {
       in_stock: product.in_stock ?? true,
     });
     setIsDialogOpen(true);
+  };
+
+  // Update fabric assignments for a product
+  const updateFabricAssignments = async (productId: string) => {
+    // First, remove all existing assignments
+    await supabase
+      .from('product_fabrics')
+      .delete()
+      .eq('product_id', productId);
+    
+    // Then add new assignments
+    if (assignedFabricIds.length > 0) {
+      const assignments = assignedFabricIds.map(fabricId => ({
+        product_id: productId,
+        fabric_id: fabricId,
+      }));
+      
+      await supabase
+        .from('product_fabrics')
+        .insert(assignments);
+    }
+  };
+
+  // Toggle fabric assignment
+  const toggleFabricAssignment = (fabricId: string) => {
+    setAssignedFabricIds(prev => 
+      prev.includes(fabricId) 
+        ? prev.filter(id => id !== fabricId)
+        : [...prev, fabricId]
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -195,6 +268,8 @@ export function AdminProductManager() {
     };
 
     try {
+      let productId = selectedProduct?.id;
+      
       if (selectedProduct) {
         // Update existing product
         const { error } = await supabase
@@ -204,17 +279,29 @@ export function AdminProductManager() {
 
         if (error) throw error;
         
+        // Update fabric assignments
+        await updateFabricAssignments(selectedProduct.id);
+        
         toast({
           title: "Product updated",
           description: `${formData.name} has been updated successfully.`,
         });
       } else {
         // Create new product
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('products')
-          .insert(productData);
+          .insert(productData)
+          .select('id')
+          .single();
 
         if (error) throw error;
+        
+        productId = data.id;
+        
+        // Add fabric assignments for new product
+        if (productId) {
+          await updateFabricAssignments(productId);
+        }
         
         toast({
           title: "Product created",
@@ -482,6 +569,58 @@ export function AdminProductManager() {
                     rows={4}
                     placeholder="Beaded lace fabric&#10;Mermaid silhouette&#10;Hidden back zipper"
                   />
+                </div>
+
+                {/* Fabric Assignment Section */}
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">
+                    <Palette className="h-4 w-4" />
+                    Assign Fabric Swatches
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Select fabric swatches to display on the product page
+                  </p>
+                  {availableFabrics.length === 0 ? (
+                    <p className="text-sm text-muted-foreground py-2">
+                      No fabric swatches available. Create some in the Fabrics section first.
+                    </p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto border border-border rounded-lg p-2">
+                      {availableFabrics.map((fabric) => (
+                        <label
+                          key={fabric.id}
+                          className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-colors ${
+                            assignedFabricIds.includes(fabric.id)
+                              ? "border-primary bg-primary/5"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          <Checkbox
+                            checked={assignedFabricIds.includes(fabric.id)}
+                            onCheckedChange={() => toggleFabricAssignment(fabric.id)}
+                          />
+                          {fabric.image_url ? (
+                            <img 
+                              src={fabric.image_url} 
+                              alt={fabric.name}
+                              className="w-6 h-6 rounded object-cover flex-shrink-0"
+                            />
+                          ) : (
+                            <span
+                              className="w-6 h-6 rounded flex-shrink-0"
+                              style={{ backgroundColor: fabric.hex_color }}
+                            />
+                          )}
+                          <span className="text-sm truncate">{fabric.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                  {assignedFabricIds.length > 0 && (
+                    <p className="text-xs text-muted-foreground">
+                      {assignedFabricIds.length} fabric{assignedFabricIds.length !== 1 ? "s" : ""} selected
+                    </p>
+                  )}
                 </div>
 
                 {selectedProduct && (

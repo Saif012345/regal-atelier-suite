@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useProductBySlug, parseColor } from "@/hooks/useProducts";
+import { useProductFabrics, FabricSwatch } from "@/hooks/useProductFabrics";
 import heroFormal from "@/assets/hero-formal.jpg";
 
 // Azixa Rahman size chart (full measurements for custom fitting)
@@ -58,14 +59,7 @@ const simplyAzixaSizeChart = [
   { size: "24", bust: "50", waist: "42", hips: "52" },
 ];
 
-// Default fabric options for Azixa Rahman products without database colors
-const defaultFabricOptions = [
-  { id: "silk-champagne", name: "Silk Champagne", color: "#d4af37" },
-  { id: "silk-ivory", name: "Silk Ivory", color: "#fffff0" },
-  { id: "silk-blush", name: "Silk Blush", color: "#e8b4b8" },
-  { id: "silk-burgundy", name: "Silk Burgundy", color: "#722f37" },
-  { id: "silk-navy", name: "Silk Navy", color: "#000080" },
-];
+// No longer using hardcoded fabric options - fabrics come from database
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -75,10 +69,13 @@ export default function ProductDetail() {
   
   const { data: product, isLoading, error } = useProductBySlug(slug);
   
+  // Fetch assigned fabric swatches for this product
+  const { data: productFabrics = [] } = useProductFabrics(product?.id);
+  
   const [selectedImage, setSelectedImage] = useState(0);
   const [sizingOption, setSizingOption] = useState<"standard" | "custom">("standard");
   const [selectedSize, setSelectedSize] = useState("");
-  const [selectedFabric, setSelectedFabric] = useState(defaultFabricOptions[0].id);
+  const [selectedFabric, setSelectedFabric] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedLength, setSelectedLength] = useState("");
   const [customMeasurements, setCustomMeasurements] = useState({
@@ -90,6 +87,13 @@ export default function ProductDetail() {
     sleeveLength: "",
     fullHeight: "",
   });
+  
+  // Auto-select first fabric when fabrics load
+  useEffect(() => {
+    if (productFabrics.length > 0 && !selectedFabric) {
+      setSelectedFabric(productFabrics[0].id);
+    }
+  }, [productFabrics, selectedFabric]);
 
   // Loading state
   if (isLoading) {
@@ -166,16 +170,24 @@ export default function ProductDetail() {
       }
     }
 
-    // Get fabric/color info based on brand
+    // Get fabric/color info based on brand and available options
     const isSimply = product.brand === "simply-azixa";
-    const colorInfo = isSimply 
-      ? { id: selectedColor, name: selectedColor }
-      : productColors.length > 0
-        ? { id: selectedColor, name: selectedColor }
-        : (() => {
-            const fabricObj = defaultFabricOptions.find((f) => f.id === selectedFabric);
-            return fabricObj ? { id: fabricObj.id, name: fabricObj.name } : { id: "default", name: "Default" };
-          })();
+    let colorInfo: { id: string; name: string };
+    
+    if (isSimply) {
+      colorInfo = { id: selectedColor, name: selectedColor };
+    } else if (productFabrics.length > 0) {
+      // Use assigned fabric swatches
+      const fabricObj = productFabrics.find((f) => f.id === selectedFabric);
+      colorInfo = fabricObj 
+        ? { id: fabricObj.id, name: fabricObj.name } 
+        : { id: "default", name: "Default" };
+    } else if (productColors.length > 0) {
+      // Use product colors from database
+      colorInfo = { id: selectedColor, name: selectedColor };
+    } else {
+      colorInfo = { id: "default", name: "Default" };
+    }
 
     addItem({
       id: `${product.slug}-${Date.now()}`,
@@ -318,15 +330,45 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Azixa Rahman: Color/Fabric Selection */}
+              {/* Azixa Rahman: Fabric/Color Selection */}
               {!isSimplyAzixa && (
                 <div className="space-y-4">
                   <Label className="text-base font-medium">
-                    {productColors.length > 0 ? "Color" : "Fabric & Color"}
+                    {productFabrics.length > 0 ? "Fabric" : productColors.length > 0 ? "Color" : "No fabrics assigned"}
                   </Label>
                   <div className="flex flex-wrap gap-3">
-                    {productColors.length > 0 ? (
-                      // Use database colors if available
+                    {productFabrics.length > 0 ? (
+                      // Use assigned fabric swatches from database
+                      productFabrics.map((fabric) => (
+                        <button
+                          key={fabric.id}
+                          onClick={() => setSelectedFabric(fabric.id)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
+                            selectedFabric === fabric.id
+                              ? "border-primary bg-primary/5"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          {fabric.image_url ? (
+                            <img 
+                              src={fabric.image_url} 
+                              alt={fabric.name}
+                              className="w-6 h-6 rounded-full object-cover border border-border"
+                            />
+                          ) : (
+                            <span
+                              className="w-5 h-5 rounded-full border border-border"
+                              style={{ backgroundColor: fabric.hex_color }}
+                            />
+                          )}
+                          <span className="text-sm">{fabric.name}</span>
+                          {selectedFabric === fabric.id && (
+                            <Check className="h-4 w-4 text-primary" />
+                          )}
+                        </button>
+                      ))
+                    ) : productColors.length > 0 ? (
+                      // Fall back to product colors from database
                       productColors.map((color) => (
                         <button
                           key={color.name}
@@ -348,27 +390,9 @@ export default function ProductDetail() {
                         </button>
                       ))
                     ) : (
-                      // Fall back to default fabric options
-                      defaultFabricOptions.map((fabric) => (
-                        <button
-                          key={fabric.id}
-                          onClick={() => setSelectedFabric(fabric.id)}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all ${
-                            selectedFabric === fabric.id
-                              ? "border-primary bg-primary/5"
-                              : "border-border hover:border-primary/50"
-                          }`}
-                        >
-                          <span
-                            className="w-5 h-5 rounded-full border border-border"
-                            style={{ backgroundColor: fabric.color }}
-                          />
-                          <span className="text-sm">{fabric.name}</span>
-                          {selectedFabric === fabric.id && (
-                            <Check className="h-4 w-4 text-primary" />
-                          )}
-                        </button>
-                      ))
+                      <p className="text-sm text-muted-foreground">
+                        Contact us to discuss fabric options for this design.
+                      </p>
                     )}
                   </div>
                 </div>
