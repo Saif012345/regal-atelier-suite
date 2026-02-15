@@ -49,12 +49,12 @@ export default function AzixaHome() {
     <AzixaLayout>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={heroBackgroundImage}
-            alt="Azixa Rahman hero"
-            className="h-full w-full object-cover object-top"
-          />
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroBackgroundImage})`
+          }}
+        >
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/50 to-transparent" />
         </div>
 
