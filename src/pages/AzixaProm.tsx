@@ -109,13 +109,9 @@ export default function AzixaProm() {
                           {product.name}
                         </h3>
                       </Link>
-                      {product.is_custom ? (
-                        <p className="text-sm text-muted-foreground">Custom Pricing</p>
-                      ) : (
-                        <p className="text-lg font-medium text-foreground">
-                          ${product.price.toLocaleString()}
-                        </p>
-                      )}
+                      <p className="text-lg font-medium text-foreground">
+                        ${product.price.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 );
