@@ -19,7 +19,7 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hello! Welcome to Azixa. How can I help you today? I can answer questions about our bridal, prom, and occasion wear from Azixa Rahman Label, or our modest abaya collection from Simply Azixa.",
+      content: "Hello! Welcome to Azixa. How can I help you today? I can answer questions about our bridal, prom, and occasion wear from Azixa Rahman, or our modest abaya collection from Simply Azixa.",
     },
   ]);
   const [input, setInput] = useState("");
