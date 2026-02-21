@@ -7,7 +7,7 @@ const corsHeaders = {
 
 const systemPrompt = `You are a helpful customer support assistant for two fashion brands:
 
-1. **Azixa Rahman Label** - A luxury fashion house specializing in:
+1. **Azixa Rahman** - A luxury fashion house specializing in:
    - Custom bridal gowns and wedding dresses
    - Prom dresses and formal wear
    - Occasion wear for special events
